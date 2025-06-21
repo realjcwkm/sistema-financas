@@ -1,38 +1,40 @@
 package com.mycompany.sistemaplanejago.view;
 
+import com.mycompany.sistemaplanejago.controller.UsuarioController;
 import java.awt.Frame;
-import java.awt.Color; // Certifique-se que esta linha está no topo do seu arquivo com os outros imports
-import java.awt.event.MouseAdapter; // E esta linha
-import java.awt.event.MouseEvent; // E esta linha
+import java.awt.Color; 
+import java.awt.event.MouseAdapter; 
+import java.awt.event.MouseEvent; 
 import com.mycompany.sistemaplanejago.view.TelaLogin;
 
 public class TelaCadastro extends javax.swing.JFrame {
     
+    private UsuarioController usuarioController;
+    
     public TelaCadastro() {
+        
         initComponents();
+        usuarioController = new UsuarioController();
+        
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
-        buttonEntrar.putClientProperty("JButton.arc", 999); //não tá arredondando muito
+        buttonEntrar.putClientProperty("JButton.arc", 999); 
         
         
         buttonEntrar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
-                // Quando o mouse ENTRA no botão, muda a cor para laranja
                 buttonEntrar.setBackground(new Color(255, 160, 0)); // Laranja
             }
 
             @Override
             public void mouseExited(MouseEvent evt) {
-                // Quando o mouse SAI do botão, volta para a cor original (branca)
-                buttonEntrar.setBackground(Color.WHITE); // Cor original do botão
+                buttonEntrar.setBackground(Color.WHITE); // Branca
             }
         });
     
     
     }
 
-    
-    
     /////////////////////////////////////////////////////////////
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -59,8 +61,8 @@ public class TelaCadastro extends javax.swing.JFrame {
         panelSenha = new javax.swing.JPanel();
         labelSenha = new javax.swing.JLabel();
         fieldSenha = new javax.swing.JPasswordField();
-        panelEntar = new javax.swing.JPanel();
-        buttonEntrar1 = new javax.swing.JButton();
+        panelCadastrar = new javax.swing.JPanel();
+        buttonCadastrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -269,44 +271,44 @@ public class TelaCadastro extends javax.swing.JFrame {
 
         panelContent.add(panelSenha);
 
-        panelEntar.setBackground(new java.awt.Color(255, 255, 255));
+        panelCadastrar.setBackground(new java.awt.Color(255, 255, 255));
 
-        buttonEntrar1.setBackground(new java.awt.Color(97, 90, 205));
-        buttonEntrar1.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
-        buttonEntrar1.setForeground(new java.awt.Color(255, 255, 255));
-        buttonEntrar1.setText("Entrar");
-        buttonEntrar1.addMouseListener(new java.awt.event.MouseAdapter() {
+        buttonCadastrar.setBackground(new java.awt.Color(97, 90, 205));
+        buttonCadastrar.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
+        buttonCadastrar.setForeground(new java.awt.Color(255, 255, 255));
+        buttonCadastrar.setText("Entrar");
+        buttonCadastrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                buttonEntrar1MouseEntered(evt);
+                buttonCadastrarMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                buttonEntrar1MouseExited(evt);
+                buttonCadastrarMouseExited(evt);
             }
         });
-        buttonEntrar1.addActionListener(new java.awt.event.ActionListener() {
+        buttonCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonEntrar1ActionPerformed(evt);
+                buttonCadastrarActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout panelEntarLayout = new javax.swing.GroupLayout(panelEntar);
-        panelEntar.setLayout(panelEntarLayout);
-        panelEntarLayout.setHorizontalGroup(
-            panelEntarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEntarLayout.createSequentialGroup()
+        javax.swing.GroupLayout panelCadastrarLayout = new javax.swing.GroupLayout(panelCadastrar);
+        panelCadastrar.setLayout(panelCadastrarLayout);
+        panelCadastrarLayout.setHorizontalGroup(
+            panelCadastrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCadastrarLayout.createSequentialGroup()
                 .addContainerGap(18, Short.MAX_VALUE)
-                .addComponent(buttonEntrar1, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-        panelEntarLayout.setVerticalGroup(
-            panelEntarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEntarLayout.createSequentialGroup()
+        panelCadastrarLayout.setVerticalGroup(
+            panelCadastrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCadastrarLayout.createSequentialGroup()
                 .addContainerGap(44, Short.MAX_VALUE)
-                .addComponent(buttonEntrar1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        panelContent.add(panelEntar);
+        panelContent.add(panelCadastrar);
 
         panelCentralizador.add(panelContent, new java.awt.GridBagConstraints());
 
@@ -334,19 +336,35 @@ public class TelaCadastro extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_fieldNomeActionPerformed
 
-    private void buttonEntrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEntrar1ActionPerformed
+    private void buttonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCadastrarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_buttonEntrar1ActionPerformed
+        String nome = fieldNome.getText();
+        String email = fieldEmail.getText();
+        String dataNascimentoStr = fieldDtNascimento.getText();
+        String senha = new String(fieldSenha.getPassword()); 
 
-    private void buttonEntrar1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEntrar1MouseEntered
-        // TODO add your handling code here:
-        buttonEntrar1.setBackground(new Color(255, 165, 0));
-    }//GEN-LAST:event_buttonEntrar1MouseEntered
+        // Se der certo, chama o método do controller
+        boolean sucesso = usuarioController.cadastrarUsuario(nome, email, dataNascimentoStr, senha);
 
-    private void buttonEntrar1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEntrar1MouseExited
+        // Limpa os campos -> não funciou corrigir em outra branch
+        if (sucesso) {
+            fieldNome.setText("");
+            fieldEmail.setText("");
+            fieldDtNascimento.setText("");
+            fieldSenha.setText("");
+        }
+    }//GEN-LAST:event_buttonCadastrarActionPerformed
+
+    private void buttonCadastrarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonCadastrarMouseEntered
         // TODO add your handling code here:
-        buttonEntrar1.setBackground(new Color(97, 90, 205));
-    }//GEN-LAST:event_buttonEntrar1MouseExited
+        buttonCadastrar.setBackground(new Color(255, 165, 0));
+        
+    }//GEN-LAST:event_buttonCadastrarMouseEntered
+
+    private void buttonCadastrarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonCadastrarMouseExited
+        // TODO add your handling code here:
+        buttonCadastrar.setBackground(new Color(97, 90, 205));
+    }//GEN-LAST:event_buttonCadastrarMouseExited
 
     private void fieldEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldEmailActionPerformed
         // TODO add your handling code here:
@@ -362,9 +380,8 @@ public class TelaCadastro extends javax.swing.JFrame {
 
     private void buttonEntrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEntrarMouseClicked
         // TODO add your handling code here:
-        TelaLogin telaLogin = new TelaLogin (); // Cria a nova tela
-        telaLogin.setVisible(true); // Torna a nova tela visível
-
+        TelaLogin telaLogin = new TelaLogin (); 
+        telaLogin.setVisible(true); 
 
         this.dispose(); 
     }//GEN-LAST:event_buttonEntrarMouseClicked
@@ -406,8 +423,8 @@ public class TelaCadastro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonCadastrar;
     private javax.swing.JButton buttonEntrar;
-    private javax.swing.JButton buttonEntrar1;
     private javax.swing.JTextField fieldDtNascimento;
     private javax.swing.JTextField fieldEmail;
     private javax.swing.JTextField fieldNome;
@@ -419,11 +436,11 @@ public class TelaCadastro extends javax.swing.JFrame {
     private javax.swing.JLabel labelSenha;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JPanel panelBtnEntrar;
+    private javax.swing.JPanel panelCadastrar;
     private javax.swing.JPanel panelCentralizador;
     private javax.swing.JPanel panelContent;
     private javax.swing.JPanel panelDtNascimento;
     private javax.swing.JPanel panelEmail;
-    private javax.swing.JPanel panelEntar;
     private javax.swing.JPanel panelNavBar;
     private javax.swing.JPanel panelNome;
     private javax.swing.JPanel panelPrincipal;

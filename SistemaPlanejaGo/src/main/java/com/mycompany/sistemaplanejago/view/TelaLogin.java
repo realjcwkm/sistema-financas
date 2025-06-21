@@ -1,5 +1,6 @@
 package com.mycompany.sistemaplanejago.view;
 
+import com.mycompany.sistemaplanejago.controller.UsuarioController;
 import java.awt.Frame;
 import java.awt.Color; // Certifique-se que esta linha está no topo do seu arquivo com os outros imports
 import java.awt.event.MouseAdapter; // E esta linha
@@ -8,8 +9,11 @@ import com.mycompany.sistemaplanejago.view.TelaCadastro;
 
 public class TelaLogin extends javax.swing.JFrame {
     
+    private UsuarioController usuarioController;
+    
     public TelaLogin() {
         initComponents();
+         usuarioController = new UsuarioController();
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         buttonCadastrar.putClientProperty("JButton.arc", 999); //não tá arredondando muito
         
@@ -278,6 +282,10 @@ public class TelaLogin extends javax.swing.JFrame {
 
     private void buttonEntrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEntrar1ActionPerformed
         // TODO add your handling code here:
+        String email = fieldEmail.getText(); // Substitua fieldEmailLogin pelo nome real do seu campo de email
+        String senha = new String(fieldSenha.getPassword());
+        
+        boolean loginSucesso = usuarioController.logarUsuario(email, senha);
     }//GEN-LAST:event_buttonEntrar1ActionPerformed
 
     private void fieldSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldSenhaActionPerformed
