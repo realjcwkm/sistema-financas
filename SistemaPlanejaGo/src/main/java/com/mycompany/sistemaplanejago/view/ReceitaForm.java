@@ -1,24 +1,64 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package com.mycompany.sistemaplanejago.view;
 
+import com.mycompany.sistemaplanejago.dao.CategoriaDAO; 
+import com.mycompany.sistemaplanejago.dao.FrequenciaDAO; 
+import com.mycompany.sistemaplanejago.model.Categoria;
+import com.mycompany.sistemaplanejago.model.Frequencia; 
 import java.awt.Color;
+import javax.swing.JOptionPane; 
+import java.util.List; 
 
-/**
- *
- * @author diego
- */
 public class ReceitaForm extends javax.swing.JDialog {
 
-    /**
-     * Creates new form DespesaForm
-     */
     public ReceitaForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(parent); //Centralizar
+        carregarComboBoxRepeticao();
+        carregarComboBoxCategoria();
+    }
+    
+    private void carregarComboBoxRepeticao() {
+        try {
+            FrequenciaDAO frequenciaDAO = new FrequenciaDAO();
+            List<Frequencia> frequencias = frequenciaDAO.listarTodasFrequencias();
+
+            ComboBoxRepeticao.removeAllItems();
+
+            for (Frequencia freq : frequencias) {
+                ComboBoxRepeticao.addItem(freq.getTitulo()); 
+            }
+
+        } catch (RuntimeException e) {
+            System.err.println("Erro ao carregar dados de frequência: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Não foi possível carregar as frequências do banco de dados.\nDetalhes: " + e.getMessage(),
+                    "Erro de Carregamento",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void carregarComboBoxCategoria() {
+        try {
+            CategoriaDAO categoriaDAO = new CategoriaDAO(); 
+            List<Categoria> categorias = categoriaDAO.listarCategorias(2); 
+
+            ComboBoxCategoria.removeAllItems();
+            ComboBoxCategoria.addItem("Selecione");
+
+            for (Categoria cat : categorias) {
+                ComboBoxCategoria.addItem(cat.getTitulo());
+            }
+
+        } catch (RuntimeException e) {
+            System.err.println("Erro ao carregar dados de categoria: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Não foi possível carregar as categorias de despesas do banco de dados.\nDetalhes: " + e.getMessage(),
+                    "Erro de Carregamento",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**

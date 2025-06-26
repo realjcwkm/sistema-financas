@@ -105,7 +105,7 @@
                                   <Component id="fieldDescricao" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
                                       <Component id="labelDescricao" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="394" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="402" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -234,7 +234,7 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="47" green="10" red="13" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="Email"/>
+                        <Property name="text" type="java.lang.String" value="Status"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JComboBox" name="jComboBox1">
@@ -245,9 +245,13 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Roboto" size="18" style="0"/>
                         </Property>
+                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="0" green="0" red="0" type="rgb"/>
+                        </Property>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="1">
-                            <StringItem index="0" value="Selecione"/>
+                          <StringArray count="2">
+                            <StringItem index="0" value="N&#xe3;o Paga"/>
+                            <StringItem index="1" value="Paga"/>
                           </StringArray>
                         </Property>
                       </Properties>
@@ -277,10 +281,13 @@
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="ComboBoxCentralCusto" min="-2" pref="248" max="-2" attributes="0"/>
-                                  <Component id="labelCentralCusto" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="labelCentralCusto" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="ComboBoxCentralCusto" pref="256" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -374,14 +381,14 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="labelDataCriacao" alignment="0" pref="218" max="32767" attributes="0"/>
-                                  <Component id="fieldDataCriacao" alignment="0" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="labelDataCriacao" pref="218" max="32767" attributes="0"/>
+                                  <Component id="fieldDataCriacao" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Component id="labelDataVencimento" pref="218" max="32767" attributes="0"/>
+                                      <Component id="labelDataVencimento" pref="226" max="32767" attributes="0"/>
                                       <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" attributes="0">
@@ -484,7 +491,7 @@
                                       <EmptySpace min="-2" pref="206" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" attributes="0">
-                                      <Component id="ComboBoxRepeticao" pref="476" max="32767" attributes="0"/>
+                                      <Component id="ComboBoxRepeticao" pref="484" max="32767" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -512,7 +519,7 @@
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="47" green="10" red="13" type="rgb"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="Repeti&#xe7;&#xe3;o"/>
+                        <Property name="text" type="java.lang.String" value="Frequ&#xea;ncia"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JComboBox" name="ComboBoxRepeticao">
@@ -546,8 +553,8 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="buttonSalvar" min="-2" pref="472" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="buttonSalvar" pref="480" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>

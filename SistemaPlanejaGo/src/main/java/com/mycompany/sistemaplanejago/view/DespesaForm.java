@@ -1,25 +1,93 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package com.mycompany.sistemaplanejago.view;
 
+import com.mycompany.sistemaplanejago.dao.CategoriaDAO; 
+import com.mycompany.sistemaplanejago.dao.CentroCustoDAO;
+import com.mycompany.sistemaplanejago.dao.FrequenciaDAO; 
+import com.mycompany.sistemaplanejago.model.Categoria;
+import com.mycompany.sistemaplanejago.model.CentroCusto;
+import com.mycompany.sistemaplanejago.model.Frequencia; 
 import java.awt.Color;
+import javax.swing.JOptionPane; 
+import java.util.List; 
 
-/**
- *
- * @author diego
- */
+
 public class DespesaForm extends javax.swing.JDialog {
 
-    /**
-     * Creates new form DespesaForm
-     */
     public DespesaForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setLocationRelativeTo(parent); //Centralizar
+        setLocationRelativeTo(parent);
+        carregarComboBoxRepeticao();
+        carregarComboBoxCategoria();
+        carregarComboBoxCentroCusto(); 
     }
+
+
+    private void carregarComboBoxRepeticao() {
+        try {
+            FrequenciaDAO frequenciaDAO = new FrequenciaDAO();
+            List<Frequencia> frequencias = frequenciaDAO.listarTodasFrequencias();
+
+            ComboBoxRepeticao.removeAllItems();
+
+            for (Frequencia freq : frequencias) {
+                ComboBoxRepeticao.addItem(freq.getTitulo()); 
+            }
+
+        } catch (RuntimeException e) {
+            System.err.println("Erro ao carregar dados de frequência: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Não foi possível carregar as frequências do banco de dados.\nDetalhes: " + e.getMessage(),
+                    "Erro de Carregamento",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void carregarComboBoxCategoria() {
+        try {
+            CategoriaDAO categoriaDAO = new CategoriaDAO(); 
+            List<Categoria> categorias = categoriaDAO.listarCategorias(1); 
+
+            ComboBoxCategoria.removeAllItems();
+            ComboBoxCategoria.addItem("Selecione");
+
+            for (Categoria cat : categorias) {
+                ComboBoxCategoria.addItem(cat.getTitulo());
+            }
+
+        } catch (RuntimeException e) {
+            System.err.println("Erro ao carregar dados de categoria: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Não foi possível carregar as categorias de despesas do banco de dados.\nDetalhes: " + e.getMessage(),
+                    "Erro de Carregamento",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+     private void carregarComboBoxCentroCusto() {
+        try {
+            CentroCustoDAO centroCustoDAO = new CentroCustoDAO(); 
+            List<CentroCusto> centrosDeCusto = centroCustoDAO.listarTodosCentrosDeCusto(); 
+
+            ComboBoxCentralCusto.removeAllItems(); 
+            ComboBoxCentralCusto.addItem("Selecione"); 
+
+            for (CentroCusto cc : centrosDeCusto) {
+                ComboBoxCentralCusto.addItem(cc.getTitulo()); 
+            }
+
+        } catch (RuntimeException e) {
+            System.err.println("Erro ao carregar dados de centro de custo: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Não foi possível carregar os centros de custo do banco de dados.\nDetalhes: " + e.getMessage(),
+                    "Erro de Carregamento",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -102,7 +170,7 @@ public class DespesaForm extends javax.swing.JDialog {
                     .addComponent(fieldDescricao)
                     .addGroup(panelDescricaoLayout.createSequentialGroup()
                         .addComponent(labelDescricao)
-                        .addGap(0, 394, Short.MAX_VALUE)))
+                        .addGap(0, 402, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelDescricaoLayout.setVerticalGroup(
@@ -134,11 +202,12 @@ public class DespesaForm extends javax.swing.JDialog {
 
         labelEmail1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         labelEmail1.setForeground(new java.awt.Color(19, 16, 71));
-        labelEmail1.setText("Email");
+        labelEmail1.setText("Status");
 
         jComboBox1.setBackground(new java.awt.Color(255, 255, 255));
         jComboBox1.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione" }));
+        jComboBox1.setForeground(new java.awt.Color(0, 0, 0));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Não Paga", "Paga" }));
 
         javax.swing.GroupLayout panelValorLayout = new javax.swing.GroupLayout(panelValor);
         panelValor.setLayout(panelValorLayout);
@@ -203,9 +272,11 @@ public class DespesaForm extends javax.swing.JDialog {
                     .addComponent(ComboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelCategoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ComboBoxCentralCusto, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelCentralCusto))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panelCategoriaLayout.createSequentialGroup()
+                        .addComponent(labelCentralCusto)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(ComboBoxCentralCusto, 0, 256, Short.MAX_VALUE))
+                .addContainerGap())
         );
         panelCategoriaLayout.setVerticalGroup(
             panelCategoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,13 +327,13 @@ public class DespesaForm extends javax.swing.JDialog {
         panelDatasLayout.setHorizontalGroup(
             panelDatasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelDatasLayout.createSequentialGroup()
-                .addGroup(panelDatasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(labelDataCriacao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
-                    .addComponent(fieldDataCriacao, javax.swing.GroupLayout.Alignment.LEADING))
+                .addGroup(panelDatasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(labelDataCriacao, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                    .addComponent(fieldDataCriacao))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelDatasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelDatasLayout.createSequentialGroup()
-                        .addComponent(labelDataVencimento, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                        .addComponent(labelDataVencimento, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
                         .addGap(36, 36, 36))
                     .addGroup(panelDatasLayout.createSequentialGroup()
                         .addComponent(fieldDataVencimento)
@@ -289,7 +360,7 @@ public class DespesaForm extends javax.swing.JDialog {
 
         labelRepeticao.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         labelRepeticao.setForeground(new java.awt.Color(19, 16, 71));
-        labelRepeticao.setText("Repetição");
+        labelRepeticao.setText("Frequência");
 
         ComboBoxRepeticao.setBackground(new java.awt.Color(255, 255, 255));
         ComboBoxRepeticao.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
@@ -306,7 +377,7 @@ public class DespesaForm extends javax.swing.JDialog {
                         .addComponent(labelRepeticao)
                         .addGap(206, 206, 206))
                     .addGroup(panelRepeticaoLayout.createSequentialGroup()
-                        .addComponent(ComboBoxRepeticao, 0, 476, Short.MAX_VALUE)
+                        .addComponent(ComboBoxRepeticao, 0, 484, Short.MAX_VALUE)
                         .addContainerGap())))
         );
         panelRepeticaoLayout.setVerticalGroup(
@@ -346,8 +417,8 @@ public class DespesaForm extends javax.swing.JDialog {
         panelSalvarLayout.setHorizontalGroup(
             panelSalvarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSalvarLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(buttonSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(buttonSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
                 .addContainerGap())
         );
         panelSalvarLayout.setVerticalGroup(
