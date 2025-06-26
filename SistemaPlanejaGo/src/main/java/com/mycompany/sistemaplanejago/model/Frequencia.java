@@ -1,9 +1,9 @@
 package com.mycompany.sistemaplanejago.model;
 
 public class Frequencia {
-    private int id; 
-    private String titulo; 
-    private String descricao; 
+    private int id;
+    private String titulo;
+    private String descricao;
 
     public Frequencia() {
     }
@@ -36,5 +36,10 @@ public class Frequencia {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    @Override
+    public String toString() {
+        return titulo;
     }
 }
