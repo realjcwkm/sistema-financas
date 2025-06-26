@@ -4,23 +4,29 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-
 public class ConexaoBD {
-    private static final String URL = "jdbc:mysql://localhost:3306/planejago"; 
-    private static final String USER = "root"; 
+    private static final String URL = "jdbc:mysql://localhost:3306/planejago";
+    private static final String USER = "root";
     private static final String PASSWORD = "senha"; //cada integrante coloca a sua respectiva senha
-    
+
     public static Connection getConnection() {
         try {
+            
+            Class.forName("com.mysql.cj.jdbc.Driver"); 
             return DriverManager.getConnection(URL, USER, PASSWORD);
+            
+        } catch (ClassNotFoundException e) {
+            System.err.println("Driver JDBC não encontrado: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao carregar o driver JDBC.", e); 
         } catch (SQLException e) {
             System.err.println("Erro ao conectar ao banco de dados: " + e.getMessage());
             e.printStackTrace();
-            return null; 
+            throw new RuntimeException("Erro ao conectar ao banco de dados.", e);
         }
     }
-    
-     public static void closeConnection(Connection conn) {
+
+    public static void closeConnection(Connection conn) {
         if (conn != null) {
             try {
                 conn.close();
@@ -30,19 +36,4 @@ public class ConexaoBD {
             }
         }
     }
-     
-    // Só testar a conexão, quem precisar testar só tirar o comentário
-    //public static void main(String[] args) {
-    //    Connection connection = null;
-    //    try {
-    //        connection = ConexaoBD.getConnection();
-    //        if (connection != null) {
-    //            System.out.println("Conexão estabelecida com sucesso!");
-    //        } else {
-    //            System.out.println("Falha na conexão.");
-    //        }
-    //    } finally {
-    //        closeConnection(connection);
-    //    }
-    //}
 }
