@@ -1,5 +1,6 @@
 package com.mycompany.sistemaplanejago.view;
 
+import com.mycompany.sistemaplanejago.controller.LancamentoController;
 import com.mycompany.sistemaplanejago.dao.CategoriaDAO; 
 import com.mycompany.sistemaplanejago.dao.CentroCustoDAO;
 import com.mycompany.sistemaplanejago.dao.FrequenciaDAO; 
@@ -11,8 +12,11 @@ import javax.swing.JOptionPane;
 import java.util.List; 
 
 
+
 public class DespesaForm extends javax.swing.JDialog {
 
+    private LancamentoController lancamentoController;
+    
     public DespesaForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -20,6 +24,12 @@ public class DespesaForm extends javax.swing.JDialog {
         carregarComboBoxRepeticao();
         carregarComboBoxCategoria();
         carregarComboBoxCentroCusto(); 
+        ComboBoxStatus.removeAllItems();
+        ComboBoxStatus.addItem("Pago");
+        ComboBoxStatus.addItem("Pendente");
+        lancamentoController = new LancamentoController();
+        
+        
     }
 
 
@@ -88,6 +98,46 @@ public class DespesaForm extends javax.swing.JDialog {
         }
     }
     
+    private int obterIdFrequenciaPorTitulo(String titulo) {
+        FrequenciaDAO frequenciaDAO = new FrequenciaDAO();
+        List<Frequencia> lista = frequenciaDAO.listarTodasFrequencias();
+
+        for (Frequencia f : lista) {
+            if (f.getTitulo().equalsIgnoreCase(titulo)) {
+                return f.getId(); 
+            }
+        }
+
+        return -1; 
+    }
+    
+    
+    private int obterIdCentroCustoPorTitulo(String titulo) {
+        CentroCustoDAO dao = new CentroCustoDAO();
+        List<CentroCusto> lista = dao.listarTodosCentrosDeCusto();
+
+        for (CentroCusto c : lista) {
+            if (c.getTitulo().equalsIgnoreCase(titulo)) {
+                return c.getId(); 
+            }
+        }
+
+        return -1;
+    }
+    
+    private int obterIdCategoriaPorTitulo(String titulo) {
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        List<Categoria> categorias = categoriaDAO.listarCategorias(1); // 1 = tipo despesa
+
+        for (Categoria cat : categorias) {
+            if (cat.getTitulo().equalsIgnoreCase(titulo)) {
+                return cat.getId(); 
+            }
+        }
+
+        return -1; 
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -110,7 +160,7 @@ public class DespesaForm extends javax.swing.JDialog {
         labelValor = new javax.swing.JLabel();
         fieldValor = new javax.swing.JTextField();
         labelEmail1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        ComboBoxStatus = new javax.swing.JComboBox<>();
         panelCategoria = new javax.swing.JPanel();
         labelCategoria = new javax.swing.JLabel();
         ComboBoxCategoria = new javax.swing.JComboBox<>();
@@ -152,7 +202,6 @@ public class DespesaForm extends javax.swing.JDialog {
         labelDescricao.setForeground(new java.awt.Color(19, 16, 71));
         labelDescricao.setText("Descrição");
 
-        fieldDescricao.setBackground(new java.awt.Color(255, 255, 255));
         fieldDescricao.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         fieldDescricao.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         fieldDescricao.addActionListener(new java.awt.event.ActionListener() {
@@ -191,7 +240,6 @@ public class DespesaForm extends javax.swing.JDialog {
         labelValor.setForeground(new java.awt.Color(19, 16, 71));
         labelValor.setText("Valor");
 
-        fieldValor.setBackground(new java.awt.Color(255, 255, 255));
         fieldValor.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         fieldValor.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         fieldValor.addActionListener(new java.awt.event.ActionListener() {
@@ -204,10 +252,8 @@ public class DespesaForm extends javax.swing.JDialog {
         labelEmail1.setForeground(new java.awt.Color(19, 16, 71));
         labelEmail1.setText("Status");
 
-        jComboBox1.setBackground(new java.awt.Color(255, 255, 255));
-        jComboBox1.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        jComboBox1.setForeground(new java.awt.Color(0, 0, 0));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Não Paga", "Paga" }));
+        ComboBoxStatus.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        ComboBoxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Não Paga", "Paga" }));
 
         javax.swing.GroupLayout panelValorLayout = new javax.swing.GroupLayout(panelValor);
         panelValor.setLayout(panelValorLayout);
@@ -224,7 +270,7 @@ public class DespesaForm extends javax.swing.JDialog {
                         .addGap(207, 207, 207))
                     .addGroup(panelValorLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ComboBoxStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
         );
         panelValorLayout.setVerticalGroup(
@@ -237,7 +283,7 @@ public class DespesaForm extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelValorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fieldValor)
-                    .addComponent(jComboBox1))
+                    .addComponent(ComboBoxStatus))
                 .addContainerGap())
         );
 
@@ -250,7 +296,6 @@ public class DespesaForm extends javax.swing.JDialog {
         labelCategoria.setForeground(new java.awt.Color(19, 16, 71));
         labelCategoria.setText("Categoria");
 
-        ComboBoxCategoria.setBackground(new java.awt.Color(255, 255, 255));
         ComboBoxCategoria.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         ComboBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione" }));
 
@@ -258,7 +303,6 @@ public class DespesaForm extends javax.swing.JDialog {
         labelCentralCusto.setForeground(new java.awt.Color(19, 16, 71));
         labelCentralCusto.setText("Central Custo");
 
-        ComboBoxCentralCusto.setBackground(new java.awt.Color(255, 255, 255));
         ComboBoxCentralCusto.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         ComboBoxCentralCusto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione" }));
 
@@ -300,7 +344,6 @@ public class DespesaForm extends javax.swing.JDialog {
         labelDataCriacao.setForeground(new java.awt.Color(19, 16, 71));
         labelDataCriacao.setText("Data da Criação");
 
-        fieldDataCriacao.setBackground(new java.awt.Color(255, 255, 255));
         fieldDataCriacao.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         fieldDataCriacao.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         fieldDataCriacao.addActionListener(new java.awt.event.ActionListener() {
@@ -313,7 +356,6 @@ public class DespesaForm extends javax.swing.JDialog {
         labelDataVencimento.setForeground(new java.awt.Color(19, 16, 71));
         labelDataVencimento.setText("Data de Vencimento");
 
-        fieldDataVencimento.setBackground(new java.awt.Color(255, 255, 255));
         fieldDataVencimento.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         fieldDataVencimento.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         fieldDataVencimento.addActionListener(new java.awt.event.ActionListener() {
@@ -362,7 +404,6 @@ public class DespesaForm extends javax.swing.JDialog {
         labelRepeticao.setForeground(new java.awt.Color(19, 16, 71));
         labelRepeticao.setText("Frequência");
 
-        ComboBoxRepeticao.setBackground(new java.awt.Color(255, 255, 255));
         ComboBoxRepeticao.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         ComboBoxRepeticao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione" }));
 
@@ -463,18 +504,52 @@ public class DespesaForm extends javax.swing.JDialog {
 
     private void buttonSalvarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSalvarMouseEntered
         // TODO add your handling code here:
-        buttonSalvar.setBackground(new Color(255, 165, 0));
+        buttonSalvar.setBackground(new Color(27, 189, 70));
 
     }//GEN-LAST:event_buttonSalvarMouseEntered
 
     private void buttonSalvarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSalvarMouseExited
         // TODO add your handling code here:
-        buttonSalvar.setBackground(new Color(97, 90, 205));
+        buttonSalvar.setBackground(new Color(4, 137, 40));
     }//GEN-LAST:event_buttonSalvarMouseExited
 
     private void buttonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSalvarActionPerformed
-        // TODO add your handling code here:
-        
+        try {
+            String descricao = fieldDescricao.getText();
+            String valor = fieldValor.getText();
+
+            String statusPagoStr = ComboBoxStatus.getSelectedItem() != null &&
+                    ComboBoxStatus.getSelectedItem().toString().equals("Pago") ? "true" : "false";
+
+            String dataCriacao = fieldDataCriacao.getText();
+            String dataVencimento = fieldDataVencimento.getText();
+            String freqTitulo = ComboBoxRepeticao.getSelectedItem().toString();
+            String ccTitulo = ComboBoxCentralCusto.getSelectedItem().toString();
+            String catTitulo = ComboBoxCategoria.getSelectedItem().toString();
+
+            int freqId = obterIdFrequenciaPorTitulo(freqTitulo);
+            int ccId = obterIdCentroCustoPorTitulo(ccTitulo);
+            int catId = obterIdCategoriaPorTitulo(catTitulo);
+
+            if (freqId<0 || ccId<0 || catId<0) {
+                JOptionPane.showMessageDialog(this, "Selecione itens válidos.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            boolean ok = lancamentoController.cadastrarDespesa(
+                    descricao, valor, statusPagoStr, dataCriacao, dataVencimento,
+                    String.valueOf(freqId), String.valueOf(ccId), String.valueOf(catId)
+            );
+
+            if (ok) {
+                JOptionPane.showMessageDialog(this, "Despesa cadastrada!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Falha ao cadastrar.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro interno: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_buttonSalvarActionPerformed
 
     private void fieldDataVencimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldDataVencimentoActionPerformed
@@ -527,12 +602,12 @@ public class DespesaForm extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> ComboBoxCategoria;
     private javax.swing.JComboBox<String> ComboBoxCentralCusto;
     private javax.swing.JComboBox<String> ComboBoxRepeticao;
+    private javax.swing.JComboBox<String> ComboBoxStatus;
     private javax.swing.JButton buttonSalvar;
     private javax.swing.JTextField fieldDataCriacao;
     private javax.swing.JTextField fieldDataVencimento;
     private javax.swing.JTextField fieldDescricao;
     private javax.swing.JTextField fieldValor;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel labelCategoria;
     private javax.swing.JLabel labelCentralCusto;
     private javax.swing.JLabel labelDataCriacao;
