@@ -15,11 +15,11 @@ public class LancamentoController {
     public boolean cadastrarDespesa(String descricao, String valorStr, String statusPagoStr,
                                     String dataCriacaoStr, String dataVencimentoStr,
                                     String frequenciaStr, String centroCustoStr, String categoriaStr) {
-        // validação
+        
         if (descricao.isEmpty() || valorStr.isEmpty() || statusPagoStr.isEmpty()
                 || dataCriacaoStr.isEmpty() || dataVencimentoStr.isEmpty()
                 || frequenciaStr.isEmpty() || centroCustoStr.isEmpty() || categoriaStr.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Todos os campos são obrigatórios.", "Erro", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Todos os campos para Despesa são obrigatórios.", "Erro", JOptionPane.WARNING_MESSAGE);
             return false;
         }
 
@@ -42,53 +42,71 @@ public class LancamentoController {
             l.setDataCriacao(dtCriacao);
             l.setDataVencimento(dtVencimento);
             l.setFrequencia(frequencia);
-            l.setTipo(1);
+            l.setTipo(1); 
             l.setCentroCusto(centroCusto);
             l.setLogDataInclusao(LocalDateTime.now());
-            l.setUsuarioId(1);
+            l.setUsuarioId(1); 
 
+            
             return lancamentoDao.criarLancamento(l, 1);
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Erro de formato numérico ou booleano: " + e.getMessage(), "Erro de Conversão", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } catch (java.time.format.DateTimeParseException e) {
+            JOptionPane.showMessageDialog(null, "Erro de formato de data. Use o formato DD/MM/AAAA: " + e.getMessage(), "Erro de Data", JOptionPane.ERROR_MESSAGE);
+            return false;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao converter dados: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Erro inesperado ao cadastrar despesa: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
 
-    public boolean cadastrarReceita(String descricao, String valorStr, String dataCriacaoStr, String frequenciaStr) {
+    public boolean cadastrarReceita(String descricao, String valorStr,
+                                    String dataCriacaoStr, String frequenciaStr, String categoriaStr) {
+        
 
-        if (descricao == null || descricao.trim().isEmpty() ||
-            valorStr == null || valorStr.trim().isEmpty() ||
-            dataCriacaoStr == null || dataCriacaoStr.trim().isEmpty() ||
-            frequenciaStr == null || frequenciaStr.trim().isEmpty()) {
-
-            JOptionPane.showMessageDialog(null, "Todos os campos são obrigatórios.", "Campos Vazios", JOptionPane.WARNING_MESSAGE);
+        if (descricao.isEmpty() || valorStr.isEmpty()
+                || dataCriacaoStr.isEmpty() || frequenciaStr.isEmpty() || categoriaStr.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Todos os campos obrigatórios para Receita são obrigatórios.", "Erro", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-
-        BigDecimal valor;
-        int frequencia;
-        LocalDate dataCriacao;
 
         try {
-            valor = new BigDecimal(valorStr.replace(",", "."));
-            frequencia = Integer.parseInt(frequenciaStr);
+            
+            BigDecimal valor = new BigDecimal(valorStr.replace(",", "."));
+            int frequencia = Integer.parseInt(frequenciaStr);
+            int categoria = Integer.parseInt(categoriaStr);
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            dataCriacao = LocalDate.parse(dataCriacaoStr, formatter);
+            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dtCriacao = LocalDate.parse(dataCriacaoStr, fmt);
+
+            Lancamento l = new Lancamento();
+            l.setDescricao(descricao);
+            l.setValor(valor);
+            l.setCategoria(categoria);
+            l.setDataCriacao(dtCriacao);
+            l.setFrequencia(frequencia);
+            l.setTipo(2); 
+
+            //l.setStatusPago(true);     
+            //l.setDataVencimento(null); 
+            //l.setCentroCusto(0);      
+
+            l.setLogDataInclusao(LocalDateTime.now());
+            l.setUsuarioId(1); 
+
+            return lancamentoDao.criarLancamento(l, 2); 
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao converter valor, frequência ou categoria. Verifique se são números válidos: " + e.getMessage(), "Erro de Conversão", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } catch (java.time.format.DateTimeParseException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao converter a data de criação. Use o formato DD/MM/AAAA: " + e.getMessage(), "Erro de Data", JOptionPane.ERROR_MESSAGE);
+            return false;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao converter campos: " + e.getMessage(), "Erro de Conversão", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Erro inesperado ao cadastrar receita: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-
-        Lancamento lancamento = new Lancamento();
-        lancamento.setDescricao(descricao);
-        lancamento.setValor(valor);
-        lancamento.setDataCriacao(dataCriacao);
-        lancamento.setFrequencia(frequencia);
-        lancamento.setTipo(2); 
-        lancamento.setLogDataInclusao(LocalDateTime.now());
-        lancamento.setUsuarioId(1); 
-
-        return lancamentoDao.criarLancamento(lancamento, 2);
     }
 }
