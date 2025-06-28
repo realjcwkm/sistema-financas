@@ -1,5 +1,6 @@
 package com.mycompany.sistemaplanejago.view;
 
+import com.mycompany.sistemaplanejago.controller.LancamentoController;
 import com.mycompany.sistemaplanejago.dao.CategoriaDAO; 
 import com.mycompany.sistemaplanejago.dao.FrequenciaDAO; 
 import com.mycompany.sistemaplanejago.model.Categoria;
@@ -9,6 +10,8 @@ import javax.swing.JOptionPane;
 import java.util.List; 
 
 public class ReceitaForm extends javax.swing.JDialog {
+    
+    private LancamentoController lancamentoController;
 
     public ReceitaForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -16,6 +19,7 @@ public class ReceitaForm extends javax.swing.JDialog {
         setLocationRelativeTo(parent); //Centralizar
         carregarComboBoxRepeticao();
         carregarComboBoxCategoria();
+        lancamentoController = new LancamentoController();
     }
     
     private void carregarComboBoxRepeticao() {
@@ -24,9 +28,10 @@ public class ReceitaForm extends javax.swing.JDialog {
             List<Frequencia> frequencias = frequenciaDAO.listarTodasFrequencias();
 
             ComboBoxRepeticao.removeAllItems();
+            ComboBoxRepeticao.addItem("Selecione");
 
             for (Frequencia freq : frequencias) {
-                ComboBoxRepeticao.addItem(freq.getTitulo()); 
+                ComboBoxRepeticao.addItem(freq.getTitulo());
             }
 
         } catch (RuntimeException e) {
@@ -38,14 +43,14 @@ public class ReceitaForm extends javax.swing.JDialog {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     private void carregarComboBoxCategoria() {
         try {
-            CategoriaDAO categoriaDAO = new CategoriaDAO(); 
+            CategoriaDAO categoriaDAO = new CategoriaDAO();
             List<Categoria> categorias = categoriaDAO.listarCategorias(2); 
 
             ComboBoxCategoria.removeAllItems();
-            ComboBoxCategoria.addItem("Selecione");
+            ComboBoxCategoria.addItem("Selecione"); 
 
             for (Categoria cat : categorias) {
                 ComboBoxCategoria.addItem(cat.getTitulo());
@@ -55,11 +60,38 @@ public class ReceitaForm extends javax.swing.JDialog {
             System.err.println("Erro ao carregar dados de categoria: " + e.getMessage());
             e.printStackTrace();
             JOptionPane.showMessageDialog(this,
-                    "Não foi possível carregar as categorias de despesas do banco de dados.\nDetalhes: " + e.getMessage(),
+                    "Não foi possível carregar as categorias de receitas do banco de dados.\nDetalhes: " + e.getMessage(),
                     "Erro de Carregamento",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    private int obterIdFrequenciaPorTitulo(String titulo) {
+        FrequenciaDAO frequenciaDAO = new FrequenciaDAO();
+        List<Frequencia> lista = frequenciaDAO.listarTodasFrequencias();
+
+        for (Frequencia f : lista) {
+            if (f.getTitulo().equalsIgnoreCase(titulo)) {
+                return f.getId();
+            }
+        }
+        return -1; 
+    }
+
+
+    private int obterIdCategoriaPorTitulo(String titulo, int tipoLancamento) {
+        CategoriaDAO categoriaDAO = new CategoriaDAO();
+        List<Categoria> categorias = categoriaDAO.listarCategorias(tipoLancamento);
+
+        for (Categoria cat : categorias) {
+            if (cat.getTitulo().equalsIgnoreCase(titulo)) {
+                return cat.getId();
+            }
+        }
+        return -1; 
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -350,17 +382,64 @@ public class ReceitaForm extends javax.swing.JDialog {
 
     private void buttonSalvarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSalvarMouseEntered
         // TODO add your handling code here:
-        buttonSalvar.setBackground(new Color(255, 165, 0));
+        buttonSalvar.setBackground(new Color(27, 189, 70));
 
     }//GEN-LAST:event_buttonSalvarMouseEntered
 
     private void buttonSalvarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSalvarMouseExited
         // TODO add your handling code here:
-        buttonSalvar.setBackground(new Color(97, 90, 205));
+        buttonSalvar.setBackground(new Color(4, 137, 40));
     }//GEN-LAST:event_buttonSalvarMouseExited
 
     private void buttonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSalvarActionPerformed
         // TODO add your handling code here:
+         try {
+            String descricao = fieldDescricao.getText();
+            String valor = fieldValor.getText();
+            String dataCriacao = fieldDataCriacao.getText();
+
+            Object selectedFreqItem = ComboBoxRepeticao.getSelectedItem();
+            if (selectedFreqItem == null) {
+                JOptionPane.showMessageDialog(this, "Por favor, selecione uma frequência.", "Erro de Seleção", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            String freqTitulo = selectedFreqItem.toString();
+
+            Object selectedCatItem = ComboBoxCategoria.getSelectedItem();
+            if (selectedCatItem == null) {
+                JOptionPane.showMessageDialog(this, "Por favor, selecione uma categoria.", "Erro de Seleção", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            String catTitulo = selectedCatItem.toString();
+
+            int freqId = obterIdFrequenciaPorTitulo(freqTitulo);
+
+            int catId = obterIdCategoriaPorTitulo(catTitulo, 2); 
+
+            if (freqId < 0 || catId < 0) {
+                JOptionPane.showMessageDialog(this, "Selecione itens válidos (Frequência e Categoria). Certifique-se de que as categorias de receita estão cadastradas corretamente.", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            boolean ok = lancamentoController.cadastrarReceita(
+                descricao, valor, dataCriacao,
+                String.valueOf(freqId), String.valueOf(catId)
+            );
+
+            if (ok) {
+                JOptionPane.showMessageDialog(this, "Receita cadastrada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                dispose(); 
+            } else {
+                
+                JOptionPane.showMessageDialog(this, "Falha ao cadastrar a receita. Verifique os dados inseridos.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NullPointerException npe) {
+            
+            JOptionPane.showMessageDialog(this, "Erro: um campo obrigatório não foi preenchido ou selecionado. Detalhes: " + npe.getMessage(), "Erro de Preenchimento", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(this, "Erro interno ao salvar receita: " + e.getMessage(), "Erro Inesperado", JOptionPane.ERROR_MESSAGE);
+        }
         
     }//GEN-LAST:event_buttonSalvarActionPerformed
 

@@ -25,8 +25,8 @@ public class DespesaForm extends javax.swing.JDialog {
         carregarComboBoxCategoria();
         carregarComboBoxCentroCusto(); 
         ComboBoxStatus.removeAllItems();
-        ComboBoxStatus.addItem("Pago");
-        ComboBoxStatus.addItem("Pendente");
+        ComboBoxStatus.addItem("Paga");
+        ComboBoxStatus.addItem("Não Paga");
         lancamentoController = new LancamentoController();
         
         
