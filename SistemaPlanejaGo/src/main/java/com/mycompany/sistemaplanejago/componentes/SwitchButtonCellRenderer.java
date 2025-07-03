@@ -1,35 +1,44 @@
 package com.mycompany.sistemaplanejago.componentes;
 
 import java.awt.Component;
-import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-public class SwitchButtonCellRenderer extends JPanel implements TableCellRenderer {
+public class SwitchButtonCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer {
 
     private final SwitchButton switchButton;
 
     public SwitchButtonCellRenderer() {
-        setOpaque(true);
-        switchButton = new SwitchButton();
-        add(switchButton);
+        this.switchButton = new SwitchButton();
+        setOpaque(true); 
     }
 
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value,
-            boolean isSelected, boolean hasFocus, int row, int column) {
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        String tipo = (String) table.getModel().getValueAt(row, 1); 
 
-        if (value instanceof Boolean) {
-            switchButton.setSelected((Boolean) value); 
-        } else {
-            switchButton.setSelected(false);
-        }
+        // Se o tipo for "Despesa", o SwitchButton DEVE APARECER.
+        if ("Despesa".equalsIgnoreCase(tipo)) { 
+            if (value instanceof Boolean) {
+                switchButton.setSelected((Boolean) value);
+            } else {
+                switchButton.setSelected(false); 
+            }
+            return switchButton; 
+        } else { // SE o tipo NÃO for "Despesa" (ex: "Receita"), a célula deve ficar VAZIA.
+            super.getTableCellRendererComponent(table, null, isSelected, hasFocus, row, column); 
+            setText(""); // Garante que nenhum texto seja exibido explicitamente
 
-        if (isSelected) {
-            setBackground(table.getSelectionBackground());
-        } else {
-            setBackground(table.getBackground());
+            if (isSelected) {
+                setBackground(table.getSelectionBackground());
+                setForeground(table.getSelectionForeground());
+            } else {
+                setBackground(table.getBackground());
+                setForeground(table.getForeground());
+            }
+            setHorizontalAlignment(CENTER); 
+            return this;
         }
-        return this;
     }
 }
