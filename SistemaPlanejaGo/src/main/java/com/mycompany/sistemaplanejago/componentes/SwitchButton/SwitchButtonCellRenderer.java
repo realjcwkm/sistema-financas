@@ -1,5 +1,6 @@
-package com.mycompany.sistemaplanejago.componentes;
+package com.mycompany.sistemaplanejago.componentes.SwitchButton;
 
+import com.mycompany.sistemaplanejago.componentes.SwitchButton.SwitchButton;
 import java.awt.Component;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;

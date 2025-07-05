@@ -1,12 +1,11 @@
-package com.mycompany.sistemaplanejago.componentes;
+package com.mycompany.sistemaplanejago.componentes.SwitchButton;
 
 import java.awt.Component;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
-import com.mycompany.sistemaplanejago.componentes.SwitchButton;
-import com.mycompany.sistemaplanejago.componentes.SwitchListener;
+import com.mycompany.sistemaplanejago.componentes.SwitchButton.SwitchButton;
 
 public class SwitchButtonCellEditor extends AbstractCellEditor implements TableCellEditor {
 

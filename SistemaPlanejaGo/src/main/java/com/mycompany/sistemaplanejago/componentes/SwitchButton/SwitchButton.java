@@ -1,4 +1,4 @@
-package com.mycompany.sistemaplanejago.componentes;
+package com.mycompany.sistemaplanejago.componentes.SwitchButton;
 
 import java.awt.AlphaComposite; 
 import java.awt.Color;
