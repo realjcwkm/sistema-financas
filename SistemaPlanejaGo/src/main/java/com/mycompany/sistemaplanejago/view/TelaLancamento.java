@@ -1,10 +1,16 @@
 package com.mycompany.sistemaplanejago.view;
 
-import com.mycompany.sistemaplanejago.componentes.SwitchButtonCellEditor; 
-import com.mycompany.sistemaplanejago.componentes.SwitchButtonCellRenderer; 
+import com.mycompany.sistemaplanejago.componentes.ActionButtons.TableActionCellEditor;
+import com.mycompany.sistemaplanejago.componentes.ActionButtons.TableActionCellRender;
+import com.mycompany.sistemaplanejago.componentes.ActionButtons.TableActionEvent;
+import com.mycompany.sistemaplanejago.componentes.SwitchButton.SwitchButtonCellEditor; 
+import com.mycompany.sistemaplanejago.componentes.SwitchButton.SwitchButtonCellRenderer; 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
+import java.net.URL;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel; 
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn; 
@@ -13,53 +19,81 @@ import javax.swing.table.TableColumn;
 public class TelaLancamento extends javax.swing.JFrame {
     
     public TelaLancamento() {
-        initComponents();
+        initComponents(); 
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
 
-        // ... personalização do cabeçalho ...
+        // o cabeçalho da tabela 
+        JTableHeader cabecalho = TabelaLancamento.getTableHeader();
+        cabecalho.setFont(new Font("Roboto", Font.BOLD, 24)); 
+        cabecalho.setForeground(new Color(19, 16, 71)); 
+        cabecalho.setBackground(new Color(248, 248, 255));
+        cabecalho.setOpaque(true);
 
-        DefaultTableModel customTableModel = new DefaultTableModel(
-            new Object[][]{
-                // Depois colocar pra puxar do banco
-                {false, "Despesa", "Conta de Luz", "Casa", 150.00}, 
-                {true, "Receita", "Salário", "Trabalho", 3000.00}, 
-                {false, "Despesa", "Aluguel", "Moradia", 750.00}, 
-                {true, "Receita", "Venda Online", "Extra", 120.50} 
-            },
-            new String[]{"Pago", "Tipo", "Descrição", "Categoria", "Valor"}
+        // Depois vai vir pelo banco 
+        final DefaultTableModel customTableModel = new DefaultTableModel( 
+                new Object[][]{
+                    {false, "Despesa", "Conta de Luz", "Casa", 150.00, null}, 
+                    {true, "Receita", "Salário", "Trabalho", 3000.00, null}, 
+                    {false, "Despesa", "Aluguel", "Moradia", 750.00, null}, 
+                    {true, "Receita", "Venda Online", "Extra", 120.50, null}
+                },
+                new String[]{"", "Tipo", "Descrição", "Categoria", "Valor", "Opções"}
         ) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 0) {
-                    return Boolean.class;
-                }
+                if (columnIndex == 0) { return Boolean.class; }
+                if (columnIndex == getColumnCount() - 1) { return Object.class; }
                 return super.getColumnClass(columnIndex);
             }
 
             @Override
             public boolean isCellEditable(int row, int column) {
                 String tipo = (String) getValueAt(row, 1); 
+                int lastColumnIndex = getColumnCount() - 1; 
 
-                return column == 0 && "Despesa".equalsIgnoreCase(tipo); // Permite clique APENAS em Despesa
+                if (column == 0) { return "Despesa".equalsIgnoreCase(tipo); }
+                if (column == lastColumnIndex) { return true; }
+                return false;
             }
         };
 
         TabelaLancamento.setModel(customTableModel);
 
+        // Configuração da coluna do status
         TableColumn pagoColumn = TabelaLancamento.getColumnModel().getColumn(0);
-        SwitchButtonCellRenderer switchRenderer = new SwitchButtonCellRenderer();
-        pagoColumn.setCellRenderer(switchRenderer);
+        pagoColumn.setCellRenderer(new SwitchButtonCellRenderer());
         pagoColumn.setCellEditor(new SwitchButtonCellEditor());
+        
+        pagoColumn.setPreferredWidth(150); 
+        pagoColumn.setMaxWidth(200);       
+        pagoColumn.setMinWidth(100);       
 
-        pagoColumn.setPreferredWidth(120);
-        pagoColumn.setMaxWidth(120);
-        pagoColumn.setMinWidth(120);
+        TabelaLancamento.setRowHeight(50); 
 
-        TabelaLancamento.setRowHeight(45);
+        // Configuração da coluna Opções
+        int lastColumnIndex = TabelaLancamento.getColumnCount() - 1; 
+        TableColumn acoesColumn = TabelaLancamento.getColumnModel().getColumn(lastColumnIndex);
+        
+        // Depois fazer as operações conforme o design do figma
+        final TableActionEvent event = new TableActionEvent() { 
+            @Override public void onEdit(int row) { JOptionPane.showMessageDialog(TelaLancamento.this, "Editar linha: " + (row + 1)); }
+            @Override public void onDelete(int row) { 
+                int confirm = JOptionPane.showConfirmDialog(TelaLancamento.this, "Tem certeza que deseja excluir a linha " + (row + 1) + "?", "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) { customTableModel.removeRow(row); }
+            }
+            @Override public void onView(int row) { JOptionPane.showMessageDialog(TelaLancamento.this, "Visualizar detalhes da linha: " + (row + 1)); }
+        };
+
+        acoesColumn.setCellRenderer(new TableActionCellRender()); 
+        acoesColumn.setCellEditor(new TableActionCellEditor(event)); 
+
+        // Aumenta a largura da coluna opções
+        acoesColumn.setPreferredWidth(140); 
+        acoesColumn.setMaxWidth(160);       
+        acoesColumn.setMinWidth(120);       
     }
 
 
-    
     
     /////////////////////////////////////////////////////////////
     @SuppressWarnings("unchecked")
