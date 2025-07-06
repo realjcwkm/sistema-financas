@@ -3,46 +3,61 @@ package com.mycompany.sistemaplanejago.view;
 import com.mycompany.sistemaplanejago.componentes.ActionButtons.TableActionCellEditor;
 import com.mycompany.sistemaplanejago.componentes.ActionButtons.TableActionCellRender;
 import com.mycompany.sistemaplanejago.componentes.ActionButtons.TableActionEvent;
-import com.mycompany.sistemaplanejago.componentes.SwitchButton.SwitchButtonCellEditor; 
-import com.mycompany.sistemaplanejago.componentes.SwitchButton.SwitchButtonCellRenderer; 
+import com.mycompany.sistemaplanejago.componentes.SwitchButton.SwitchButtonCellEditor;
+import com.mycompany.sistemaplanejago.componentes.SwitchButton.SwitchButtonCellRenderer;
+
+import com.mycompany.sistemaplanejago.controller.LancamentoController;
+import com.mycompany.sistemaplanejago.model.Lancamento;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
-import java.net.URL;
-import javax.swing.ImageIcon;
+import java.util.List;
+import java.util.ArrayList; 
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel; 
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn; 
+import javax.swing.table.TableColumn;
+import javax.swing.SwingWorker;
 
 
 public class TelaLancamento extends javax.swing.JFrame {
     
+    private LancamentoController lancamentoController;
+    private List<Lancamento> lancamentosCarregados; 
+    
     public TelaLancamento() {
         initComponents(); 
-        this.setExtendedState(Frame.MAXIMIZED_BOTH);
+        System.out.println("TelaLancamento: initComponents() finalizado. TabelaLancamento está inicializada? " + (TabelaLancamento != null));
 
-        // o cabeçalho da tabela 
+        if (TabelaLancamento == null) {
+            JOptionPane.showMessageDialog(this, "Erro: A TabelaLancamento não foi inicializada corretamente pelo designer.", "Erro Fatal de UI", JOptionPane.ERROR_MESSAGE);
+            throw new IllegalStateException("TabelaLancamento é null após initComponents()");
+        }
+
+        this.setExtendedState(Frame.MAXIMIZED_BOTH);
+        
+        lancamentoController = new LancamentoController();
+        lancamentosCarregados = new ArrayList<>(); // Inicializa a lista
+
+        // cabeçalho da tabela 
         JTableHeader cabecalho = TabelaLancamento.getTableHeader();
-        cabecalho.setFont(new Font("Roboto", Font.BOLD, 24)); 
-        cabecalho.setForeground(new Color(19, 16, 71)); 
+        cabecalho.setFont(new Font("Roboto", Font.BOLD, 24));
+        cabecalho.setForeground(new Color(19, 16, 71));
         cabecalho.setBackground(new Color(248, 248, 255));
         cabecalho.setOpaque(true);
 
-        // Depois vai vir pelo banco 
-        final DefaultTableModel customTableModel = new DefaultTableModel( 
-                new Object[][]{
-                    {false, "Despesa", "Conta de Luz", "Casa", 150.00, null}, 
-                    {true, "Receita", "Salário", "Trabalho", 3000.00, null}, 
-                    {false, "Despesa", "Aluguel", "Moradia", 750.00, null}, 
-                    {true, "Receita", "Venda Online", "Extra", 120.50, null}
-                },
-                new String[]{"", "Tipo", "Descrição", "Categoria", "Valor", "Opções"}
+        // titulos da cabeçalho da tabela
+        final DefaultTableModel customTableModel = new DefaultTableModel(
+                new Object[][]{}, 
+                new String[]{"", "Tipo", "Descrição", "Categoria", "Valor", "Opções"} 
         ) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 0) { return Boolean.class; }
-                if (columnIndex == getColumnCount() - 1) { return Object.class; }
+                if (columnIndex == 0) { return Boolean.class; } // A primeira referente ao status
+                if (columnIndex == getColumnCount() - 1) { return Object.class; } // Coluna Opções
                 return super.getColumnClass(columnIndex);
             }
 
@@ -51,50 +66,164 @@ public class TelaLancamento extends javax.swing.JFrame {
                 String tipo = (String) getValueAt(row, 1); 
                 int lastColumnIndex = getColumnCount() - 1; 
 
-                if (column == 0) { return "Despesa".equalsIgnoreCase(tipo); }
-                if (column == lastColumnIndex) { return true; }
+                if (column == 0) { return "Despesa".equalsIgnoreCase(tipo); } // Coluna status é editável só para Despesa
+                if (column == lastColumnIndex) { return true; } 
                 return false;
             }
         };
 
         TabelaLancamento.setModel(customTableModel);
-
-        // Configuração da coluna do status
-        TableColumn pagoColumn = TabelaLancamento.getColumnModel().getColumn(0);
+        
+        // Configuração da coluna vazia que é o status
+        TableColumn pagoColumn = TabelaLancamento.getColumnModel().getColumn(0); 
         pagoColumn.setCellRenderer(new SwitchButtonCellRenderer());
         pagoColumn.setCellEditor(new SwitchButtonCellEditor());
         
         pagoColumn.setPreferredWidth(150); 
-        pagoColumn.setMaxWidth(200);       
-        pagoColumn.setMinWidth(100);       
+        pagoColumn.setMaxWidth(200);    
+        pagoColumn.setMinWidth(100);    
 
         TabelaLancamento.setRowHeight(50); 
 
-        // Configuração da coluna Opções
         int lastColumnIndex = TabelaLancamento.getColumnCount() - 1; 
         TableColumn acoesColumn = TabelaLancamento.getColumnModel().getColumn(lastColumnIndex);
         
-        // Depois fazer as operações conforme o design do figma
         final TableActionEvent event = new TableActionEvent() { 
-            @Override public void onEdit(int row) { JOptionPane.showMessageDialog(TelaLancamento.this, "Editar linha: " + (row + 1)); }
+            @Override public void onEdit(int row) { 
+                // Pega o objeto Lancamento da lista carregada
+                if (row >= 0 && row < lancamentosCarregados.size()) {
+                    Lancamento lancamentoEdit = lancamentosCarregados.get(row);
+                    //Depois por a função certa
+                    JOptionPane.showMessageDialog(TelaLancamento.this, "Editar Lançamento ID: " + lancamentoEdit.getId() + ", Desc: " + lancamentoEdit.getDescricao());
+                   
+                }
+            }
             @Override public void onDelete(int row) { 
                 int confirm = JOptionPane.showConfirmDialog(TelaLancamento.this, "Tem certeza que deseja excluir a linha " + (row + 1) + "?", "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
-                if (confirm == JOptionPane.YES_OPTION) { customTableModel.removeRow(row); }
+                if (confirm == JOptionPane.YES_OPTION) { 
+                    if (row >= 0 && row < lancamentosCarregados.size()) {
+                        Lancamento lancamentoDelete = lancamentosCarregados.get(row);
+                        //Depois por a função certa
+                        System.out.println("Tentando deletar Lançamento ID: " + lancamentoDelete.getId());
+                        //customTableModel.removeRow(row); 
+                        //lancamentosCarregados.remove(row);
+                        //JOptionPane.showMessageDialog(TelaLancamento.this, "Lançamento excluído com sucesso (se implementado)!");
+                    }
+                }
             }
-            @Override public void onView(int row) { JOptionPane.showMessageDialog(TelaLancamento.this, "Visualizar detalhes da linha: " + (row + 1)); }
+            @Override public void onView(int row) { 
+                if (row >= 0 && row < lancamentosCarregados.size()) {
+                    Lancamento lancamentoView = lancamentosCarregados.get(row);
+                    //Depois por a função certa
+                    JOptionPane.showMessageDialog(TelaLancamento.this, "Visualizar Lançamento ID: " + lancamentoView.getId() + ", Valor: " + lancamentoView.getValor());
+                }
+            }
         };
 
         acoesColumn.setCellRenderer(new TableActionCellRender()); 
-        acoesColumn.setCellEditor(new TableActionCellEditor(event)); 
+        acoesColumn.setCellEditor(new TableActionCellEditor(event));
 
-        // Aumenta a largura da coluna opções
         acoesColumn.setPreferredWidth(140); 
-        acoesColumn.setMaxWidth(160);       
-        acoesColumn.setMinWidth(120);       
+        acoesColumn.setMaxWidth(160);    
+        acoesColumn.setMinWidth(120);    
+
+        carregarLancamentosNaTabela(); 
+
+        // Pra mudar o estado de despesa paga ou não
+        customTableModel.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == 0) { 
+                    int row = e.getFirstRow();
+                    if (row >= 0 && row < lancamentosCarregados.size()) {
+                        boolean novoStatus = (boolean) customTableModel.getValueAt(row, 0); // Pegar o valor atual do SwitchButton
+                        
+                        // Pegar o ID do lançamento da lista local, não da tabela
+                        Lancamento lancamento = lancamentosCarregados.get(row); 
+                        int idLancamento = lancamento.getId();
+                        String tipoLancamento = (String) customTableModel.getValueAt(row, 1); // Coluna Tipo é agora índice 1
+
+                        if ("Despesa".equalsIgnoreCase(tipoLancamento)) {
+                            new SwingWorker<Boolean, Void>() {
+                                @Override
+                                protected Boolean doInBackground() throws Exception {
+                                    return lancamentoController.atualizarStatusLancamento(idLancamento, novoStatus);
+                                }
+                                @Override
+                                protected void done() {
+                                    try {
+                                        boolean sucesso = get(); 
+                                        if (sucesso) {
+                                            //JOptionPane.showMessageDialog(TelaLancamento.this, "Status da despesa atualizado com sucesso!"); //Era só pra testar se funfou
+                                            lancamento.setStatusPago(novoStatus); // Atualiza o objeto na lista local
+                                        } else {
+                                            //JOptionPane.showMessageDialog(TelaLancamento.this, "Erro ao atualizar status da despesa.", "Erro", JOptionPane.ERROR_MESSAGE); //Era só pra testar o porque não funfou
+                                            customTableModel.setValueAt(!novoStatus, row, 0); // Reverte o SwitchButton
+                                        }
+                                    } catch (Exception ex) {
+                                        //JOptionPane.showMessageDialog(TelaLancamento.this, "Erro inesperado ao finalizar atualização de status: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                                        //ex.printStackTrace();
+                                        customTableModel.setValueAt(!novoStatus, row, 0); // Reverte o SwitchButton
+                                    }
+                                }
+                            }.execute();
+                        } else {
+                            //JOptionPane.showMessageDialog(TelaLancamento.this, "O status de uma Receita não pode ser alterado por este botão.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+                            customTableModel.setValueAt(!novoStatus, row, 0); // Reverte o SwitchButton
+                        }
+                    }
+                }
+            }
+        });
+    } // Fim do construtor
+    
+
+    private void carregarLancamentosNaTabela() {
+        DefaultTableModel model = (DefaultTableModel) TabelaLancamento.getModel();
+        model.setRowCount(0); 
+        lancamentosCarregados.clear(); // Limpa a lista local antes de recarregar
+
+        new SwingWorker<List<Lancamento>, Void>() {
+            @Override
+            protected List<Lancamento> doInBackground() throws Exception {
+                return lancamentoController.listarLancamentos();
+            }
+            @Override
+            protected void done() {
+                try {
+                    List<Lancamento> lancamentos = get(); 
+
+                    if (lancamentos.isEmpty()) {
+                        System.out.println("SwingWorker (load): Nenhuns lançamentos encontrados para adicionar à tabela.");
+                    } else {
+                        for (Lancamento lancamento : lancamentos) {
+                            lancamentosCarregados.add(lancamento); // Adiciona o objeto completo à lista local
+                            String tipoNome = lancamentoController.getNomeTipoLancamento(lancamento.getTipo());
+                            String categoriaNome = lancamentoController.getNomeCategoria(lancamento.getCategoria());
+                            
+                            Object statusDisplay = (lancamento.getTipo() == 1) ? lancamento.isStatusPago() : null; 
+
+                            // Adiciona uma nova linha ao modelo da tabela (6 colunas)
+                            model.addRow(new Object[]{
+                                statusDisplay,             // Coluna 0 (Status)
+                                tipoNome,                  // Coluna 1 (Tipo)
+                                lancamento.getDescricao(), // Coluna 2 (Descrição)
+                                categoriaNome,             // Coluna 3 (Categoria)
+                                lancamento.getValor(),     // Coluna 4 (Valor)
+                                null                       // Coluna 5 (Opções)
+                            }); 
+                        }
+                    }
+                    model.fireTableDataChanged(); 
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(TelaLancamento.this, "Erro ao carregar lançamentos: " + e.getMessage(), "Erro de Carregamento", JOptionPane.ERROR_MESSAGE);
+                    e.printStackTrace();
+                }
+            }
+        }.execute();
     }
 
-
-    
     /////////////////////////////////////////////////////////////
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
