@@ -12,9 +12,11 @@ import com.mycompany.sistemaplanejago.model.Lancamento;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Point;
 import java.util.List;
 import java.util.ArrayList; 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -30,7 +32,7 @@ public class TelaLancamento extends javax.swing.JFrame {
     
     public TelaLancamento() {
         initComponents(); 
-        System.out.println("TelaLancamento: initComponents() finalizado. TabelaLancamento está inicializada? " + (TabelaLancamento != null));
+        panelAddLancamento.setVisible(false);
 
         if (TabelaLancamento == null) {
             JOptionPane.showMessageDialog(this, "Erro: A TabelaLancamento não foi inicializada corretamente pelo designer.", "Erro Fatal de UI", JOptionPane.ERROR_MESSAGE);
@@ -238,8 +240,11 @@ public class TelaLancamento extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         TabelaLancamento = new javax.swing.JTable();
         jPanel6 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        buttonAddLancamento = new javax.swing.JButton();
         labelTitulo = new javax.swing.JLabel();
+        panelAddLancamento = new javax.swing.JPanel();
+        buttonNovaDespesa = new javax.swing.JButton();
+        buttonNovaReceita = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
@@ -288,14 +293,62 @@ public class TelaLancamento extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton2.setBackground(new java.awt.Color(97, 90, 205));
-        jButton2.setFont(new java.awt.Font("Roboto", 1, 48)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("+");
+        buttonAddLancamento.setBackground(new java.awt.Color(97, 90, 205));
+        buttonAddLancamento.setFont(new java.awt.Font("Roboto", 1, 48)); // NOI18N
+        buttonAddLancamento.setForeground(new java.awt.Color(255, 255, 255));
+        buttonAddLancamento.setText("+");
+        buttonAddLancamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAddLancamentoActionPerformed(evt);
+            }
+        });
 
         labelTitulo.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
         labelTitulo.setForeground(new java.awt.Color(97, 90, 205));
         labelTitulo.setText("Lançamento");
+
+        panelAddLancamento.setBackground(new java.awt.Color(255, 255, 255));
+
+        buttonNovaDespesa.setBackground(new java.awt.Color(255, 255, 255));
+        buttonNovaDespesa.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        buttonNovaDespesa.setForeground(new java.awt.Color(44, 41, 102));
+        buttonNovaDespesa.setText("Nova Despesa");
+        buttonNovaDespesa.setToolTipText("");
+        buttonNovaDespesa.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        buttonNovaDespesa.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        buttonNovaDespesa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonNovaDespesaActionPerformed(evt);
+            }
+        });
+
+        buttonNovaReceita.setBackground(new java.awt.Color(255, 255, 255));
+        buttonNovaReceita.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        buttonNovaReceita.setForeground(new java.awt.Color(44, 41, 102));
+        buttonNovaReceita.setText("Nova Receita");
+        buttonNovaReceita.setToolTipText("");
+        buttonNovaReceita.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        buttonNovaReceita.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        buttonNovaReceita.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonNovaReceitaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelAddLancamentoLayout = new javax.swing.GroupLayout(panelAddLancamento);
+        panelAddLancamento.setLayout(panelAddLancamentoLayout);
+        panelAddLancamentoLayout.setHorizontalGroup(
+            panelAddLancamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(buttonNovaReceita, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(buttonNovaDespesa, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+        );
+        panelAddLancamentoLayout.setVerticalGroup(
+            panelAddLancamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelAddLancamentoLayout.createSequentialGroup()
+                .addComponent(buttonNovaDespesa, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonNovaReceita, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -304,20 +357,22 @@ public class TelaLancamento extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(labelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonAddLancamento, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelAddLancamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(328, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(29, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(labelTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonAddLancamento, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelAddLancamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -384,7 +439,7 @@ public class TelaLancamento extends javax.swing.JFrame {
                 .addGroup(PanelRow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(PanelRow1Layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 673, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -408,6 +463,24 @@ public class TelaLancamento extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonNovaReceitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovaReceitaActionPerformed
+        ReceitaForm Receitaformulario = new ReceitaForm(this, true);
+        Receitaformulario.setVisible(true);
+    }//GEN-LAST:event_buttonNovaReceitaActionPerformed
+
+    private void buttonAddLancamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddLancamentoActionPerformed
+        if (panelAddLancamento.isVisible()) {
+            panelAddLancamento.setVisible(false); 
+        } else {
+            panelAddLancamento.setVisible(true);
+        }
+    }//GEN-LAST:event_buttonAddLancamentoActionPerformed
+
+    private void buttonNovaDespesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovaDespesaActionPerformed
+        DespesaForm Despesaformulario = new DespesaForm(this, true);
+        Despesaformulario.setVisible(true);
+    }//GEN-LAST:event_buttonNovaDespesaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -448,8 +521,10 @@ public class TelaLancamento extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelRow1;
     private javax.swing.JTable TabelaLancamento;
+    private javax.swing.JButton buttonAddLancamento;
+    private javax.swing.JButton buttonNovaDespesa;
+    private javax.swing.JButton buttonNovaReceita;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
@@ -457,6 +532,7 @@ public class TelaLancamento extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel labelPlanejaGo;
     private javax.swing.JLabel labelTitulo;
+    private javax.swing.JPanel panelAddLancamento;
     private javax.swing.JPanel panelBtnCadastrar;
     private javax.swing.JPanel panelCentralizador;
     private javax.swing.JPanel panelNavBar;
