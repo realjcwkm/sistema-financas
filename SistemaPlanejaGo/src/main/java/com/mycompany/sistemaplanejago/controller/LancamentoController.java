@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class LancamentoController {
 
@@ -42,12 +43,11 @@ public class LancamentoController {
             l.setDataCriacao(dtCriacao);
             l.setDataVencimento(dtVencimento);
             l.setFrequencia(frequencia);
-            l.setTipo(1); 
+            l.setTipo(1); // Despesa
             l.setCentroCusto(centroCusto);
             l.setLogDataInclusao(LocalDateTime.now());
-            l.setUsuarioId(1); 
+            l.setUsuarioId(1); // Exemplo de ID de usuário
 
-            
             return lancamentoDao.criarLancamento(l, 1);
             
         } catch (NumberFormatException e) {
@@ -65,7 +65,6 @@ public class LancamentoController {
     public boolean cadastrarReceita(String descricao, String valorStr,
                                     String dataCriacaoStr, String frequenciaStr, String categoriaStr) {
         
-
         if (descricao.isEmpty() || valorStr.isEmpty()
                 || dataCriacaoStr.isEmpty() || frequenciaStr.isEmpty() || categoriaStr.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Todos os campos obrigatórios para Receita são obrigatórios.", "Erro", JOptionPane.WARNING_MESSAGE);
@@ -87,16 +86,12 @@ public class LancamentoController {
             l.setCategoria(categoria);
             l.setDataCriacao(dtCriacao);
             l.setFrequencia(frequencia);
-            l.setTipo(2); 
-
-            //l.setStatusPago(true);     
-            //l.setDataVencimento(null); 
-            //l.setCentroCusto(0);      
+            l.setTipo(2); // Receita
 
             l.setLogDataInclusao(LocalDateTime.now());
-            l.setUsuarioId(1); 
+            l.setUsuarioId(1); // Exemplo de ID de usuário
 
-            return lancamentoDao.criarLancamento(l, 2); 
+            return lancamentoDao.criarLancamento(l, 2);
             
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Erro ao converter valor, frequência ou categoria. Verifique se são números válidos: " + e.getMessage(), "Erro de Conversão", JOptionPane.ERROR_MESSAGE);
@@ -108,5 +103,30 @@ public class LancamentoController {
             JOptionPane.showMessageDialog(null, "Erro inesperado ao cadastrar receita: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+    }
+    
+
+    public List<Lancamento> listarLancamentos() {
+        return lancamentoDao.listarTodosLancamentos();
+    }
+    
+    public String getNomeCategoria(int categoriaId) {
+        String nome = lancamentoDao.getTituloCategoriaPorId(categoriaId);
+        return nome != null ? nome : "Desconhecida";
+    }
+    
+    public String getNomeTipoLancamento(int tipoId) {
+        switch (tipoId) {
+            case 1:
+                return "Despesa";
+            case 2:
+                return "Receita";
+            default:
+                return "Desconhecido"; // Para IDs de tipo não reconhecidos
+        }
+    }
+    
+    public boolean atualizarStatusLancamento(int idLancamento, boolean statusPago) {
+        return lancamentoDao.atualizarStatusLancamento(idLancamento, statusPago);
     }
 }
