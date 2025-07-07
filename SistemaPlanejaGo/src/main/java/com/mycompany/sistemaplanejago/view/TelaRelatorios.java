@@ -29,24 +29,24 @@ public class TelaRelatorios extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
+        MenuPlanejaGo = new javax.swing.JMenu();
+        MenuLançamentos = new javax.swing.JMenu();
+        MenuRelatórios = new javax.swing.JMenu();
+        MenuCalculadora = new javax.swing.JMenu();
 
         jMenuBar1.setForeground(new java.awt.Color(1, 1, 1));
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        MenuPlanejaGo.setText("File");
+        jMenuBar1.add(MenuPlanejaGo);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        MenuLançamentos.setText("Edit");
+        jMenuBar1.add(MenuLançamentos);
 
-        jMenu3.setText("jMenu3");
-        jMenuBar1.add(jMenu3);
+        MenuRelatórios.setText("jMenu3");
+        jMenuBar1.add(MenuRelatórios);
 
-        jMenu4.setText("jMenu4");
-        jMenuBar1.add(jMenu4);
+        MenuCalculadora.setText("jMenu4");
+        jMenuBar1.add(MenuCalculadora);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -80,10 +80,10 @@ public class TelaRelatorios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu MenuCalculadora;
+    private javax.swing.JMenu MenuLançamentos;
+    private javax.swing.JMenu MenuPlanejaGo;
+    private javax.swing.JMenu MenuRelatórios;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }
