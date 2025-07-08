@@ -32,4 +32,26 @@ public class FrequenciaDAO {
         }
         return frequencias;
     }
+    
+    public Frequencia buscarFrequenciaPorId(int id) {
+        String sql = "SELECT id, titulo, descricao FROM tb_frequencia WHERE id = ?";
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Frequencia frequencia = new Frequencia();
+                    frequencia.setId(rs.getInt("id"));
+                    frequencia.setTitulo(rs.getString("titulo"));
+                    frequencia.setDescricao(rs.getString("descricao"));
+                    return frequencia;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar frequência por ID: " + e.getMessage());
+            throw new RuntimeException("Erro ao buscar frequência por ID: " + e.getMessage(), e);
+        }
+        return null; 
+    }
 }

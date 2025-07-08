@@ -33,4 +33,26 @@ public class CentroCustoDAO {
         }
         return centrosDeCusto;
     }
+    
+     public CentroCusto buscarCentroCustoPorId(int id) {
+        String sql = "SELECT id, titulo, descricao FROM tb_centro_custo WHERE id = ?";
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    CentroCusto centroCusto = new CentroCusto();
+                    centroCusto.setId(rs.getInt("id"));
+                    centroCusto.setTitulo(rs.getString("titulo"));
+                    centroCusto.setDescricao(rs.getString("descricao"));
+                    return centroCusto;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar centro de custo por ID: " + e.getMessage());
+            throw new RuntimeException("Erro ao buscar centro de custo por ID: " + e.getMessage(), e);
+        }
+        return null; 
+    }
 }
