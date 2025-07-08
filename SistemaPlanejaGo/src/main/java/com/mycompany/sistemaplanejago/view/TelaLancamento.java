@@ -116,8 +116,18 @@ public class TelaLancamento extends javax.swing.JFrame {
             @Override public void onView(int row) { 
                 if (row >= 0 && row < lancamentosCarregados.size()) {
                     Lancamento lancamentoView = lancamentosCarregados.get(row);
-                    //Depois por a função certa
-                    JOptionPane.showMessageDialog(TelaLancamento.this, "Visualizar Lançamento ID: " + lancamentoView.getId() + ", Valor: " + lancamentoView.getValor());
+
+                    // Verifica o tipo de Lancamento
+                    if (lancamentoView.getTipo() == 1) { 
+                        VerDespesa despesaViewDialog = new VerDespesa(TelaLancamento.this, true, lancamentoView);
+                        despesaViewDialog.setVisible(true);
+                    } else if (lancamentoView.getTipo() == 2) { 
+                        VerReceita receitaViewDialog = new VerReceita(TelaLancamento.this, true, lancamentoView);
+                        receitaViewDialog.setVisible(true);
+                    } else {
+                        // Caso algum erro
+                        JOptionPane.showMessageDialog(TelaLancamento.this, "Tipo de lançamento desconhecido para visualização.", "Erro de Visualização", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         };
@@ -478,7 +488,7 @@ public class TelaLancamento extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonAddLancamentoActionPerformed
 
     private void buttonNovaDespesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovaDespesaActionPerformed
-        DespesaForm Despesaformulario = new DespesaForm(this, true);
+        VerDespesa Despesaformulario = new VerDespesa(this, true);
         Despesaformulario.setVisible(true);
     }//GEN-LAST:event_buttonNovaDespesaActionPerformed
 
