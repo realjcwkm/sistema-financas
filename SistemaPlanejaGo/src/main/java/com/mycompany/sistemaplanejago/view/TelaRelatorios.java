@@ -4,6 +4,12 @@
  */
 package com.mycompany.sistemaplanejago.view;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 /**
  *
  * @author Liah
@@ -17,6 +23,7 @@ public class TelaRelatorios extends javax.swing.JFrame {
      */
     public TelaRelatorios() {
         initComponents();
+        adicionarGraficos();
     }
 
     /**
@@ -28,23 +35,28 @@ public class TelaRelatorios extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        panelNavBar = new javax.swing.JPanel();
+        labelPlanejaGo = new javax.swing.JLabel();
+        labelPlanejaGo1 = new javax.swing.JLabel();
+        labelPlanejaGo7 = new javax.swing.JLabel();
+        labelPlanejaGo8 = new javax.swing.JLabel();
+        panelBtnCadastrar = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jLabel5 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         jComboBox4 = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
+        labelPlanejaGo2 = new javax.swing.JLabel();
+        labelPlanejaGo4 = new javax.swing.JLabel();
+        labelPlanejaGo5 = new javax.swing.JLabel();
+        labelPlanejaGo6 = new javax.swing.JLabel();
+        jComboBox5 = new javax.swing.JComboBox<>();
+        jComboBox6 = new javax.swing.JComboBox<>();
+        jComboBox7 = new javax.swing.JComboBox<>();
+        labelPlanejaGo3 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -52,66 +64,201 @@ public class TelaRelatorios extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        MenuPlanejaGo = new javax.swing.JMenu();
-        MenuLançamentos = new javax.swing.JMenu();
-        MenuRelatórios = new javax.swing.JMenu();
-        MenuCalculadora = new javax.swing.JMenu();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel6 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(228, 5, 228));
-        jLabel1.setText("Relatórios");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-        jLabel1.getAccessibleContext().setAccessibleName("Relatórios");
+        panelNavBar.setBackground(new java.awt.Color(44, 41, 102));
+        panelNavBar.setPreferredSize(new java.awt.Dimension(800, 70));
+        panelNavBar.setLayout(new javax.swing.BoxLayout(panelNavBar, javax.swing.BoxLayout.X_AXIS));
 
-        jLabel2.setBackground(new java.awt.Color(255, 204, 255));
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(51, 255, 0));
-        jLabel2.setText("Periodos");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, -1, 20));
+        labelPlanejaGo.setFont(new java.awt.Font("Roboto", 1, 32)); // NOI18N
+        labelPlanejaGo.setForeground(new java.awt.Color(255, 160, 81));
+        labelPlanejaGo.setText("PlanejaGo ");
+        labelPlanejaGo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
+        panelNavBar.add(labelPlanejaGo);
 
-        jComboBox1.setForeground(new java.awt.Color(0, 204, 204));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione..." }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, -1, -1));
+        labelPlanejaGo1.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        labelPlanejaGo1.setForeground(new java.awt.Color(255, 255, 255));
+        labelPlanejaGo1.setText("Lançamentos");
+        labelPlanejaGo1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
+        labelPlanejaGo1.setFocusable(false);
+        panelNavBar.add(labelPlanejaGo1);
 
-        jLabel3.setText("Tipo de Lançamento");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 110, 20));
+        labelPlanejaGo7.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        labelPlanejaGo7.setForeground(new java.awt.Color(255, 255, 255));
+        labelPlanejaGo7.setText("Relatórios ");
+        labelPlanejaGo7.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
+        panelNavBar.add(labelPlanejaGo7);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, -1, -1));
+        labelPlanejaGo8.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        labelPlanejaGo8.setForeground(new java.awt.Color(255, 255, 255));
+        labelPlanejaGo8.setText("Calculadora");
+        labelPlanejaGo8.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
+        panelNavBar.add(labelPlanejaGo8);
 
-        jLabel4.setText("Categoria");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, -1, -1));
+        getContentPane().add(panelNavBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1360, -1));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 50, -1, -1));
+        panelBtnCadastrar.setBackground(new java.awt.Color(44, 41, 102));
+        panelBtnCadastrar.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 30));
+        panelBtnCadastrar.setLayout(null);
 
-        jLabel5.setText("Status");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, -1, -1));
+        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\Jr\\Saved Games\\sistema-financas\\SistemaPlanejaGo\\src\\Icons\\Imagens\\notification (2).png")); // NOI18N
+        panelBtnCadastrar.add(jLabel3);
+        jLabel3.setBounds(40, 20, 30, 40);
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Jr\\Saved Games\\sistema-financas\\SistemaPlanejaGo\\src\\Icons\\Imagens\\profile (3).png")); // NOI18N
+        panelBtnCadastrar.add(jLabel2);
+        jLabel2.setBounds(80, 0, 64, 70);
+
+        getContentPane().add(panelBtnCadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(1360, 0, 150, 70));
+
+        jPanel2.setBackground(new java.awt.Color(229, 229, 246));
+        jPanel2.setForeground(new java.awt.Color(229, 229, 246));
+
+        jComboBox4.setForeground(new java.awt.Color(19, 16, 71));
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Despesa", "Receita" }));
+        jComboBox4.setMinimumSize(new java.awt.Dimension(108, 22));
+        jComboBox4.setOpaque(true);
+        jComboBox4.setPreferredSize(new java.awt.Dimension(108, 22));
         jComboBox4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 50, -1, -1));
 
+        jButton1.setBackground(new java.awt.Color(97, 90, 205));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Gerar");
+        jButton1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 50, -1, -1));
+
+        labelPlanejaGo2.setFont(new java.awt.Font("Roboto", 0, 24)); // NOI18N
+        labelPlanejaGo2.setForeground(new java.awt.Color(19, 16, 71));
+        labelPlanejaGo2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labelPlanejaGo2.setText("Período");
+        labelPlanejaGo2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        labelPlanejaGo4.setFont(new java.awt.Font("Roboto", 0, 24)); // NOI18N
+        labelPlanejaGo4.setForeground(new java.awt.Color(19, 16, 71));
+        labelPlanejaGo4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labelPlanejaGo4.setText("Tipo de Lançamento");
+        labelPlanejaGo4.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        labelPlanejaGo5.setFont(new java.awt.Font("Roboto", 0, 24)); // NOI18N
+        labelPlanejaGo5.setForeground(new java.awt.Color(19, 16, 71));
+        labelPlanejaGo5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labelPlanejaGo5.setText("Categoria");
+        labelPlanejaGo5.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        labelPlanejaGo6.setFont(new java.awt.Font("Roboto", 0, 24)); // NOI18N
+        labelPlanejaGo6.setForeground(new java.awt.Color(19, 16, 71));
+        labelPlanejaGo6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labelPlanejaGo6.setText("Status");
+        labelPlanejaGo6.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        jComboBox5.setForeground(new java.awt.Color(19, 16, 71));
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Hoje", "Esta Semana", "Este Mês", "Este Semestre" }));
+        jComboBox5.setName(""); // NOI18N
+        jComboBox5.setOpaque(true);
+        jComboBox5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox5ActionPerformed(evt);
+            }
+        });
+
+        jComboBox6.setForeground(new java.awt.Color(19, 16, 71));
+        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Selecionar Tudo", "Educação", "Casa", "Saúde" }));
+        jComboBox6.setMinimumSize(new java.awt.Dimension(108, 22));
+        jComboBox6.setOpaque(true);
+        jComboBox6.setPreferredSize(new java.awt.Dimension(108, 22));
+        jComboBox6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox6ActionPerformed(evt);
+            }
+        });
+
+        jComboBox7.setForeground(new java.awt.Color(19, 16, 71));
+        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Todos", "Pagas", "Não Pagas" }));
+        jComboBox7.setMinimumSize(new java.awt.Dimension(108, 22));
+        jComboBox7.setOpaque(true);
+        jComboBox7.setPreferredSize(new java.awt.Dimension(108, 22));
+        jComboBox7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox7ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelPlanejaGo2)
+                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(77, 77, 77)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelPlanejaGo4, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(75, 75, 75)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelPlanejaGo5)
+                    .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(72, 72, 72)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(labelPlanejaGo6)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelPlanejaGo6)
+                            .addComponent(labelPlanejaGo5)
+                            .addComponent(labelPlanejaGo4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jComboBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(labelPlanejaGo2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jComboBox5.getAccessibleContext().setAccessibleName("");
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 170, 1340, -1));
+        jPanel2.getAccessibleContext().setAccessibleName("PainelGraficoPizza");
+
+        labelPlanejaGo3.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
+        labelPlanejaGo3.setForeground(new java.awt.Color(97, 90, 205));
+        labelPlanejaGo3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labelPlanejaGo3.setText("Relatórios");
+        labelPlanejaGo3.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        getContentPane().add(labelPlanejaGo3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, -1, -1));
 
         jLabel6.setText("Despesas ao Longo da Semana");
 
@@ -119,59 +266,18 @@ public class TelaRelatorios extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(265, Short.MAX_VALUE)
                 .addComponent(jLabel6)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addGap(239, 239, 239))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(91, 91, 91)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(117, Short.MAX_VALUE))
+                .addContainerGap(231, Short.MAX_VALUE))
         );
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 240, 150));
-        jPanel1.getAccessibleContext().setAccessibleName("PainelGraficoLinha");
-
-        jLabel7.setText("Despesas desse periodo");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 90, -1, -1));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Descrição", "Visualizar"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, 270, 90));
-
-        jLabel8.setText("Catgoria das Despesas");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel8)
-                .addContainerGap(24, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel8)
-                .addContainerGap(138, Short.MAX_VALUE))
-        );
-
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 210, 160, 160));
-        jPanel2.getAccessibleContext().setAccessibleName("PainelGraficoPizza");
 
         jLabel9.setText("Economia de 20%");
 
@@ -183,30 +289,28 @@ public class TelaRelatorios extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addGap(48, 48, 48))
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(19, 19, 19)
                 .addComponent(jLabel9)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(135, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(jLabel11)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addGap(21, 21, 21))
         );
-
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 250, -1));
 
         jLabel12.setText("pagas");
 
@@ -221,7 +325,7 @@ public class TelaRelatorios extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,43 +334,134 @@ public class TelaRelatorios extends javax.swing.JFrame {
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel13)
-                .addContainerGap(116, Short.MAX_VALUE))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 210, 100, 160));
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Descrição", "Visualizar"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 396, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 645, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+
+        jPanel1.getAccessibleContext().setAccessibleName("PanelGraficoLinha");
         jPanel4.getAccessibleContext().setAccessibleName("PainelGraficoBarra");
 
-        jMenuBar1.setForeground(new java.awt.Color(1, 1, 1));
-
-        MenuPlanejaGo.setText("PlanejaGo");
-        jMenuBar1.add(MenuPlanejaGo);
-
-        MenuLançamentos.setText("Lançamentos");
-        jMenuBar1.add(MenuLançamentos);
-
-        MenuRelatórios.setText("Relatórios");
-        jMenuBar1.add(MenuRelatórios);
-
-        MenuCalculadora.setText("Calculadora");
-        jMenuBar1.add(MenuCalculadora);
-
-        setJMenuBar(jMenuBar1);
+        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 1400, 510));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox4ActionPerformed
+
+    private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox5ActionPerformed
+
+    private void jComboBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox6ActionPerformed
+
+    private void jComboBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox7ActionPerformed
+private void adicionarGraficos() {
+        
+        DefaultPieDataset pieDataset = new DefaultPieDataset();
+        pieDataset.setValue("Pagas", 60);
+        pieDataset.setValue("Não Pagas", 40);
+
+        JFreeChart pieChart = ChartFactory.createPieChart(
+            "Categoria das Despesas",
+            pieDataset,
+            true, true, false
+        );
+
+        ChartPanel piePanel = new ChartPanel(pieChart);
+        
+        piePanel.setPreferredSize(new java.awt.Dimension(jPanel2.getWidth(), jPanel2.getHeight()));
+        jPanel2.removeAll();  
+        jPanel2.setLayout(new java.awt.BorderLayout());
+        jPanel2.add(piePanel, java.awt.BorderLayout.CENTER);
+        jPanel2.validate();
+
+        
+        DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
+        barDataset.setValue(200, "Despesas", "Semana Passada");
+        barDataset.setValue(150, "Despesas", "Essa Semana");
+
+        JFreeChart barChart = ChartFactory.createBarChart(
+            "Despesas ao Longo da Semana",
+            "Semana",
+            "Valor (R$)",
+            barDataset
+        );
+
+        ChartPanel barPanel = new ChartPanel(barChart);
+        
+        barPanel.setPreferredSize(new java.awt.Dimension(jPanel4.getWidth(), jPanel4.getHeight()));
+        jPanel4.removeAll();  
+        jPanel4.setLayout(new java.awt.BorderLayout());
+        jPanel4.add(barPanel, java.awt.BorderLayout.CENTER);
+        jPanel4.validate();
+    }
     /**
      * @param args the command line arguments
      */
@@ -293,34 +488,37 @@ public class TelaRelatorios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu MenuCalculadora;
-    private javax.swing.JMenu MenuLançamentos;
-    private javax.swing.JMenu MenuPlanejaGo;
-    private javax.swing.JMenu MenuRelatórios;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JComboBox<String> jComboBox5;
+    private javax.swing.JComboBox<String> jComboBox6;
+    private javax.swing.JComboBox<String> jComboBox7;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel labelPlanejaGo;
+    private javax.swing.JLabel labelPlanejaGo1;
+    private javax.swing.JLabel labelPlanejaGo2;
+    private javax.swing.JLabel labelPlanejaGo3;
+    private javax.swing.JLabel labelPlanejaGo4;
+    private javax.swing.JLabel labelPlanejaGo5;
+    private javax.swing.JLabel labelPlanejaGo6;
+    private javax.swing.JLabel labelPlanejaGo7;
+    private javax.swing.JLabel labelPlanejaGo8;
+    private javax.swing.JPanel panelBtnCadastrar;
+    private javax.swing.JPanel panelNavBar;
     // End of variables declaration//GEN-END:variables
 }
