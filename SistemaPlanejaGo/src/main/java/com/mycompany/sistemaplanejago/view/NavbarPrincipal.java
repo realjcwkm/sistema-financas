@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter; 
 import java.awt.event.MouseEvent; 
 import com.mycompany.sistemaplanejago.view.TelaLogin;
+import com.formdev.flatlaf.FlatLightLaf;
 
 public class NavbarPrincipal extends javax.swing.JFrame {
     
@@ -17,18 +18,18 @@ public class NavbarPrincipal extends javax.swing.JFrame {
         usuarioController = new UsuarioController();
         
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
-        buttonEntrar.putClientProperty("JButton.arc", 999); 
+        buttonCadastrar2.putClientProperty("JButton.arc", 999); 
         
-        
-        buttonEntrar.addMouseListener(new MouseAdapter() {
+                
+        buttonCadastrar2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
-                buttonEntrar.setBackground(new Color(255, 160, 0)); // Laranja
+                buttonCadastrar2.setBackground(new Color(255, 160, 0)); // Laranja
             }
 
             @Override
             public void mouseExited(MouseEvent evt) {
-                buttonEntrar.setBackground(Color.WHITE); // Branca
+                buttonCadastrar2.setBackground(Color.WHITE); // Branca
             }
         });
     
@@ -42,12 +43,11 @@ public class NavbarPrincipal extends javax.swing.JFrame {
 
         panelPrincipal = new javax.swing.JPanel();
         panelNavBar = new javax.swing.JPanel();
-        labelPlanejaGo = new javax.swing.JLabel();
-        panelBtnEntrar = new javax.swing.JPanel();
         buttonCadastrar2 = new javax.swing.JButton();
         buttonCadastrar3 = new javax.swing.JButton();
         buttonCadastrar4 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        labelPlanejaGo = new javax.swing.JLabel();
+        avatarPanel1 = new com.mycompany.sistemaplanejago.view.AvatarPanel();
         panelCentralizador = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -58,16 +58,6 @@ public class NavbarPrincipal extends javax.swing.JFrame {
         panelNavBar.setBackground(new java.awt.Color(44, 41, 102));
         panelNavBar.setPreferredSize(new java.awt.Dimension(800, 70));
         panelNavBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        labelPlanejaGo.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        labelPlanejaGo.setForeground(new java.awt.Color(255, 160, 81));
-        labelPlanejaGo.setText("PlanejaGo");
-        labelPlanejaGo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
-        panelNavBar.add(labelPlanejaGo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 120, 70));
-
-        panelBtnEntrar.setBackground(new java.awt.Color(44, 41, 102));
-        panelBtnEntrar.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 30));
-        panelNavBar.add(panelBtnEntrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(759, 0, -1, 70));
 
         buttonCadastrar2.setBackground(new java.awt.Color(44, 41, 102));
         buttonCadastrar2.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -123,8 +113,24 @@ public class NavbarPrincipal extends javax.swing.JFrame {
         });
         panelNavBar.add(buttonCadastrar4, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, 130, 50));
 
-        jLabel1.setText("jLabel1");
-        panelNavBar.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 20, -1, -1));
+        labelPlanejaGo.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        labelPlanejaGo.setForeground(new java.awt.Color(255, 160, 81));
+        labelPlanejaGo.setText("PlanejaGo");
+        labelPlanejaGo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
+        panelNavBar.add(labelPlanejaGo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 22, -1, 30));
+
+        javax.swing.GroupLayout avatarPanel1Layout = new javax.swing.GroupLayout(avatarPanel1);
+        avatarPanel1.setLayout(avatarPanel1Layout);
+        avatarPanel1Layout.setHorizontalGroup(
+            avatarPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+        avatarPanel1Layout.setVerticalGroup(
+            avatarPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+
+        panelNavBar.add(avatarPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 10, -1, -1));
 
         panelPrincipal.add(panelNavBar, java.awt.BorderLayout.NORTH);
 
@@ -201,6 +207,16 @@ public class NavbarPrincipal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        try {
+            // Defina o Look and Feel para FlatLaf
+            // Você pode escolher FlatLightLaf(), FlatDarkLaf(), FlatDarculaLaf(), FlatIntelliJLaf()
+            javax.swing.UIManager.setLookAndFeel(new FlatLightLaf());
+            // OU, se você quiser uma aparência mais específica:
+            // com.formdev.flatlaf.FlatLaf.registerCustomDefaultsSource( "seu.pacote.tema" ); // Se você tiver um tema customizado
+            // javax.swing.UIManager.setLookAndFeel( new com.formdev.flatlaf.FlatLightLaf() );
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(NavbarPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new NavbarPrincipal().setVisible(true);
@@ -209,12 +225,11 @@ public class NavbarPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.mycompany.sistemaplanejago.view.AvatarPanel avatarPanel1;
     private javax.swing.JButton buttonCadastrar2;
     private javax.swing.JButton buttonCadastrar3;
     private javax.swing.JButton buttonCadastrar4;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel labelPlanejaGo;
-    private javax.swing.JPanel panelBtnEntrar;
     private javax.swing.JPanel panelCentralizador;
     private javax.swing.JPanel panelNavBar;
     private javax.swing.JPanel panelPrincipal;
