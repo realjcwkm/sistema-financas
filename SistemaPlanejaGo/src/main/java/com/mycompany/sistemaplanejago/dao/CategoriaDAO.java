@@ -37,5 +37,27 @@ public class CategoriaDAO {
         }
         return categorias;
     }
+        
+    public Categoria buscarCategoriaPorId(int id) {
+        String sql = "SELECT id, titulo, descricao, tipo FROM tb_categoria WHERE id = ?";
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Categoria categoria = new Categoria();
+                    categoria.setId(rs.getInt("id"));
+                    categoria.setTitulo(rs.getString("titulo"));
+                    categoria.setDescricao(rs.getString("descricao"));
+                    categoria.setTipo(rs.getInt("tipo"));
+                    return categoria;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar categoria por ID: " + e.getMessage());
+            throw new RuntimeException("Erro ao buscar categoria por ID: " + e.getMessage(), e);
+        }
+        return null; 
+    }
 }

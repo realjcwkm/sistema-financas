@@ -7,148 +7,166 @@ import com.mycompany.sistemaplanejago.componentes.SwitchButton.SwitchButtonCellE
 import com.mycompany.sistemaplanejago.componentes.SwitchButton.SwitchButtonCellRenderer;
 
 import com.mycompany.sistemaplanejago.controller.LancamentoController;
-import com.mycompany.sistemaplanejago.model.Lancamento;
+import com.mycompany.sistemaplanejago.model.Lancamento; 
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Frame;
-import java.awt.Point;
+import java.awt.Frame; 
 import java.util.List;
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
-import javax.swing.SwingWorker;
-
+import javax.swing.table.DefaultTableModel; 
+import javax.swing.table.JTableHeader; 
+import javax.swing.table.TableColumn; 
+import javax.swing.SwingWorker; 
 
 public class TelaLancamento extends javax.swing.JFrame {
-    
+
     private LancamentoController lancamentoController;
-    private List<Lancamento> lancamentosCarregados; 
-    
+    private List<Lancamento> lancamentosCarregados;
+
     public TelaLancamento() {
-        initComponents(); 
-        panelAddLancamento.setVisible(false);
-
-        if (TabelaLancamento == null) {
-            JOptionPane.showMessageDialog(this, "Erro: A TabelaLancamento não foi inicializada corretamente pelo designer.", "Erro Fatal de UI", JOptionPane.ERROR_MESSAGE);
-            throw new IllegalStateException("TabelaLancamento é null após initComponents()");
-        }
-
-        this.setExtendedState(Frame.MAXIMIZED_BOTH);
         
-        lancamentoController = new LancamentoController();
-        lancamentosCarregados = new ArrayList<>(); // Inicializa a lista
+        initComponents();
 
-        // cabeçalho da tabela 
+        panelAddLancamento.setVisible(false); 
+
+        this.setExtendedState(Frame.MAXIMIZED_BOTH); // Maximiza a janela ao iniciar
+
+        lancamentoController = new LancamentoController(); // Inicializa o Controller
+        lancamentosCarregados = new ArrayList<>(); 
+
+        // Cabeçalho da Tabela 
         JTableHeader cabecalho = TabelaLancamento.getTableHeader();
         cabecalho.setFont(new Font("Roboto", Font.BOLD, 24));
-        cabecalho.setForeground(new Color(19, 16, 71));
-        cabecalho.setBackground(new Color(248, 248, 255));
-        cabecalho.setOpaque(true);
+        cabecalho.setForeground(new Color(19, 16, 71)); 
+        cabecalho.setBackground(new Color(248, 248, 255)); 
+        cabecalho.setOpaque(true); 
 
-        // titulos da cabeçalho da tabela
+        // Modelo da Tabela 
         final DefaultTableModel customTableModel = new DefaultTableModel(
                 new Object[][]{}, 
-                new String[]{"", "Tipo", "Descrição", "Categoria", "Valor", "Opções"} 
+                new String[]{"", "Tipo", "Descrição", "Categoria", "Valor", "Opções"} //A primeira é o switch button
         ) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 0) { return Boolean.class; } // A primeira referente ao status
-                if (columnIndex == getColumnCount() - 1) { return Object.class; } // Coluna Opções
-                return super.getColumnClass(columnIndex);
+                if (columnIndex == 0) { return Boolean.class; } // status pago/não pago)
+                if (columnIndex == getColumnCount() - 1) { return Object.class; } // botões de ação Editar / Excluir / Visualizar
+                return super.getColumnClass(columnIndex); 
             }
 
             @Override
             public boolean isCellEditable(int row, int column) {
-                String tipo = (String) getValueAt(row, 1); 
-                int lastColumnIndex = getColumnCount() - 1; 
+                // Controla quais células são editáveis.
+                String tipo = (String) getValueAt(row, 1); // Pega o tipo de lançamento da coluna "Tipo"
+                int lastColumnIndex = getColumnCount() - 1;
 
-                if (column == 0) { return "Despesa".equalsIgnoreCase(tipo); } // Coluna status é editável só para Despesa
-                if (column == lastColumnIndex) { return true; } 
-                return false;
+                if (column == 0) { 
+                    return "Despesa".equalsIgnoreCase(tipo); // Editável APENAS se for uma Despesa
+                }
+                if (column == lastColumnIndex) { 
+                    return true; // Editável para permitir os botões de ação
+                }
+                return false; 
             }
         };
-
-        TabelaLancamento.setModel(customTableModel);
         
-        // Configuração da coluna vazia que é o status
-        TableColumn pagoColumn = TabelaLancamento.getColumnModel().getColumn(0); 
-        pagoColumn.setCellRenderer(new SwitchButtonCellRenderer());
-        pagoColumn.setCellEditor(new SwitchButtonCellEditor());
-        
-        pagoColumn.setPreferredWidth(150); 
-        pagoColumn.setMaxWidth(200);    
-        pagoColumn.setMinWidth(100);    
+        TabelaLancamento.setModel(customTableModel); 
 
-        TabelaLancamento.setRowHeight(50); 
+        TableColumn pagoColumn = TabelaLancamento.getColumnModel().getColumn(0);
+        pagoColumn.setCellRenderer(new SwitchButtonCellRenderer()); // Renderiza o SwitchButton
+        pagoColumn.setCellEditor(new SwitchButtonCellEditor()); // Permite interagir com o SwitchButton
+        pagoColumn.setPreferredWidth(150); // Configuracoes do tamanho
+        pagoColumn.setMaxWidth(200);      
+        pagoColumn.setMinWidth(100);      
 
-        int lastColumnIndex = TabelaLancamento.getColumnCount() - 1; 
+        TabelaLancamento.setRowHeight(50); // altura de todas as linhas da tabela
+
+        // Botões de Ação
+        int lastColumnIndex = TabelaLancamento.getColumnCount() - 1;
         TableColumn acoesColumn = TabelaLancamento.getColumnModel().getColumn(lastColumnIndex);
-        
-        final TableActionEvent event = new TableActionEvent() { 
-            @Override public void onEdit(int row) { 
-                // Pega o objeto Lancamento da lista carregada
+
+        final TableActionEvent event = new TableActionEvent() {
+            @Override
+            public void onEdit(int row) {
                 if (row >= 0 && row < lancamentosCarregados.size()) {
-                    Lancamento lancamentoEdit = lancamentosCarregados.get(row);
-                    //Depois por a função certa
-                    JOptionPane.showMessageDialog(TelaLancamento.this, "Editar Lançamento ID: " + lancamentoEdit.getId() + ", Desc: " + lancamentoEdit.getDescricao());
-                   
-                }
-            }
-            @Override public void onDelete(int row) { 
-                int confirm = JOptionPane.showConfirmDialog(TelaLancamento.this, "Tem certeza que deseja excluir a linha " + (row + 1) + "?", "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
-                if (confirm == JOptionPane.YES_OPTION) { 
-                    if (row >= 0 && row < lancamentosCarregados.size()) {
-                        Lancamento lancamentoDelete = lancamentosCarregados.get(row);
-                        //Depois por a função certa
-                        System.out.println("Tentando deletar Lançamento ID: " + lancamentoDelete.getId());
-                        //customTableModel.removeRow(row); 
-                        //lancamentosCarregados.remove(row);
-                        //JOptionPane.showMessageDialog(TelaLancamento.this, "Lançamento excluído com sucesso (se implementado)!");
+                    Lancamento lancamentoEdit = lancamentosCarregados.get(row); 
+                    if (lancamentoEdit.getTipo() == 1) { // Se for uma Despesa 
+                        EditarDespesa editarDespesaDialog = new EditarDespesa(TelaLancamento.this, true, lancamentoEdit);
+                        editarDespesaDialog.setVisible(true); 
+                    } else if (lancamentoEdit.getTipo() == 2) { // Se for uma Receita 
+                        EditarReceita editarReceitaDialog = new EditarReceita(TelaLancamento.this, true, lancamentoEdit);
+                        editarReceitaDialog.setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(TelaLancamento.this, "Tipo de lançamento desconhecido para edição.", "Erro", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
-            @Override public void onView(int row) { 
+
+            @Override
+            public void onDelete(int row) {
+                int confirm = JOptionPane.showConfirmDialog(TelaLancamento.this, "Tem certeza que deseja excluir esse lançamento ", "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    if (row >= 0 && row < lancamentosCarregados.size()) {
+                        Lancamento lancamentoDelete = lancamentosCarregados.get(row); 
+                        boolean sucessoExclusao = lancamentoController.excluirLancamento(lancamentoDelete.getId());
+                        if (sucessoExclusao) {
+                            JOptionPane.showMessageDialog(TelaLancamento.this, "Lançamento excluído com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                            carregarLancamentosNaTabela(); 
+                        } else {
+                            JOptionPane.showMessageDialog(TelaLancamento.this, "Falha ao excluir lançamento. Verifique o console para mais detalhes.", "Erro de Exclusão", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onView(int row) {
                 if (row >= 0 && row < lancamentosCarregados.size()) {
-                    Lancamento lancamentoView = lancamentosCarregados.get(row);
-                    //Depois por a função certa
-                    JOptionPane.showMessageDialog(TelaLancamento.this, "Visualizar Lançamento ID: " + lancamentoView.getId() + ", Valor: " + lancamentoView.getValor());
+                    Lancamento lancamentoEdit = lancamentosCarregados.get(row); 
+                    if (lancamentoEdit.getTipo() == 1) { // Se for uma Despesa 
+                        EditarDespesa editarDespesaDialog = new EditarDespesa(TelaLancamento.this, true, lancamentoEdit);
+                        editarDespesaDialog.setVisible(true);
+                    } else if (lancamentoEdit.getTipo() == 2) { // Se for uma Receita 
+                        EditarReceita editarReceitaDialog = new EditarReceita(TelaLancamento.this, true, lancamentoEdit);
+                        editarReceitaDialog.setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(TelaLancamento.this, "Tipo de lançamento desconhecido para edição.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         };
 
-        acoesColumn.setCellRenderer(new TableActionCellRender()); 
-        acoesColumn.setCellEditor(new TableActionCellEditor(event));
+        acoesColumn.setCellRenderer(new TableActionCellRender()); // Renderiza os botões
+        acoesColumn.setCellEditor(new TableActionCellEditor(event)); // Adiciona a funcionalidade de clique
 
-        acoesColumn.setPreferredWidth(140); 
-        acoesColumn.setMaxWidth(160);    
-        acoesColumn.setMinWidth(120);    
+        acoesColumn.setPreferredWidth(140); // Tamanho
+        acoesColumn.setMaxWidth(160);      
+        acoesColumn.setMinWidth(120);     
 
-        carregarLancamentosNaTabela(); 
+        carregarLancamentosNaTabela();
 
-        // Pra mudar o estado de despesa paga ou não
+        // coluna de Status 
         customTableModel.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == 0) { 
+                if (e.getType() == TableModelEvent.UPDATE && e.getColumn() == 0) {
                     int row = e.getFirstRow();
                     if (row >= 0 && row < lancamentosCarregados.size()) {
-                        boolean novoStatus = (boolean) customTableModel.getValueAt(row, 0); // Pegar o valor atual do SwitchButton
-                        
-                        // Pegar o ID do lançamento da lista local, não da tabela
-                        Lancamento lancamento = lancamentosCarregados.get(row); 
-                        int idLancamento = lancamento.getId();
-                        String tipoLancamento = (String) customTableModel.getValueAt(row, 1); // Coluna Tipo é agora índice 1
+                        boolean novoStatus = (boolean) customTableModel.getValueAt(row, 0); // Pega o novo estado do SwitchButton
 
+                        Lancamento lancamento = lancamentosCarregados.get(row);
+                        int idLancamento = lancamento.getId();
+                        String tipoLancamento = (String) customTableModel.getValueAt(row, 1);
+
+                        // Atualiza o status pago apenas se o lançamento for uma Despesa
                         if ("Despesa".equalsIgnoreCase(tipoLancamento)) {
                             new SwingWorker<Boolean, Void>() {
                                 @Override
                                 protected Boolean doInBackground() throws Exception {
+                                    // Chama o Controller para atualizar o status no banco de dados
                                     return lancamentoController.atualizarStatusLancamento(idLancamento, novoStatus);
                                 }
                                 @Override
@@ -156,68 +174,67 @@ public class TelaLancamento extends javax.swing.JFrame {
                                     try {
                                         boolean sucesso = get(); 
                                         if (sucesso) {
-                                            //JOptionPane.showMessageDialog(TelaLancamento.this, "Status da despesa atualizado com sucesso!"); //Era só pra testar se funfou
-                                            lancamento.setStatusPago(novoStatus); // Atualiza o objeto na lista local
+                                            lancamento.setStatusPago(novoStatus); // Atualiza o objeto na lista local em memória
                                         } else {
-                                            //JOptionPane.showMessageDialog(TelaLancamento.this, "Erro ao atualizar status da despesa.", "Erro", JOptionPane.ERROR_MESSAGE); //Era só pra testar o porque não funfou
-                                            customTableModel.setValueAt(!novoStatus, row, 0); // Reverte o SwitchButton
+                                            // Se a atualização falhou no DB, reverte o estado visual do SwitchButton na UI
+                                            customTableModel.setValueAt(!novoStatus, row, 0);
+                                            JOptionPane.showMessageDialog(TelaLancamento.this, "Falha ao atualizar status da despesa.", "Erro", JOptionPane.ERROR_MESSAGE);
                                         }
                                     } catch (Exception ex) {
-                                        //JOptionPane.showMessageDialog(TelaLancamento.this, "Erro inesperado ao finalizar atualização de status: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-                                        //ex.printStackTrace();
-                                        customTableModel.setValueAt(!novoStatus, row, 0); // Reverte o SwitchButton
+                                        customTableModel.setValueAt(!novoStatus, row, 0);
+                                        JOptionPane.showMessageDialog(TelaLancamento.this, "Erro inesperado ao atualizar status: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                                        ex.printStackTrace();
                                     }
                                 }
-                            }.execute();
+                            }.execute(); 
                         } else {
-                            //JOptionPane.showMessageDialog(TelaLancamento.this, "O status de uma Receita não pode ser alterado por este botão.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-                            customTableModel.setValueAt(!novoStatus, row, 0); // Reverte o SwitchButton
+                            customTableModel.setValueAt(!novoStatus, row, 0);
+                            JOptionPane.showMessageDialog(TelaLancamento.this, "O status de uma Receita não pode ser alterado por este botão.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                         }
                     }
                 }
             }
         });
-    } // Fim do construtor
-    
+    }
 
-    private void carregarLancamentosNaTabela() {
-        DefaultTableModel model = (DefaultTableModel) TabelaLancamento.getModel();
+    public void carregarLancamentosNaTabela() { 
+        final DefaultTableModel model = (DefaultTableModel) TabelaLancamento.getModel();
         model.setRowCount(0); 
-        lancamentosCarregados.clear(); // Limpa a lista local antes de recarregar
+        
+        lancamentosCarregados.clear(); 
 
-        new SwingWorker<List<Lancamento>, Void>() {
+        new SwingWorker<List<Lancamento>, Void>() { 
             @Override
             protected List<Lancamento> doInBackground() throws Exception {
-                return lancamentoController.listarLancamentos();
+                return lancamentoController.listarLancamentos(); // Chama o controlador para buscar os dados
             }
+
             @Override
             protected void done() {
                 try {
                     List<Lancamento> lancamentos = get(); 
 
                     if (lancamentos.isEmpty()) {
-                        System.out.println("SwingWorker (load): Nenhuns lançamentos encontrados para adicionar à tabela.");
+                        System.out.println("Nenhum lançamento encontrado para adicionar à tabela.");
                     } else {
                         for (Lancamento lancamento : lancamentos) {
-                            lancamentosCarregados.add(lancamento); // Adiciona o objeto completo à lista local
+                            lancamentosCarregados.add(lancamento); 
+
                             String tipoNome = lancamentoController.getNomeTipoLancamento(lancamento.getTipo());
                             String categoriaNome = lancamentoController.getNomeCategoria(lancamento.getCategoria());
-                            
-                            Object statusDisplay = (lancamento.getTipo() == 1) ? lancamento.isStatusPago() : null; 
+                            Object statusDisplay = (lancamento.getTipo() == 1) ? lancamento.isStatusPago() : null;
 
-                            // Adiciona uma nova linha ao modelo da tabela (6 colunas)
                             model.addRow(new Object[]{
-                                statusDisplay,             // Coluna 0 (Status)
-                                tipoNome,                  // Coluna 1 (Tipo)
-                                lancamento.getDescricao(), // Coluna 2 (Descrição)
-                                categoriaNome,             // Coluna 3 (Categoria)
-                                lancamento.getValor(),     // Coluna 4 (Valor)
-                                null                       // Coluna 5 (Opções)
-                            }); 
+                                statusDisplay,
+                                tipoNome,
+                                lancamento.getDescricao(),
+                                categoriaNome,
+                                lancamento.getValor(),
+                                null 
+                            });
                         }
                     }
                     model.fireTableDataChanged(); 
-
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(TelaLancamento.this, "Erro ao carregar lançamentos: " + e.getMessage(), "Erro de Carregamento", JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace();
@@ -225,7 +242,7 @@ public class TelaLancamento extends javax.swing.JFrame {
             }
         }.execute();
     }
-
+    
     /////////////////////////////////////////////////////////////
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -478,7 +495,7 @@ public class TelaLancamento extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonAddLancamentoActionPerformed
 
     private void buttonNovaDespesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovaDespesaActionPerformed
-        DespesaForm Despesaformulario = new DespesaForm(this, true);
+        VerDespesa Despesaformulario = new VerDespesa(this, true);
         Despesaformulario.setVisible(true);
     }//GEN-LAST:event_buttonNovaDespesaActionPerformed
 

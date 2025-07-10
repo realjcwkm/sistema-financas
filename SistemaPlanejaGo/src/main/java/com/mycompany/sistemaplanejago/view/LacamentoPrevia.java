@@ -26,7 +26,7 @@ public class LacamentoPrevia extends javax.swing.JFrame {
     
      private void mostrarFormularioPopUp() {
         
-        DespesaForm formulario = new DespesaForm(this, true);
+        VerDespesa formulario = new VerDespesa(this, true);
         formulario.setVisible(true);
     }
 

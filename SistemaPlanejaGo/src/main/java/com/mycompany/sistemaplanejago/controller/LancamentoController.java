@@ -129,4 +129,80 @@ public class LancamentoController {
     public boolean atualizarStatusLancamento(int idLancamento, boolean statusPago) {
         return lancamentoDao.atualizarStatusLancamento(idLancamento, statusPago);
     }
+    
+    public boolean excluirLancamento(int idLancamento) {
+        if (idLancamento <= 0) {
+            System.err.println("Controller: ID de lançamento inválido para exclusão (ID <= 0).");
+            return false;
+        }
+
+        return lancamentoDao.excluirLancamento(idLancamento);
+    }
+    
+    public boolean atualizarDespesa(int id, String descricao, BigDecimal valor, boolean statusPago,
+                                     LocalDate dataCriacao, LocalDate dataVencimento,
+                                     int frequenciaId, int categoriaId, Integer centroCustoId) {
+   
+        if (id <= 0 || descricao == null || descricao.trim().isEmpty() || valor == null || valor.compareTo(BigDecimal.ZERO) <= 0 ||
+            dataCriacao == null || frequenciaId <= 0 || categoriaId <= 0) {
+            System.err.println("LancamentoController.atualizarDespesa: Dados básicos de despesa inválidos para ID: " + id);
+            return false;
+        }
+
+        Lancamento lancamentoExistente = lancamentoDao.buscarLancamentoPorId(id);
+
+        // Verifca se o lançamento foi encontrado e se é realmente uma despesa 
+        if (lancamentoExistente == null || lancamentoExistente.getTipo() != 1) {
+            System.err.println("LancamentoController.atualizarDespesa: Despesa não encontrada ou tipo incorreto para o ID: " + id);
+            return false;
+        }
+
+        lancamentoExistente.setDescricao(descricao);
+        lancamentoExistente.setValor(valor);
+        lancamentoExistente.setStatusPago(statusPago);
+        lancamentoExistente.setCategoria(categoriaId);
+        lancamentoExistente.setDataCriacao(dataCriacao);
+        lancamentoExistente.setDataVencimento(dataVencimento);
+        lancamentoExistente.setFrequencia(frequenciaId);
+        lancamentoExistente.setCentroCusto(centroCustoId);
+        lancamentoExistente.setTipo(1); // Mantém o tipo como Despesa
+
+        return lancamentoDao.atualizarLancamento(lancamentoExistente);
+    }
+    
+    public boolean atualizarReceita(int id, String descricao, BigDecimal valor,
+                                    LocalDate dataCriacao, int frequenciaId, int categoriaId) {
+        
+        if (id <= 0 || descricao == null || descricao.trim().isEmpty() || valor == null || valor.compareTo(BigDecimal.ZERO) <= 0 ||
+            dataCriacao == null || frequenciaId <= 0 || categoriaId <= 0) {
+            System.err.println("LancamentoController.atualizarReceita: Dados básicos de receita inválidos para ID: " + id);
+            return false;
+        }
+
+        Lancamento lancamentoExistente = lancamentoDao.buscarLancamentoPorId(id);
+        
+        // Verifica se é realmente uma receita 
+        if (lancamentoExistente == null || lancamentoExistente.getTipo() != 2) {
+            System.err.println("LancamentoController.atualizarReceita: Receita não encontrada ou tipo incorreto para o ID: " + id);
+            return false;
+        }
+
+        lancamentoExistente.setDescricao(descricao);
+        lancamentoExistente.setValor(valor);
+        lancamentoExistente.setDataCriacao(dataCriacao);
+        lancamentoExistente.setFrequencia(frequenciaId);
+        lancamentoExistente.setCategoria(categoriaId);
+        lancamentoExistente.setTipo(2); 
+
+        lancamentoExistente.setStatusPago(false); 
+        lancamentoExistente.setDataVencimento(null);
+        lancamentoExistente.setCentroCusto(null);
+
+        return lancamentoDao.atualizarLancamento(lancamentoExistente);
+    }
+    
+  
+    
+    
+    
 }
