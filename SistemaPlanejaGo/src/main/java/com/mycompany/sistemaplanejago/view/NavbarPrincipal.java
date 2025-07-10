@@ -41,6 +41,7 @@ public class NavbarPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        notificationBellPanel1 = new com.mycompany.sistemaplanejago.view.NotificationBellPanel();
         panelPrincipal = new javax.swing.JPanel();
         panelNavBar = new javax.swing.JPanel();
         buttonCadastrar2 = new javax.swing.JButton();
@@ -230,6 +231,7 @@ public class NavbarPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton buttonCadastrar3;
     private javax.swing.JButton buttonCadastrar4;
     private javax.swing.JLabel labelPlanejaGo;
+    private com.mycompany.sistemaplanejago.view.NotificationBellPanel notificationBellPanel1;
     private javax.swing.JPanel panelCentralizador;
     private javax.swing.JPanel panelNavBar;
     private javax.swing.JPanel panelPrincipal;
