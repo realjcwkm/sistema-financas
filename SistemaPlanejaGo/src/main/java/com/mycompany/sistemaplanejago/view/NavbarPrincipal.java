@@ -1,22 +1,64 @@
 package com.mycompany.sistemaplanejago.view;
 
 import com.mycompany.sistemaplanejago.controller.UsuarioController;
+import javax.swing.ImageIcon;
 import java.awt.Frame;
 import java.awt.Color; 
 import java.awt.event.MouseAdapter; 
 import java.awt.event.MouseEvent; 
 import com.mycompany.sistemaplanejago.view.TelaLogin;
 import com.formdev.flatlaf.FlatLightLaf;
+import java.net.URL;
 
 public class NavbarPrincipal extends javax.swing.JFrame {
     
     private UsuarioController usuarioController;
     
+    
     public NavbarPrincipal() {
         
         initComponents();
         usuarioController = new UsuarioController();
-        
+   try {
+            // Caminho da imagem: AGORA DEVE SER COM UNDERSCORE E .jpeg, já que você renomeou
+            String imagePath = "/imagens/bell_icon.jpeg";
+            URL imageUrl = getClass().getResource(imagePath); // Tenta obter a URL do recurso
+
+            if (imageUrl == null) {
+                System.err.println("ERRO FATAL (NavbarPrincipal): O recurso da imagem '" + imagePath + "' NÃO foi encontrado. Verifique o caminho absoluto e o nome do arquivo!");
+                // Se esta mensagem aparecer, o problema é que o arquivo não está sendo encontrado no JAR ou no caminho de classe.
+                return; // Sai do método para evitar NullPointerException.
+            } else {
+                System.out.println("DEBUG (NavbarPrincipal): URL do recurso da imagem encontrada: " + imageUrl);
+            }
+
+            ImageIcon bellIcon = new ImageIcon(imageUrl); // Cria o ImageIcon a partir da URL
+
+            if (bellIcon.getImageLoadStatus() != java.awt.MediaTracker.COMPLETE) {
+                System.err.println("ERRO FATAL (NavbarPrincipal): A imagem foi encontrada, mas NÃO carregou completamente. Status: " + bellIcon.getImageLoadStatus());
+                // Isso pode indicar um arquivo JPEG corrompido, mas você já verificou que a imagem é válida.
+            } else if (bellIcon.getIconWidth() <= 0 || bellIcon.getIconHeight() <= 0) {
+                System.err.println("AVISO (NavbarPrincipal): Imagem carregada, mas com dimensões zero ou negativas. Largura: " + bellIcon.getIconWidth() + ", Altura: " + bellIcon.getIconHeight());
+                // Indica que o ImageIcon foi criado, mas não conseguiu ler as dimensões da imagem.
+            } else {
+                System.out.println("DEBUG (NavbarPrincipal): Imagem do sino carregada com SUCESSO. Dimensões: " + bellIcon.getIconWidth() + "x" + bellIcon.getIconHeight());
+            }
+
+            // O nome da instância no seu Designer (Navigator) é notificationBellPanel1.
+            if (notificationBellPanel1 != null) { // Garante que o componente existe
+                notificationBellPanel1.setBellIcon(bellIcon); // Envia o ImageIcon para o seu painel customizado
+                // Mantenha notificationBellPanel1.setNotificationCount(1); COMENTADO por enquanto.
+            } else {
+                System.err.println("ERRO (NavbarPrincipal): A instância 'notificationBellPanel1' é nula. O componente não foi inicializado corretamente no designer.");
+            }
+
+        } catch (Exception e) {
+            System.err.println("ERRO CRÍTICO (NavbarPrincipal): Exceção inesperada durante o carregamento ou configuração do sino: " + e.getMessage());
+            e.printStackTrace(); // Imprime o stack trace completo para depuração
+        }
+
+
+
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         buttonCadastrar2.putClientProperty("JButton.arc", 999); 
         
@@ -41,7 +83,6 @@ public class NavbarPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        notificationBellPanel1 = new com.mycompany.sistemaplanejago.view.NotificationBellPanel();
         panelPrincipal = new javax.swing.JPanel();
         panelNavBar = new javax.swing.JPanel();
         buttonCadastrar2 = new javax.swing.JButton();
@@ -49,6 +90,7 @@ public class NavbarPrincipal extends javax.swing.JFrame {
         buttonCadastrar4 = new javax.swing.JButton();
         labelPlanejaGo = new javax.swing.JLabel();
         avatarPanel1 = new com.mycompany.sistemaplanejago.view.AvatarPanel();
+        notificationBellPanel1 = new com.mycompany.sistemaplanejago.view.NotificationBellPanel();
         panelCentralizador = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -131,7 +173,22 @@ public class NavbarPrincipal extends javax.swing.JFrame {
             .addGap(0, 40, Short.MAX_VALUE)
         );
 
-        panelNavBar.add(avatarPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 10, -1, -1));
+        panelNavBar.add(avatarPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 10, -1, -1));
+
+        notificationBellPanel1.setForeground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout notificationBellPanel1Layout = new javax.swing.GroupLayout(notificationBellPanel1);
+        notificationBellPanel1.setLayout(notificationBellPanel1Layout);
+        notificationBellPanel1Layout.setHorizontalGroup(
+            notificationBellPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+        notificationBellPanel1Layout.setVerticalGroup(
+            notificationBellPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+
+        panelNavBar.add(notificationBellPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 10, 40, 40));
 
         panelPrincipal.add(panelNavBar, java.awt.BorderLayout.NORTH);
 
