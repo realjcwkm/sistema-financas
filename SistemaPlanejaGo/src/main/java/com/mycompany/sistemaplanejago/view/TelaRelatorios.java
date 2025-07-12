@@ -30,6 +30,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.jfree.chart.plot.dial.*;
 import javax.swing.*;
+import org.jfree.chart.title.TextTitle;
+import java.awt.BasicStroke;
+import org.jfree.chart.plot.dial.DialPointer;
+import org.jfree.chart.plot.dial.DialPointer.Pointer;
+
 /**
  *
  * @author Liah
@@ -45,7 +50,7 @@ public class TelaRelatorios extends javax.swing.JFrame {
         initComponents();
         adicionarGraficos();
         jPanelPaigraficos.setVisible(false);
-        System.out.println("Painel visível? " + jPanelPaigraficos.isVisible());
+        
 
 
     }
@@ -81,13 +86,11 @@ public class TelaRelatorios extends javax.swing.JFrame {
         jPanelPaigraficos = new javax.swing.JPanel();
         jPanelDespesasdaSemana = new javax.swing.JPanel();
         jPanelEconomiaeGastos = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         jPanelNãopagas = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jPanelCategoriaDespesas = new javax.swing.JPanel();
+        jPanelDespesasPeriodo = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -297,60 +300,27 @@ public class TelaRelatorios extends javax.swing.JFrame {
             .addGap(0, 349, Short.MAX_VALUE)
         );
 
-        jLabel9.setText("Economia de 20%");
-
-        jLabel10.setText("semana passada");
-
-        jLabel11.setText("essa semana");
-
         javax.swing.GroupLayout jPanelEconomiaeGastosLayout = new javax.swing.GroupLayout(jPanelEconomiaeGastos);
         jPanelEconomiaeGastos.setLayout(jPanelEconomiaeGastosLayout);
         jPanelEconomiaeGastosLayout.setHorizontalGroup(
             jPanelEconomiaeGastosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEconomiaeGastosLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanelEconomiaeGastosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10))
-                .addGap(48, 48, 48))
-            .addGroup(jPanelEconomiaeGastosLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel9)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 670, Short.MAX_VALUE)
         );
         jPanelEconomiaeGastosLayout.setVerticalGroup(
             jPanelEconomiaeGastosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelEconomiaeGastosLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(jLabel11)
-                .addGap(21, 21, 21))
+            .addGap(0, 131, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanelNãopagasLayout = new javax.swing.GroupLayout(jPanelNãopagas);
         jPanelNãopagas.setLayout(jPanelNãopagasLayout);
         jPanelNãopagasLayout.setHorizontalGroup(
             jPanelNãopagasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 231, Short.MAX_VALUE)
         );
         jPanelNãopagasLayout.setVerticalGroup(
             jPanelNãopagasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 250, Short.MAX_VALUE)
         );
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Descrição", "Visualizar"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanelCategoriaDespesasLayout = new javax.swing.GroupLayout(jPanelCategoriaDespesas);
         jPanelCategoriaDespesas.setLayout(jPanelCategoriaDespesasLayout);
@@ -361,6 +331,30 @@ public class TelaRelatorios extends javax.swing.JFrame {
         jPanelCategoriaDespesasLayout.setVerticalGroup(
             jPanelCategoriaDespesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable2);
+
+        javax.swing.GroupLayout jPanelDespesasPeriodoLayout = new javax.swing.GroupLayout(jPanelDespesasPeriodo);
+        jPanelDespesasPeriodo.setLayout(jPanelDespesasPeriodoLayout);
+        jPanelDespesasPeriodoLayout.setHorizontalGroup(
+            jPanelDespesasPeriodoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2)
+        );
+        jPanelDespesasPeriodoLayout.setVerticalGroup(
+            jPanelDespesasPeriodoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanelPaigraficosLayout = new javax.swing.GroupLayout(jPanelPaigraficos);
@@ -377,8 +371,8 @@ public class TelaRelatorios extends javax.swing.JFrame {
                     .addGroup(jPanelPaigraficosLayout.createSequentialGroup()
                         .addComponent(jPanelCategoriaDespesas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jPanelNãopagas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 645, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanelNãopagas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanelDespesasPeriodo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelPaigraficosLayout.setVerticalGroup(
@@ -387,15 +381,15 @@ public class TelaRelatorios extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanelPaigraficosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelPaigraficosLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanelDespesasdaSemana, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanelEconomiaeGastos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelPaigraficosLayout.createSequentialGroup()
+                        .addComponent(jPanelDespesasPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanelPaigraficosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanelCategoriaDespesas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanelNãopagas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanelPaigraficosLayout.createSequentialGroup()
-                        .addComponent(jPanelDespesasdaSemana, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanelEconomiaeGastos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jPanelNãopagas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
@@ -430,74 +424,96 @@ public class TelaRelatorios extends javax.swing.JFrame {
 private void adicionarGraficos() {
       DefaultCategoryDataset datasetLinha = new DefaultCategoryDataset();
 
-        datasetLinha.addValue(10, "Despesas", "Seg");
-        datasetLinha.addValue(12, "Despesas", "Ter");
-        datasetLinha.addValue(18, "Despesas", "Qua");
-        datasetLinha.addValue(25, "Despesas", "Qui");
-        datasetLinha.addValue(22, "Despesas", "Sex");
-        datasetLinha.addValue(30, "Despesas", "Sáb");
-        datasetLinha.addValue(28, "Despesas", "Dom");
+datasetLinha.addValue(10, "Despesas", "Seg");
+datasetLinha.addValue(12, "Despesas", "Ter");
+datasetLinha.addValue(18, "Despesas", "Qua");
+datasetLinha.addValue(25, "Despesas", "Qui");
+datasetLinha.addValue(22, "Despesas", "Sex");
+datasetLinha.addValue(30, "Despesas", "Sáb");
+datasetLinha.addValue(28, "Despesas", "Dom");
 
-        JFreeChart lineChart = ChartFactory.createLineChart(
-            "Despesas ao Longo da Semana",  
-            "Dia",                          
-            "Valor (R$)",                   
-            datasetLinha,
-            PlotOrientation.VERTICAL,
-            false, true, false              
-        );
+JFreeChart lineChart = ChartFactory.createLineChart(
+    "Despesas ao Longo da Semana",
+    "Dia",
+    "Valor (R$)",
+    datasetLinha,
+    PlotOrientation.VERTICAL,
+    false, true, false
+);
 
-        CategoryPlot plot = lineChart.getCategoryPlot();
-        LineAndShapeRenderer renderer = new LineAndShapeRenderer();
+// Aplica cor personalizada ao título
+TextTitle title = new TextTitle("Despesas ao Longo da Semana", new Font("SansSerif", Font.BOLD, 14));
+title.setPaint(new Color(0x2C, 0x29, 0x66)); // cor #2C2966
+lineChart.setTitle(title);
 
-        renderer.setSeriesPaint(0, Color.RED);
-        renderer.setSeriesShapesVisible(0, true); 
-        renderer.setSeriesStroke(0, new BasicStroke(2.0f));
 
-        plot.setRenderer(renderer);
-        plot.setBackgroundPaint(Color.WHITE);
-        plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
+CategoryPlot plot = lineChart.getCategoryPlot();
+LineAndShapeRenderer renderer = new LineAndShapeRenderer();
 
-        NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
-        yAxis.setRange(0.0, 40.0);
-        yAxis.setTickUnit(new org.jfree.chart.axis.NumberTickUnit(10)); 
+renderer.setSeriesPaint(0, Color.RED);
+renderer.setSeriesShapesVisible(0, true);
+renderer.setSeriesStroke(0, new BasicStroke(2.0f));
 
-        ChartPanel chartPanelLinha = new ChartPanel(lineChart);
-        chartPanelLinha.setPreferredSize(new Dimension(
-            jPanelDespesasdaSemana.getWidth(),
-            jPanelDespesasdaSemana.getHeight()
-        ));
+plot.setRenderer(renderer);
+plot.setBackgroundPaint(Color.WHITE);  // Cor interna do gráfico
+plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
 
-        jPanelDespesasdaSemana.removeAll();
-        jPanelDespesasdaSemana.setLayout(new BorderLayout());
-        jPanelDespesasdaSemana.add(chartPanelLinha, BorderLayout.CENTER);
-        jPanelDespesasdaSemana.validate();
+// Eixo Y
+NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+yAxis.setRange(0.0, 40.0);
+yAxis.setTickUnit(new NumberTickUnit(10));
+
+// Painel do gráfico
+ChartPanel chartPanelLinha = new ChartPanel(lineChart);
+chartPanelLinha.setPreferredSize(new Dimension(
+    jPanelDespesasdaSemana.getWidth(),
+    jPanelDespesasdaSemana.getHeight()
+));
+
+// COR DE FUNDO #E5E5F6
+chartPanelLinha.setBackground(new Color(0xE5, 0xE5, 0xF6));
+
+jPanelDespesasdaSemana.removeAll();
+jPanelDespesasdaSemana.setLayout(new BorderLayout());
+jPanelDespesasdaSemana.add(chartPanelLinha, BorderLayout.CENTER);
+jPanelDespesasdaSemana.validate();
+
         
      DefaultPieDataset pieDataset = new DefaultPieDataset();
 pieDataset.setValue("Casa", 60);
 pieDataset.setValue("Saúde", 40);
 
 JFreeChart pieChart = ChartFactory.createPieChart(
-    "Categoria das Despesas",
+    null,  // Título removido do construtor
     pieDataset,
     true, true, false
 );
 
+// Aplica o título personalizado
+title = new TextTitle("Categoria das Despesas", new Font("SansSerif", Font.BOLD, 14));
+title.setPaint(new Color(0x2C, 0x29, 0x66)); // cor #2C2966
+pieChart.setTitle(title);
+
+// Estiliza o gráfico de pizza
 PiePlot pieplot = (PiePlot) pieChart.getPlot();
-
 pieplot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0} ({2})"));
-
-pieplot.setSimpleLabels(true); 
-
+pieplot.setSimpleLabels(true);
 pieplot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
 
+// Painel do gráfico de pizza
 ChartPanel piePanel = new ChartPanel(pieChart);
-piePanel.setPreferredSize(new java.awt.Dimension(jPanelCategoriaDespesas.getWidth(), jPanelCategoriaDespesas.getHeight()));
+piePanel.setPreferredSize(new Dimension(
+    jPanelCategoriaDespesas.getWidth(),
+    jPanelCategoriaDespesas.getHeight()
+));
+piePanel.setBackground(new Color(0xE5, 0xE5, 0xF6)); // fundo #E5E5F6
 
 jPanelCategoriaDespesas.removeAll();  
-jPanelCategoriaDespesas.setLayout(new java.awt.BorderLayout());
-jPanelCategoriaDespesas.add(piePanel, java.awt.BorderLayout.CENTER);
+jPanelCategoriaDespesas.setLayout(new BorderLayout());
+jPanelCategoriaDespesas.add(piePanel, BorderLayout.CENTER);
 jPanelCategoriaDespesas.validate();
+
+
 
       
         DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
@@ -565,7 +581,7 @@ jPanelCategoriaDespesas.validate();
         });
 
         ChartPanel chartPanelBarra = new ChartPanel(barChart);
-        chartPanelBarra.setPreferredSize(new Dimension(jPanelNãopagas.getWidth(), 200)); // Fino e alto
+        chartPanelBarra.setPreferredSize(new Dimension(20, 30)); // Fino e alto
 
         JPanel legenda = new JPanel(new FlowLayout(FlowLayout.CENTER));
         legenda.setBackground(Color.WHITE);
@@ -593,23 +609,45 @@ jPanelCategoriaDespesas.validate();
         
        DialPlot dialPlot = new DialPlot();
 
-StandardDialRange greenRange = new StandardDialRange(0, 50, Color.GREEN);
-greenRange.setInnerRadius(0.52);
-greenRange.setOuterRadius(0.55);
+StandardDialRange greenRange = new StandardDialRange(0, 20,Color.GREEN);
+greenRange.setInnerRadius(0.68);
+greenRange.setOuterRadius(0.67);
 dialPlot.addLayer(greenRange);
 
-StandardDialRange redRange = new StandardDialRange(50, 100, Color.RED);
-redRange.setInnerRadius(0.52);
-redRange.setOuterRadius(0.55);
+StandardDialRange greenRange2 = new StandardDialRange(0, 20,Color.GREEN);
+greenRange2.setInnerRadius(0.66);
+greenRange2.setOuterRadius(0.65);
+dialPlot.addLayer(greenRange2);
+
+StandardDialRange greenRange3 = new StandardDialRange(0, 20,Color.GREEN);
+greenRange3.setInnerRadius(0.64);
+greenRange3.setOuterRadius(0.63);
+dialPlot.addLayer(greenRange3);
+
+StandardDialRange redRange = new StandardDialRange(20, 101, Color.RED);
+redRange.setInnerRadius(0.68);
+redRange.setOuterRadius(0.67);
 dialPlot.addLayer(redRange);
 
-StandardDialScale scale = new StandardDialScale(0, 100, 180, -180, 10, 4);
-scale.setTickRadius(0.88);
-scale.setTickLabelOffset(0.15);
+StandardDialRange redRange2 = new StandardDialRange(20, 101, Color.RED);
+redRange2.setInnerRadius(0.66);
+redRange2.setOuterRadius(0.65);
+dialPlot.addLayer(redRange2);
+
+StandardDialRange redRange3 = new StandardDialRange(20, 101, Color.RED);
+redRange3.setInnerRadius(0.64);
+redRange3.setOuterRadius(0.63);
+dialPlot.addLayer(redRange3);
+
+StandardDialScale scale = new StandardDialScale(0, 100, 200, -200, 10, 1);
+scale.setTickRadius(0.90);
+scale.setTickLabelOffset(0.10);
 scale.setTickLabelFont(new Font("Dialog", Font.PLAIN, 10));
 dialPlot.addScale(0, scale);
 
 DialPointer.Pointer pointer = new DialPointer.Pointer();
+        BasicStroke Ponteiro = new BasicStroke(8.0f); // Deixa a linha mais grossa
+pointer.setRadius(0.8);  // Controle o comprimento da barra
 dialPlot.addPointer(pointer);
 dialPlot.setDataset(0, new org.jfree.data.general.DefaultValueDataset(20)); // Valor atual
 
@@ -617,16 +655,21 @@ DialBackground db = new DialBackground(Color.WHITE);
 dialPlot.setBackground(db);
 dialPlot.setDialFrame(new StandardDialFrame());
 
-JFreeChart dialChart = new JFreeChart("Economia/Gastos 20% em Relação à Semana Passada", JFreeChart.DEFAULT_TITLE_FONT, dialPlot, false);
+JFreeChart dialChart = new JFreeChart(dialPlot); // precisa vir antes do título
+title = new TextTitle("Economia/Gastos de 20% em Relação a Semana Passada", new Font("SansSerif", Font.BOLD, 14));
+title.setPaint(new Color(0x2C, 0x29, 0x66)); // cor #2C2966
+dialChart.setTitle(title);
 ChartPanel medidorPanel = new ChartPanel(dialChart);
-medidorPanel.setPreferredSize(new Dimension(jPanelEconomiaeGastos.getWidth(), jPanelEconomiaeGastos.getHeight()));
+medidorPanel.setPreferredSize(new Dimension(50, 180));
 
 jPanelEconomiaeGastos.removeAll();
 jPanelEconomiaeGastos.setLayout(new BorderLayout());
 jPanelEconomiaeGastos.add(medidorPanel, BorderLayout.CENTER);
 
-JPanel infoPanel = new JPanel(new GridLayout(2, 1));
-infoPanel.setBackground(Color.WHITE);
+JPanel infoPanel = new JPanel(new GridLayout(1, 1));
+infoPanel.setOpaque(false); // importante
+infoPanel.setBackground(new Color(0, 0, 0, 0)); // fundo transparente
+
 
 JLabel semanaPassada = new JLabel("Semana Passada: R$200");
 JLabel essaSemana = new JLabel("Essa Semana: R$160");
@@ -675,19 +718,17 @@ jPanelEconomiaeGastos.repaint();
     private javax.swing.JComboBox<String> jComboBoxLançamentos;
     private javax.swing.JComboBox<String> jComboBoxPeríodo;
     private javax.swing.JComboBox<String> jComboBoxStatus;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelNotificação;
     private javax.swing.JLabel jLabelUsuário;
     private javax.swing.JPanel jPanelCategoriaDespesas;
+    private javax.swing.JPanel jPanelDespesasPeriodo;
     private javax.swing.JPanel jPanelDespesasdaSemana;
     private javax.swing.JPanel jPanelEconomiaeGastos;
     private javax.swing.JPanel jPanelFiltros;
     private javax.swing.JPanel jPanelNãopagas;
     private javax.swing.JPanel jPanelPaigraficos;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable2;
     private javax.swing.JLabel labelCalculadora;
     private javax.swing.JLabel labelCategoria;
     private javax.swing.JLabel labelLançamentos;
