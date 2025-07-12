@@ -1,6 +1,7 @@
 package com.mycompany.sistemaplanejago.dao;
 
 import com.mycompany.sistemaplanejago.model.Lancamento;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,7 +9,9 @@ import java.sql.SQLException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -299,5 +302,96 @@ public class LancamentoDAO {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    public BigDecimal getSomaTotalDespesasNaoPagas() {
+        BigDecimal totalDespesas = BigDecimal.ZERO;
+
+        LocalDate hoje = LocalDate.now();
+        LocalDate primeiroDiaMes = hoje.with(TemporalAdjusters.firstDayOfMonth());
+        var primeiroDiaProximoMes = hoje.with(TemporalAdjusters.firstDayOfNextMonth());
+
+        String sql = "SELECT SUM(valor) AS total FROM tb_Lancamento WHERE tipo = 1 AND status_pago = false " +
+                     "AND data_criacao >= ? AND data_criacao < ?"; // datas como parâmetros
+
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Define os parâmetros da consulta como java.sql.Date
+            stmt.setDate(1, Date.valueOf(primeiroDiaMes));
+            stmt.setDate(2, Date.valueOf(primeiroDiaProximoMes));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    totalDespesas = rs.getBigDecimal("total");
+                    if (totalDespesas == null) {
+                        totalDespesas = BigDecimal.ZERO;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            return BigDecimal.ZERO;
+        }
+        return totalDespesas;
+    }
+
+    public BigDecimal getSomaTotalDespesasPagas() {
+        BigDecimal totalDespesas = BigDecimal.ZERO;
+
+        LocalDate hoje = LocalDate.now();
+        LocalDate primeiroDiaMes = hoje.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate primeiroDiaProximoMes = hoje.with(TemporalAdjusters.firstDayOfNextMonth());
+
+        String sql = "SELECT SUM(valor) AS total FROM tb_Lancamento WHERE tipo = 1 AND status_pago = true " +
+                     "AND data_criacao >= ? AND data_criacao < ?";
+
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, Date.valueOf(primeiroDiaMes));
+            stmt.setDate(2, Date.valueOf(primeiroDiaProximoMes));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    totalDespesas = rs.getBigDecimal("total");
+                    if (totalDespesas == null) {
+                        totalDespesas = BigDecimal.ZERO;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            return BigDecimal.ZERO;
+        }
+        return totalDespesas;
+    }
+
+    public BigDecimal getSomaTotalReceitas() {
+        BigDecimal totalReceitas = BigDecimal.ZERO;
+
+        LocalDate hoje = LocalDate.now();
+        LocalDate primeiroDiaMes = hoje.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate primeiroDiaProximoMes = hoje.with(TemporalAdjusters.firstDayOfNextMonth());
+
+        String sql = "SELECT SUM(valor) AS total FROM tb_Lancamento WHERE tipo = 2 " +
+                     "AND data_criacao >= ? AND data_criacao < ?";
+
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, Date.valueOf(primeiroDiaMes));
+            stmt.setDate(2, Date.valueOf(primeiroDiaProximoMes));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    totalReceitas = rs.getBigDecimal("total");
+                    if (totalReceitas == null) {
+                        totalReceitas = BigDecimal.ZERO;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            return BigDecimal.ZERO;
+        }
+        return totalReceitas;
     }
 }
