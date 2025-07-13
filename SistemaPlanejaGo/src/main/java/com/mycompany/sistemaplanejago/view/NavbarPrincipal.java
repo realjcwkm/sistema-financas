@@ -20,42 +20,15 @@ public class NavbarPrincipal extends javax.swing.JFrame {
         initComponents();
         usuarioController = new UsuarioController();
    try {
-            // Caminho da imagem: AGORA DEVE SER COM UNDERSCORE E .jpeg, já que você renomeou
-            String imagePath = "/imagens/bell_icon.jpeg";
-            URL imageUrl = getClass().getResource(imagePath); // Tenta obter a URL do recurso
+    // ...
+    ImageIcon bellIcon = new ImageIcon(getClass().getResource("/imagens/bell_icon.jpeg"));
 
-            if (imageUrl == null) {
-                System.err.println("ERRO FATAL (NavbarPrincipal): O recurso da imagem '" + imagePath + "' NÃO foi encontrado. Verifique o caminho absoluto e o nome do arquivo!");
-                // Se esta mensagem aparecer, o problema é que o arquivo não está sendo encontrado no JAR ou no caminho de classe.
-                return; // Sai do método para evitar NullPointerException.
-            } else {
-                System.out.println("DEBUG (NavbarPrincipal): URL do recurso da imagem encontrada: " + imageUrl);
-            }
-
-            ImageIcon bellIcon = new ImageIcon(imageUrl); // Cria o ImageIcon a partir da URL
-
-            if (bellIcon.getImageLoadStatus() != java.awt.MediaTracker.COMPLETE) {
-                System.err.println("ERRO FATAL (NavbarPrincipal): A imagem foi encontrada, mas NÃO carregou completamente. Status: " + bellIcon.getImageLoadStatus());
-                // Isso pode indicar um arquivo JPEG corrompido, mas você já verificou que a imagem é válida.
-            } else if (bellIcon.getIconWidth() <= 0 || bellIcon.getIconHeight() <= 0) {
-                System.err.println("AVISO (NavbarPrincipal): Imagem carregada, mas com dimensões zero ou negativas. Largura: " + bellIcon.getIconWidth() + ", Altura: " + bellIcon.getIconHeight());
-                // Indica que o ImageIcon foi criado, mas não conseguiu ler as dimensões da imagem.
-            } else {
-                System.out.println("DEBUG (NavbarPrincipal): Imagem do sino carregada com SUCESSO. Dimensões: " + bellIcon.getIconWidth() + "x" + bellIcon.getIconHeight());
-            }
-
-            // O nome da instância no seu Designer (Navigator) é notificationBellPanel1.
-            if (notificationBellPanel1 != null) { // Garante que o componente existe
-                notificationBellPanel1.setBellIcon(bellIcon); // Envia o ImageIcon para o seu painel customizado
-                // Mantenha notificationBellPanel1.setNotificationCount(1); COMENTADO por enquanto.
-            } else {
-                System.err.println("ERRO (NavbarPrincipal): A instância 'notificationBellPanel1' é nula. O componente não foi inicializado corretamente no designer.");
-            }
-
-        } catch (Exception e) {
-            System.err.println("ERRO CRÍTICO (NavbarPrincipal): Exceção inesperada durante o carregamento ou configuração do sino: " + e.getMessage());
-            e.printStackTrace(); // Imprime o stack trace completo para depuração
-        }
+    notificationBellPanel1.setBellIcon(bellIcon); // Chama o método do seu painel
+    notificationBellPanel1.setNotificationCount(1); // Define a contagem
+    // ...
+} catch (Exception e) {
+    // ...
+}
 
 
 
