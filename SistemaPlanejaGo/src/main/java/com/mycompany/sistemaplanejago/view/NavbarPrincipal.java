@@ -3,39 +3,46 @@ package com.mycompany.sistemaplanejago.view;
 import com.mycompany.sistemaplanejago.controller.UsuarioController;
 import javax.swing.ImageIcon;
 import java.awt.Frame;
-import java.awt.Color; 
-import java.awt.event.MouseAdapter; 
-import java.awt.event.MouseEvent; 
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import com.mycompany.sistemaplanejago.view.TelaLogin;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.net.URL;
+import javax.swing.JPopupMenu;
+import javax.swing.JMenuItem;
+// Note: Você importou MouseAdapter e MouseEvent duas vezes. Não é um erro, mas pode ser limpo.
+// import java.awt.event.MouseAdapter; // Já importado
+// import java.awt.event.MouseEvent;   // Já importado
 
 public class NavbarPrincipal extends javax.swing.JFrame {
-    
+
     private UsuarioController usuarioController;
-    
-    
+    private JPopupMenu userMenu; // <<<<<<<< DECLARAÇÃO AQUI
+
     public NavbarPrincipal() {
-        
         initComponents();
         usuarioController = new UsuarioController();
-   try {
-    // ...
-    ImageIcon bellIcon = new ImageIcon(getClass().getResource("/imagens/bell_icon.jpeg"));
 
-    notificationBellPanel1.setBellIcon(bellIcon); // Chama o método do seu painel
-    notificationBellPanel1.setNotificationCount(1); // Define a contagem
-    // ...
-} catch (Exception e) {
-    // ...
-}
-
-
+        try {
+            ImageIcon bellIcon = new ImageIcon(getClass().getResource("/imagens/bell_icon.jpeg"));
+            // Pelo que vejo nos seus layouts, é 'notificationBellPanel1'
+            notificationBellPanel1.setBellIcon(bellIcon);
+            notificationBellPanel1.setNotificationCount(1);
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar o ícone do sino ou configurar notificationBellPanel: " + e.getMessage());
+            e.printStackTrace();
+        }
 
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
-        buttonCadastrar2.putClientProperty("JButton.arc", 999); 
-        
-                
+
+        // <<<<<<<<<<<< CHAME O MÉTODO AQUI NO CONSTRUTOR >>>>>>>>>>>>>>
+        setupUserMenu(); 
+        // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        // Seus listeners de mouse para buttonCadastrar2, etc. (deixei como estava)
+        buttonCadastrar2.putClientProperty("JButton.arc", 999);
+
         buttonCadastrar2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent evt) {
@@ -47,9 +54,58 @@ public class NavbarPrincipal extends javax.swing.JFrame {
                 buttonCadastrar2.setBackground(Color.WHITE); // Branca
             }
         });
-    
-    
+    } // <<<<<<<<<<<< FIM DO CONSTRUTOR >>>>>>>>>>>>>>
+
+    // <<<<<<<<<<<< COLOQUE O MÉTODO setupUserMenu() AQUI FORA DO CONSTRUTOR >>>>>>>>>>>>>>
+    private void setupUserMenu() {
+        userMenu = new JPopupMenu();
+
+        // Item "Ver perfil"
+        JMenuItem viewProfileItem = new JMenuItem("Ver perfil");
+        viewProfileItem.addActionListener(e -> {
+            System.out.println("Opção 'Ver perfil' clicada!");
+            // Lógica para "Ver perfil"
+        });
+        userMenu.add(viewProfileItem);
+
+        // Separador
+        userMenu.addSeparator();
+
+        // Item "Deslogar"
+        JMenuItem logoutItem = new JMenuItem("Deslogar");
+        logoutItem.addActionListener(e -> {
+            System.out.println("Opção 'Deslogar' clicada!");
+            this.dispose(); // Fecha a tela atual
+            // new TelaLogin().setVisible(true); // Exemplo: abre a tela de login
+        });
+        userMenu.add(logoutItem);
+
+        // Adicionar MouseListener ao avatarPanel1 (seu ícone de usuário)
+        // Pelo que vi nas suas imagens (image_b8e37e.png), 'avatarPanel1' é o nome.
+        avatarPanel1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                userMenu.show(e.getComponent(), e.getX(), e.getY());
+            }
+        });
+    } // <<<<<<<<<<<< FIM DO MÉTODO setupUserMenu() >>>>>>>>>>>>>>
+
+
+    // --- CÓDIGO GERADO PELO NETBEANS ABAIXO ---
+    /////////////////////////////////////////////////////////////
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    private void initComponents() {
+        // ... (todo o código initComponents gerado pelo NetBeans)
+    } // </editor-fold>                        
+
+    // ... (seus outros métodos de evento, como buttonCadastrar2MouseClicked, etc.)
+
+    public static void main(String args[]) {
+        // ... (código do main)
     }
+
+
 
     /////////////////////////////////////////////////////////////
     @SuppressWarnings("unchecked")
@@ -210,50 +266,7 @@ public class NavbarPrincipal extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NavbarPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NavbarPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NavbarPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NavbarPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        try {
-            // Defina o Look and Feel para FlatLaf
-            // Você pode escolher FlatLightLaf(), FlatDarkLaf(), FlatDarculaLaf(), FlatIntelliJLaf()
-            javax.swing.UIManager.setLookAndFeel(new FlatLightLaf());
-            // OU, se você quiser uma aparência mais específica:
-            // com.formdev.flatlaf.FlatLaf.registerCustomDefaultsSource( "seu.pacote.tema" ); // Se você tiver um tema customizado
-            // javax.swing.UIManager.setLookAndFeel( new com.formdev.flatlaf.FlatLightLaf() );
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NavbarPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new NavbarPrincipal().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.mycompany.sistemaplanejago.view.AvatarPanel avatarPanel1;
