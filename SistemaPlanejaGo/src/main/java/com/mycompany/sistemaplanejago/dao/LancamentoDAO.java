@@ -1,6 +1,7 @@
 package com.mycompany.sistemaplanejago.dao;
 
 import com.mycompany.sistemaplanejago.model.Lancamento;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,9 +9,14 @@ import java.sql.SQLException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LancamentoDAO {
 
@@ -32,7 +38,7 @@ public class LancamentoDAO {
             if (tipoL == 1) {
                 stmt.setString(1, lancamento.getDescricao());
                 stmt.setBigDecimal(2, lancamento.getValor());
-                stmt.setBoolean(3, lancamento.isStatusPago());
+                stmt.setInt(3, lancamento.isStatusPago() ? 1 : 0); 
                 stmt.setInt(4, lancamento.getCategoria());
                 stmt.setDate(5, Date.valueOf(lancamento.getDataCriacao()));
 
@@ -299,5 +305,219 @@ public class LancamentoDAO {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    public BigDecimal getSomaTotalDespesasNaoPagas() {
+        BigDecimal totalDespesas = BigDecimal.ZERO;
+
+        LocalDate hoje = LocalDate.now();
+        LocalDate primeiroDiaMes = hoje.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate primeiroDiaProximoMes = hoje.with(TemporalAdjusters.firstDayOfNextMonth());
+
+        String sql = "SELECT SUM(valor) AS total FROM tb_Lancamento WHERE tipo = 1 AND status_pago = 0 " +
+                     "AND data_criacao >= ? AND data_criacao < ?";
+
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, Date.valueOf(primeiroDiaMes));
+            stmt.setDate(2, Date.valueOf(primeiroDiaProximoMes));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    totalDespesas = rs.getBigDecimal("total");
+                    if (totalDespesas == null) {
+                        totalDespesas = BigDecimal.ZERO;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("LancamentoDAO.getSomaTotalDespesasNaoPagas: Erro ao calcular despesas não pagas do mês atual: " + e.getMessage());
+            e.printStackTrace();
+            return BigDecimal.ZERO;
+        }
+        return totalDespesas;
+    }
+
+    public BigDecimal getSomaTotalDespesasPagas() {
+        BigDecimal totalDespesas = BigDecimal.ZERO;
+        LocalDate hoje = LocalDate.now();
+        LocalDate primeiroDiaMes = hoje.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate primeiroDiaProximoMes = hoje.with(TemporalAdjusters.firstDayOfNextMonth());
+
+        String sql = "SELECT SUM(valor) AS total FROM tb_Lancamento WHERE tipo = 1 AND status_pago = 1 " +
+                     "AND data_criacao >= ? AND data_criacao < ?";
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDate(1, Date.valueOf(primeiroDiaMes));
+            stmt.setDate(2, Date.valueOf(primeiroDiaProximoMes));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    totalDespesas = rs.getBigDecimal("total");
+                    if (totalDespesas == null) { totalDespesas = BigDecimal.ZERO; }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("LancamentoDAO.getSomaTotalDespesasPagas: Erro ao calcular despesas pagas do mês atual: " + e.getMessage());
+            e.printStackTrace();
+            return BigDecimal.ZERO;
+        }
+        return totalDespesas;
+    }
+     
+    public BigDecimal getSomaTotalReceitas() {
+        BigDecimal totalReceitas = BigDecimal.ZERO;
+
+        LocalDate hoje = LocalDate.now();
+        LocalDate primeiroDiaMes = hoje.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate primeiroDiaProximoMes = hoje.with(TemporalAdjusters.firstDayOfNextMonth());
+
+        String sql = "SELECT SUM(valor) AS total FROM tb_Lancamento WHERE tipo = 2 " +
+                     "AND data_criacao >= ? AND data_criacao < ?";
+
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, Date.valueOf(primeiroDiaMes));
+            stmt.setDate(2, Date.valueOf(primeiroDiaProximoMes));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    totalReceitas = rs.getBigDecimal("total");
+                    if (totalReceitas == null) {
+                        totalReceitas = BigDecimal.ZERO;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("LancamentoDAO.getSomaTotalReceitas: Erro ao calcular receitas do mês atual: " + e.getMessage());
+            e.printStackTrace();
+            return BigDecimal.ZERO;
+        }
+        return totalReceitas;
+    }  
+
+    public Map<Integer, BigDecimal> getTop3CategoriasDespesasMesAtual() {
+        Map<Integer, BigDecimal> topCategorias = new LinkedHashMap<>();
+
+        LocalDate hoje = LocalDate.now();
+        LocalDate primeiroDiaMes = hoje.with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate ultimoDiaMes = hoje.with(TemporalAdjusters.lastDayOfMonth());
+
+        String sql = "SELECT categoria, SUM(valor) AS total_gasto " +
+                     "FROM tb_Lancamento " +
+                     "WHERE tipo = 1 " + 
+                     "AND data_criacao >= ? AND data_criacao <= ? " +
+                     "GROUP BY categoria " +
+                     "ORDER BY total_gasto DESC " +
+                     "LIMIT 3";
+
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, java.sql.Date.valueOf(primeiroDiaMes));
+            stmt.setDate(2, java.sql.Date.valueOf(ultimoDiaMes));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int categoriaId = rs.getInt("categoria");
+                    BigDecimal totalGasto = rs.getBigDecimal("total_gasto");
+                    if (totalGasto == null) {
+                        totalGasto = BigDecimal.ZERO;
+                    }
+                    topCategorias.put(categoriaId, totalGasto);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar as top 3 categorias de despesas do mês: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Falha ao carregar as top categorias de despesas.", e);
+        }
+        return topCategorias;
+    }
+    
+    public Map<Integer, BigDecimal> getReceitasParaGraficoPorMesSemestreAtual() {
+        Map<Integer, BigDecimal> receitasPorMes = new LinkedHashMap<>();
+
+        LocalDate hoje = LocalDate.now(); 
+        int anoAtual = hoje.getYear(); 
+        
+        LocalDate dataInicioSemestre = LocalDate.of(anoAtual, Month.JULY, 1); 
+        LocalDate primeiroDiaProximoAno = LocalDate.of(anoAtual + 1, Month.JANUARY, 1); 
+
+        for (int mes = 7; mes <= 12; mes++) {
+            receitasPorMes.put(mes, BigDecimal.ZERO);
+        }
+
+        String sql = "SELECT MONTH(data_criacao) AS mes_num, SUM(valor) AS total_receita " + 
+                     "FROM tb_Lancamento " +
+                     "WHERE tipo = 2 " + // Apenas Receitas
+                     "AND data_criacao >= ? AND data_criacao < ? " + 
+                     "GROUP BY mes_num " +
+                     "ORDER BY mes_num ASC";
+
+        try (Connection conn = ConexaoBD.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, Date.valueOf(dataInicioSemestre));
+            stmt.setDate(2, Date.valueOf(primeiroDiaProximoAno));
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int mes = rs.getInt("mes_num"); 
+                    BigDecimal total = rs.getBigDecimal("total_receita");
+                    if (total == null) total = BigDecimal.ZERO;
+                    
+                    receitasPorMes.put(mes, total); 
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro SQL em LancamentoDAO.getReceitasParaGraficoPorMesSemestreAtual: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao carregar dados de receita para o gráfico de linha.", e);
+        } 
+        return receitasPorMes;
+    }
+
+    public Map<Integer, BigDecimal> getDespesasParaGraficoPorMesSemestreAtual() {
+        Map<Integer, BigDecimal> despesasPorMes = new LinkedHashMap<>();
+
+        LocalDate hoje = LocalDate.now();
+        int anoAtual = hoje.getYear();
+        LocalDate dataInicioSemestre = LocalDate.of(anoAtual, Month.JULY, 1);
+        LocalDate primeiroDiaProximoAno = LocalDate.of(anoAtual + 1, Month.JANUARY, 1);
+
+        for (int mes = 7; mes <= 12; mes++) {
+            despesasPorMes.put(mes, BigDecimal.ZERO);
+        }
+
+        String sql = "SELECT MONTH(data_criacao) AS mes_num, SUM(valor) AS total_despesa " + // <-- CORREÇÃO AQUI
+                     "FROM tb_Lancamento " +
+                     "WHERE tipo = 1 " + // Apenas Despesas
+                     "AND data_criacao >= ? AND data_criacao < ? " +
+                     "GROUP BY mes_num " +
+                     "ORDER BY mes_num ASC";
+
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, Date.valueOf(dataInicioSemestre));
+            stmt.setDate(2, Date.valueOf(primeiroDiaProximoAno));
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int mes = rs.getInt("mes_num"); 
+                    BigDecimal total = rs.getBigDecimal("total_despesa");
+                    if (total == null) total = BigDecimal.ZERO;
+                    
+                    despesasPorMes.put(mes, total);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro SQL em LancamentoDAO.getDespesasParaGraficoPorMesSemestreAtual: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao carregar dados de despesa para o gráfico de linha.", e);
+        } 
+        return despesasPorMes;
     }
 }

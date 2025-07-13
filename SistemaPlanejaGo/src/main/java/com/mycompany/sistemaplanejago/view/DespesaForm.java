@@ -24,9 +24,6 @@ public class DespesaForm extends javax.swing.JDialog {
         carregarComboBoxRepeticao();
         carregarComboBoxCategoria();
         carregarComboBoxCentroCusto(); 
-        ComboBoxStatus.removeAllItems();
-        ComboBoxStatus.addItem("Paga");
-        ComboBoxStatus.addItem("Não Paga");
         lancamentoController = new LancamentoController();
         
         
@@ -518,8 +515,8 @@ public class DespesaForm extends javax.swing.JDialog {
             String descricao = fieldDescricao.getText();
             String valor = fieldValor.getText();
 
-            String statusPagoStr = ComboBoxStatus.getSelectedItem() != null &&
-                    ComboBoxStatus.getSelectedItem().toString().equals("Pago") ? "true" : "false";
+            boolean statusEhPago = ComboBoxStatus.getSelectedIndex() == 1; // 0 é "Não Paga", 1 é "Paga"
+            String statusPagoStr = String.valueOf(statusEhPago);
 
             String dataCriacao = fieldDataCriacao.getText();
             String dataVencimento = fieldDataVencimento.getText();
