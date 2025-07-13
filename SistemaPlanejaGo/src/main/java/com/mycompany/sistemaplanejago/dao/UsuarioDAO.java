@@ -94,4 +94,48 @@ public class UsuarioDAO {
         }
         return usuario; 
     }
+    
+     public Usuario getPrimeiroUsuario() {
+        String sql = "SELECT id, nome, email, data_nascimento, senha, log_data_inclusao FROM tb_Usuario ORDER BY id ASC LIMIT 1";
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Usuario usuario = null;
+
+        try {
+            conn = ConexaoBD.getConnection();
+            if (conn == null) {
+                return null;
+            }
+
+            stmt = conn.prepareStatement(sql);
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                usuario = new Usuario();
+                usuario.setId(rs.getInt("id"));
+                usuario.setNome(rs.getString("nome"));
+                usuario.setEmail(rs.getString("email"));
+                
+                java.sql.Date sqlDate = rs.getDate("data_nascimento");
+                if (sqlDate != null) {
+                    usuario.setDataNascimento(sqlDate.toLocalDate());
+                }
+                usuario.setSenha(rs.getString("senha"));
+
+                Timestamp timestamp = rs.getTimestamp("log_data_inclusao");
+                if (timestamp != null) {
+                    usuario.setLogDataInclusao(timestamp.toLocalDateTime());
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar o primeiro usuário: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            ConexaoBD.closeConnection(conn);
+        }
+        return usuario;
+    }
+    
 }
