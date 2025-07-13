@@ -6,8 +6,14 @@ import javax.swing.JOptionPane;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class LancamentoController {
 
@@ -105,7 +111,6 @@ public class LancamentoController {
         }
     }
     
-
     public List<Lancamento> listarLancamentos() {
         return lancamentoDao.listarTodosLancamentos();
     }
@@ -200,9 +205,84 @@ public class LancamentoController {
 
         return lancamentoDao.atualizarLancamento(lancamentoExistente);
     }
+     
+     public BigDecimal calcularTotalDespesas() {
+        return lancamentoDao.getSomaTotalDespesasNaoPagas();
+    }
+
+    public BigDecimal calcularTotalDespesasPagas() {
+        return lancamentoDao.getSomaTotalDespesasPagas(); 
+    }
+
+    public BigDecimal calculaRestanteReceita() {
+        BigDecimal totalReceitas = lancamentoDao.getSomaTotalReceitas();
+        BigDecimal totalDespesasPagas = lancamentoDao.getSomaTotalDespesasPagas();
+
+        return totalReceitas.subtract(totalDespesasPagas);
+    }
     
-  
+    public List<Map.Entry<String, BigDecimal>> getTop3GastosPorCategoriaNoMes() {
+        List<Map.Entry<String, BigDecimal>> topCategoriasComNomes = new ArrayList<>();
+        try {
+            Map<Integer, BigDecimal> topCategoriasIds = lancamentoDao.getTop3CategoriasDespesasMesAtual();
+
+            for (Map.Entry<Integer, BigDecimal> entry : topCategoriasIds.entrySet()) {
+                int categoriaId = entry.getKey();
+                BigDecimal totalGasto = entry.getValue();
+                String nomeCategoria = lancamentoDao.getTituloCategoriaPorId(categoriaId); // Chama o método existente
+
+                if (nomeCategoria == null || nomeCategoria.trim().isEmpty()) {
+                    nomeCategoria = "Categoria Desconhecida (ID: " + categoriaId + ")";
+                }
+                topCategoriasComNomes.add(new SimpleEntry<>(nomeCategoria, totalGasto));
+            }
+        } catch (RuntimeException e) {
+            System.err.println("Erro no controller ao buscar top 3 gastos por categoria: " + e.getMessage());
+            e.printStackTrace(); 
+            return new ArrayList<>(); // Retorna lista vazia em caso de erro
+        }
+        return topCategoriasComNomes;
+    }
     
-    
-    
+    public List<Map.Entry<String, BigDecimal>> getReceitasParaGraficoPorMesSemestreAtualComNome() {
+        List<Map.Entry<String, BigDecimal>> listaComNomes = new ArrayList<>();
+        try {
+            Map<Integer, BigDecimal> receitasPorMes = lancamentoDao.getReceitasParaGraficoPorMesSemestreAtual();
+
+            // Itera pelos meses de Julho (7) a Dezembro (12)
+            for (int mesNum = 7; mesNum <= 12; mesNum++) {
+                Month mesEnum = Month.of(mesNum); 
+                String nomeMes = mesEnum.getDisplayName(TextStyle.SHORT, new Locale("pt", "BR")); 
+
+                BigDecimal total = receitasPorMes.getOrDefault(mesNum, BigDecimal.ZERO);
+                listaComNomes.add(new SimpleEntry<>(nomeMes, total));
+            }
+        } catch (RuntimeException e) {
+            System.err.println("Erro no controller ao obter receitas para o gráfico de linha: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>(); // Retorna uma lista vazia em caso de erro
+        }
+        return listaComNomes;
+    }
+
+    public List<Map.Entry<String, BigDecimal>> getDespesasParaGraficoPorMesSemestreAtualComNome() {
+        List<Map.Entry<String, BigDecimal>> listaComNomes = new ArrayList<>();
+        try {
+            Map<Integer, BigDecimal> despesasPorMes = lancamentoDao.getDespesasParaGraficoPorMesSemestreAtual();
+
+            // Itera pelos meses de Julho (7) a Dezembro (12)
+            for (int mesNum = 7; mesNum <= 12; mesNum++) {
+                Month mesEnum = Month.of(mesNum);
+                String nomeMes = mesEnum.getDisplayName(TextStyle.SHORT, new Locale("pt", "BR"));
+
+                BigDecimal total = despesasPorMes.getOrDefault(mesNum, BigDecimal.ZERO);
+                listaComNomes.add(new SimpleEntry<>(nomeMes, total));
+            }
+        } catch (RuntimeException e) {
+            System.err.println("Erro no controller ao obter despesas para o gráfico de linha: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>(); // Retorna uma lista vazia em caso de erro
+        }
+        return listaComNomes;
+    }
 }

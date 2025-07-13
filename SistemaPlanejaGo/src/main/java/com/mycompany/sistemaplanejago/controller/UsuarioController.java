@@ -67,6 +67,17 @@ public class UsuarioController {
         }
     }
         
-        
+    public String getNomePrimeiroUsuario() {
+        try {
+            Usuario primeiroUsuario = usuarioDao.getPrimeiroUsuario();
+            if (primeiroUsuario != null) {
+                return primeiroUsuario.getNome();
+            }
+        } catch (Exception e) {
+            System.err.println("Erro ao obter nome do primeiro usuário: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return "Usuário"; // Nome padrão 
+    }    
     
 }
