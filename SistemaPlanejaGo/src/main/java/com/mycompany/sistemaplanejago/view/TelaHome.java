@@ -1,13 +1,144 @@
 package com.mycompany.sistemaplanejago.view;
 
+import com.mycompany.sistemaplanejago.componentes.graficoBarraHome.Bar;
+import com.mycompany.sistemaplanejago.componentes.graficoBarraHome.BarChartPanel;
+import com.mycompany.sistemaplanejago.componentes.graficoBarraHome.BarData;
+import com.mycompany.sistemaplanejago.componentes.graficoLinhaHome.LineChartPanel;
+import com.mycompany.sistemaplanejago.controller.LancamentoController;
+import com.mycompany.sistemaplanejago.controller.UsuarioController;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map.Entry;
+
 public class TelaHome extends javax.swing.JFrame {
 
+    private LancamentoController lancamentoController;
+    private UsuarioController usuarioController;
+    private LineChartPanel lineChartPanel;
+
     public TelaHome() {
-        
-        initComponents();  
-      
+        initComponents(); 
+        lancamentoController = new LancamentoController();
+        usuarioController = new UsuarioController();
+        inicializarGraficoLinha();
+        inicializarComponentesPersonalizados();
+
     }
     
+    private void inicializarGraficoLinha() {
+        lineChartPanel = new LineChartPanel(); 
+
+        if (panelGraficoLinha != null) {
+            panelGraficoLinha.setLayout(new BorderLayout()); 
+            panelGraficoLinha.add(lineChartPanel, BorderLayout.CENTER);
+            panelGraficoLinha.revalidate();
+            panelGraficoLinha.repaint();
+        } else {
+            System.err.println("Erro: 'panelGraficoLinha' é NULL. Verifique se foi inicializado em initComponents().");
+        }
+    }
+    
+    private void inicializarComponentesPersonalizados() {
+        carregarTotalDespesas();
+        carregarTotalDespesasPagas();
+        carregaRestoReceita();
+        atualizarLabelCumprimento();
+        atualizarGraficoDespesas(); 
+        atualizarGraficoLinha();
+    }
+    
+    private void atualizarLabelCumprimento() {
+        if (labelCumprimento != null) {
+            String nomeUsuario = usuarioController.getNomePrimeiroUsuario();
+            labelCumprimento.setText("Olá " + nomeUsuario + "!");
+        } else {
+            System.err.println("Erro: 'labelCumprimento' é nulo ou não foi inicializado. Verifique o initComponents().");
+        }
+    }
+    
+    public void atualizarGraficoLinha() {
+        if (lineChartPanel != null) {
+            lineChartPanel.loadData(); 
+        } else {
+            System.err.println("Erro: Não foi possível atualizar o gráfico de linha, pois 'lineChartPanel' é NULL.");
+        }
+    }
+
+    public void atualizarGraficoDespesas() {
+        BarData data = new BarData();
+
+        Color[] barColors = {
+            new Color(180, 160, 205), 
+            new Color(44, 41,102),  
+            new Color(255, 160, 81)   
+        };
+
+        try {
+            List<Entry<String, BigDecimal>> topGastos = lancamentoController.getTop3GastosPorCategoriaNoMes();
+
+            for (int i = 0; i < topGastos.size(); i++) {
+                Entry<String, BigDecimal> entry = topGastos.get(i);
+                String categoriaNome = entry.getKey();
+                BigDecimal valorGasto = entry.getValue();
+
+                Color barColor = barColors[i % barColors.length];
+                data.addBar(new Bar(valorGasto.doubleValue(), barColor, categoriaNome));
+            }
+
+            while (data.getBars().size() < 3) {
+                int currentSize = data.getBars().size();
+                Color defaultColor = barColors[currentSize % barColors.length];
+                data.addBar(new Bar(0, defaultColor, "Sem Gasto Registrado"));
+            }
+
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar dados para o gráfico de barras: " + e.getMessage());
+            e.printStackTrace();
+            data.addBar(new Bar(0, Color.GRAY, "Erro"));
+            data.addBar(new Bar(0, Color.GRAY, "Ao Carregar"));
+            data.addBar(new Bar(0, Color.GRAY, "Dados"));
+        }
+
+        BarChartPanel barChartPanel = new BarChartPanel(data);
+
+        if (panelGraficoBarra != null) {
+            panelGraficoBarra.setLayout(new java.awt.BorderLayout());
+            panelGraficoBarra.removeAll(); // Remove o gráfico antigo
+            panelGraficoBarra.add(barChartPanel, java.awt.BorderLayout.CENTER); // Adiciona o novo gráfico
+            panelGraficoBarra.revalidate(); // Revalida o layout
+            panelGraficoBarra.repaint();   // Redesenha
+        } else {
+            System.err.println("Erro: panelGraficoBarra é nulo ou não foi inicializado.");
+        }
+    }        
+
+    public void carregarTotalDespesas() {
+        BigDecimal totalDespesas = lancamentoController.calcularTotalDespesas();
+        if (labelValorTotalPagar != null) { 
+            labelValorTotalPagar.setText(totalDespesas.toPlainString());
+        } 
+    }
+    
+    public void carregarTotalDespesasPagas() {
+        BigDecimal totalDespesasPagas = lancamentoController.calcularTotalDespesasPagas();
+        if (labelValorTotalPago != null) { 
+            labelValorTotalPago.setText(totalDespesasPagas.toPlainString());
+        }
+    }
+    
+    public void carregaRestoReceita(){
+        BigDecimal totalReceita = lancamentoController.calculaRestanteReceita();
+        if (labelValorReceita != null) { 
+            labelValorReceita.setText(totalReceita.toPlainString());
+            if (totalReceita.compareTo(BigDecimal.ZERO) < 0) {
+                labelValorReceita.setForeground(new Color(255, 103, 103));
+            } else {
+                labelValorReceita.setForeground(new Color(0, 126, 244));
+            }
+        }
+    }
     /////////////////////////////////////////////////////////////
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -42,9 +173,11 @@ public class TelaHome extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         panelConfiguracaoLinhas = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        panelGraficoLinha = new javax.swing.JPanel();
         panelRegiaoBarra = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        panelGraficoBarra = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -109,10 +242,32 @@ public class TelaHome extends javax.swing.JFrame {
         labelNovaDespesa.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         labelNovaDespesa.setForeground(new java.awt.Color(44, 41, 102));
         labelNovaDespesa.setText("+ Criar Nova Despesa");
+        labelNovaDespesa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelNovaDespesaMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                labelNovaDespesaMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                labelNovaDespesaMouseExited(evt);
+            }
+        });
 
         labelNovaReceita.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         labelNovaReceita.setForeground(new java.awt.Color(44, 41, 102));
         labelNovaReceita.setText("+ Criar Nova Receita");
+        labelNovaReceita.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelNovaReceitaMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                labelNovaReceitaMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                labelNovaReceitaMouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelRowRightLayout = new javax.swing.GroupLayout(panelRowRight);
         panelRowRight.setLayout(panelRowRightLayout);
@@ -258,9 +413,9 @@ public class TelaHome extends javax.swing.JFrame {
             panelRow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRow2Layout.createSequentialGroup()
                 .addComponent(panelTotalPagar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(170, 170, 170)
+                .addGap(210, 210, 210)
                 .addComponent(panelTotalPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panelTotalReceita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         panelRow2Layout.setVerticalGroup(
@@ -294,6 +449,17 @@ public class TelaHome extends javax.swing.JFrame {
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
         );
 
+        javax.swing.GroupLayout panelGraficoLinhaLayout = new javax.swing.GroupLayout(panelGraficoLinha);
+        panelGraficoLinha.setLayout(panelGraficoLinhaLayout);
+        panelGraficoLinhaLayout.setHorizontalGroup(
+            panelGraficoLinhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        panelGraficoLinhaLayout.setVerticalGroup(
+            panelGraficoLinhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -302,13 +468,15 @@ public class TelaHome extends javax.swing.JFrame {
                 .addGap(418, 418, 418)
                 .addComponent(panelConfiguracaoLinhas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(457, Short.MAX_VALUE))
+            .addComponent(panelGraficoLinha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelConfiguracaoLinhas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelGraficoLinha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelRegiaoLinhaLayout = new javax.swing.GroupLayout(panelRegiaoLinha);
@@ -332,6 +500,17 @@ public class TelaHome extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(44, 41, 102));
         jLabel3.setText("Categorias com Maiores");
 
+        javax.swing.GroupLayout panelGraficoBarraLayout = new javax.swing.GroupLayout(panelGraficoBarra);
+        panelGraficoBarra.setLayout(panelGraficoBarraLayout);
+        panelGraficoBarraLayout.setHorizontalGroup(
+            panelGraficoBarraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        panelGraficoBarraLayout.setVerticalGroup(
+            panelGraficoBarraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 453, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout panelRegiaoBarraLayout = new javax.swing.GroupLayout(panelRegiaoBarra);
         panelRegiaoBarra.setLayout(panelRegiaoBarraLayout);
         panelRegiaoBarraLayout.setHorizontalGroup(
@@ -345,6 +524,7 @@ public class TelaHome extends javax.swing.JFrame {
                         .addGap(121, 121, 121)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(61, Short.MAX_VALUE))
+            .addComponent(panelGraficoBarra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panelRegiaoBarraLayout.setVerticalGroup(
             panelRegiaoBarraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -353,7 +533,8 @@ public class TelaHome extends javax.swing.JFrame {
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addContainerGap(459, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelGraficoBarra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelRow3Layout = new javax.swing.GroupLayout(panelRow3);
@@ -411,6 +592,48 @@ public class TelaHome extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void labelNovaDespesaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelNovaDespesaMouseEntered
+        // TODO add your handling code here:
+        labelNovaDespesa.setForeground(new Color(255, 160, 81));
+    }//GEN-LAST:event_labelNovaDespesaMouseEntered
+
+    private void labelNovaReceitaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelNovaReceitaMouseEntered
+        // TODO add your handling code here:
+        labelNovaReceita.setForeground(new Color(255, 160, 81));
+    }//GEN-LAST:event_labelNovaReceitaMouseEntered
+
+    private void labelNovaDespesaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelNovaDespesaMouseExited
+        // TODO add your handling code here:
+        labelNovaDespesa.setForeground(new Color(44, 41, 102));
+    }//GEN-LAST:event_labelNovaDespesaMouseExited
+
+    private void labelNovaReceitaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelNovaReceitaMouseExited
+        // TODO add your handling code here:
+        labelNovaReceita.setForeground(new Color(44, 41, 102));
+    }//GEN-LAST:event_labelNovaReceitaMouseExited
+
+    private void labelNovaDespesaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelNovaDespesaMouseClicked
+        // TODO add your handling code here:
+        DespesaForm Despesaformulario = new DespesaForm(this, true);
+        Despesaformulario.setVisible(true);
+        carregarTotalDespesas();
+        carregarTotalDespesasPagas();
+        carregaRestoReceita();
+        atualizarGraficoDespesas();
+        atualizarGraficoLinha();
+    }//GEN-LAST:event_labelNovaDespesaMouseClicked
+
+    private void labelNovaReceitaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelNovaReceitaMouseClicked
+        // TODO add your handling code here:
+        ReceitaForm Receitaformulario = new ReceitaForm(this, true);
+        Receitaformulario.setVisible(true);
+        carregarTotalDespesas();
+        carregarTotalDespesasPagas();
+        carregaRestoReceita();
+        atualizarGraficoDespesas();
+        atualizarGraficoLinha();
+    }//GEN-LAST:event_labelNovaReceitaMouseClicked
 
     /**
      * @param args the command line arguments
@@ -471,6 +694,8 @@ public class TelaHome extends javax.swing.JFrame {
     private javax.swing.JPanel panelCentralizador;
     private javax.swing.JPanel panelConfiguracaoLinhas;
     private javax.swing.JPanel panelContent;
+    private javax.swing.JPanel panelGraficoBarra;
+    private javax.swing.JPanel panelGraficoLinha;
     private javax.swing.JPanel panelNavBar;
     private javax.swing.JPanel panelPrincipal;
     private javax.swing.JPanel panelRegiaoBarra;

@@ -297,6 +297,11 @@
                             </Property>
                             <Property name="text" type="java.lang.String" value="+ Criar Nova Despesa"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="labelNovaDespesaMouseClicked"/>
+                            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="labelNovaDespesaMouseEntered"/>
+                            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="labelNovaDespesaMouseExited"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="labelNovaReceita">
                           <Properties>
@@ -308,6 +313,11 @@
                             </Property>
                             <Property name="text" type="java.lang.String" value="+ Criar Nova Receita"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="labelNovaReceitaMouseClicked"/>
+                            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="labelNovaReceitaMouseEntered"/>
+                            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="labelNovaReceitaMouseExited"/>
+                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -325,9 +335,9 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="panelTotalPagar" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="170" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="210" max="-2" attributes="0"/>
                               <Component id="panelTotalPago" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace type="unrelated" max="32767" attributes="0"/>
                               <Component id="panelTotalReceita" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -560,11 +570,12 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
                                       <EmptySpace min="-2" pref="418" max="-2" attributes="0"/>
                                       <Component id="panelConfiguracaoLinhas" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace pref="457" max="32767" attributes="0"/>
                                   </Group>
+                                  <Component id="panelGraficoLinha" alignment="0" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                             <DimensionLayout dim="1">
@@ -572,7 +583,8 @@
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="panelConfiguracaoLinhas" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="panelGraficoLinha" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -612,6 +624,21 @@
                                 </Component>
                               </SubComponents>
                             </Container>
+                            <Container class="javax.swing.JPanel" name="panelGraficoLinha">
+
+                              <Layout>
+                                <DimensionLayout dim="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                </DimensionLayout>
+                                <DimensionLayout dim="1">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                </DimensionLayout>
+                              </Layout>
+                            </Container>
                           </SubComponents>
                         </Container>
                       </SubComponents>
@@ -639,6 +666,7 @@
                                   </Group>
                                   <EmptySpace pref="61" max="32767" attributes="0"/>
                               </Group>
+                              <Component id="panelGraficoBarra" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                         <DimensionLayout dim="1">
@@ -648,7 +676,8 @@
                                   <Component id="jLabel3" min="-2" pref="37" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="459" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="panelGraficoBarra" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -676,6 +705,21 @@
                             <Property name="text" type="java.lang.String" value="Categorias com Maiores"/>
                           </Properties>
                         </Component>
+                        <Container class="javax.swing.JPanel" name="panelGraficoBarra">
+
+                          <Layout>
+                            <DimensionLayout dim="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                            </DimensionLayout>
+                            <DimensionLayout dim="1">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <EmptySpace min="0" pref="453" max="32767" attributes="0"/>
+                              </Group>
+                            </DimensionLayout>
+                          </Layout>
+                        </Container>
                       </SubComponents>
                     </Container>
                   </SubComponents>
