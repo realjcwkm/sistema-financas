@@ -57,8 +57,8 @@ public class UsuarioController {
         
         Usuario usuarioEncontrado = usuarioDao.buscarUsuario(email, senha);
 
-        if (usuarioEncontrado != null) { //vai retornar a Home, adicionais mais pra frente
-            JOptionPane.showMessageDialog(null, "Login bem-sucedido! Bem-vindo(a), " + usuarioEncontrado.getNome() + "!", "Login Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        if (usuarioEncontrado != null) { 
+            //JOptionPane.showMessageDialog(null, "Login bem-sucedido! Bem-vindo(a), " + usuarioEncontrado.getNome() + "!", "Login Sucesso", JOptionPane.INFORMATION_MESSAGE);
             return true;
         } else {
             // depois deixar o modal mais bonito
