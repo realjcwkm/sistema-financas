@@ -374,7 +374,6 @@ public class TelaLancamento extends javax.swing.JFrame {
 
         PanelRow1.setBackground(new java.awt.Color(255, 255, 255));
 
-        TabelaLancamento.setBackground(new java.awt.Color(255, 255, 255));
         TabelaLancamento.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         TabelaLancamento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -407,7 +406,6 @@ public class TelaLancamento extends javax.swing.JFrame {
 
         panelAddLancamento.setBackground(new java.awt.Color(255, 255, 255));
 
-        buttonNovaDespesa.setBackground(new java.awt.Color(255, 255, 255));
         buttonNovaDespesa.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         buttonNovaDespesa.setForeground(new java.awt.Color(44, 41, 102));
         buttonNovaDespesa.setText("Nova Despesa");
@@ -420,7 +418,6 @@ public class TelaLancamento extends javax.swing.JFrame {
             }
         });
 
-        buttonNovaReceita.setBackground(new java.awt.Color(255, 255, 255));
         buttonNovaReceita.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         buttonNovaReceita.setForeground(new java.awt.Color(44, 41, 102));
         buttonNovaReceita.setText("Nova Receita");

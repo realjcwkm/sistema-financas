@@ -174,9 +174,6 @@
                   <SubComponents>
                     <Component class="javax.swing.JTable" name="TabelaLancamento">
                       <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Roboto" size="18" style="0"/>
                         </Property>
@@ -287,9 +284,6 @@
                       <SubComponents>
                         <Component class="javax.swing.JButton" name="buttonNovaDespesa">
                           <Properties>
-                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                            </Property>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Roboto" size="18" style="1"/>
                             </Property>
@@ -311,9 +305,6 @@
                         </Component>
                         <Component class="javax.swing.JButton" name="buttonNovaReceita">
                           <Properties>
-                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                            </Property>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Roboto" size="18" style="1"/>
                             </Property>

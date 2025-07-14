@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexaoBD {
-    private static final String URL = "jdbc:mysql://localhost:3306/planejago";
+    private static final String URL = "jdbc:mysql://localhost:3306/PlanejaGo";
     private static final String USER = "root";
-    private static final String PASSWORD = "senha"; //cada integrante coloca a sua respectiva senha
+    private static final String PASSWORD = "Miraculous@21"; //cada integrante coloca a sua respectiva senha
 
     public static Connection getConnection() {
         try {
