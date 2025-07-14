@@ -463,7 +463,7 @@ renderer.setSeriesShapesVisible(0, true);
 renderer.setSeriesStroke(0, new BasicStroke(2.0f));
 
 plot.setRenderer(renderer);
-plot.setBackgroundPaint(new Color(229, 229, 246)); // fundo do gráfico
+plot.setBackgroundPaint(new Color(229, 229, 246)); 
 plot.setOutlineVisible(false);
 lineChart.setBackgroundPaint(new Color(229, 229, 246));
 plot.setRangeGridlinePaint(Color.GRAY);
@@ -475,12 +475,12 @@ yAxis.setTickUnit(new NumberTickUnit(10));
 
     ChartPanel chartPanelLinha = new ChartPanel(lineChart);
 chartPanelLinha.setPreferredSize(new Dimension(jPanelDespesasdaSemana.getWidth(), jPanelDespesasdaSemana.getHeight()));
-chartPanelLinha.setBackground(new Color(229, 229, 246)); // fundo do painel
+chartPanelLinha.setBackground(new Color(229, 229, 246)); 
 chartPanelLinha.setOpaque(true);
 jPanelDespesasdaSemana.removeAll();
 jPanelDespesasdaSemana.setLayout(new BorderLayout());
 jPanelDespesasdaSemana.add(chartPanelLinha, BorderLayout.CENTER);
-jPanelDespesasdaSemana.setBackground(new Color(229, 229, 246)); // fundo do JPanel
+jPanelDespesasdaSemana.setBackground(new Color(229, 229, 246)); 
 jPanelDespesasdaSemana.setOpaque(true);
 jPanelDespesasdaSemana.validate();
 
@@ -500,8 +500,8 @@ pieplot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0} ({2})"));
 pieplot.setSimpleLabels(true);
 pieplot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
 pieplot.setBackgroundPaint(new Color(229, 229, 246));
-pieplot.setSectionPaint("Casa", new Color(0x4F81BD)); // cor para "Casa"
-pieplot.setSectionPaint("Saúde", new Color(0xC0504D)); // cor para "Saúde"
+pieplot.setSectionPaint("Casa", new Color(0x4F81BD)); 
+pieplot.setSectionPaint("Saúde", new Color(0xC0504D)); 
 
 ChartPanel piePanel = new ChartPanel(pieChart);
 piePanel.setPreferredSize(new Dimension(jPanelCategoriaDespesas.getWidth(), jPanelCategoriaDespesas.getHeight()));
@@ -555,7 +555,7 @@ barplot.setRenderer(barrenderer);
 barplot.setOutlineVisible(false);
 barplot.setRangeGridlinesVisible(false);
 barplot.setDomainGridlinesVisible(false);
-barChart.setBackgroundPaint(new Color(229, 229, 246)); // fundo geral
+barChart.setBackgroundPaint(new Color(229, 229, 246)); 
 barplot.setBackgroundPaint(new Color(229, 229, 246));
 barplot.setOutlineVisible(false);
 barplot.getDomainAxis().setVisible(false);
@@ -584,8 +584,8 @@ rangeAxis3.setNumberFormatOverride(new java.text.NumberFormat() {
 
 ChartPanel chartPanelBarra = new ChartPanel(barChart);
 chartPanelBarra.setPreferredSize(new Dimension(20, 30));
-chartPanelBarra.setBackground(new Color(229, 229, 246)); // fundo do painel
-chartPanelBarra.setOpaque(true); // Fundo #E5E5F6
+chartPanelBarra.setBackground(new Color(229, 229, 246)); 
+chartPanelBarra.setOpaque(true); 
 
 JPanel legenda = new JPanel(new FlowLayout(FlowLayout.CENTER));
 legenda.setBackground(new Color(229, 229, 246));
@@ -608,8 +608,8 @@ legenda.add(textoVermelho);
 
 jPanelNãopagas.removeAll();
 jPanelNãopagas.setLayout(new BorderLayout());
-jPanelNãopagas.setBackground(new Color(229, 229, 246)); // fundo do JPanel
-jPanelNãopagas.setOpaque(true); // Fundo do JPanel
+jPanelNãopagas.setBackground(new Color(229, 229, 246)); 
+jPanelNãopagas.setOpaque(true); 
 jPanelNãopagas.add(chartPanelBarra, BorderLayout.CENTER);
 jPanelNãopagas.add(legenda, BorderLayout.SOUTH);
 jPanelNãopagas.revalidate();
@@ -617,7 +617,6 @@ jPanelNãopagas.repaint();
 
        DialPlot dialPlot = new DialPlot();
 
-// Faixas verdes
 for (int i = 0; i < 3; i++) {
     StandardDialRange greenRange = new StandardDialRange(0, 20, Color.GREEN);
     greenRange.setInnerRadius(0.68 - i * 0.02);
@@ -625,7 +624,6 @@ for (int i = 0; i < 3; i++) {
     dialPlot.addLayer(greenRange);
 }
 
-// Faixas vermelhas
   for (int i = 0; i < 3; i++) {
     StandardDialRange redRange = new StandardDialRange(20, 101, Color.RED);
     redRange.setInnerRadius(0.68 - i * 0.02);
@@ -633,42 +631,42 @@ for (int i = 0; i < 3; i++) {
     dialPlot.addLayer(redRange);
 }
 
-// Escala
+
 StandardDialScale scale = new StandardDialScale(0, 100, 200, -200, 10, 1);
 scale.setTickRadius(0.90);
 scale.setTickLabelOffset(0.10);
 scale.setTickLabelFont(new Font("Dialog", Font.PLAIN, 10));
 dialPlot.addScale(0, scale);
 
-// Ponteiro
+
 DialPointer.Pointer pointer = new DialPointer.Pointer();
 pointer.setRadius(0.8);
 dialPlot.addPointer(pointer);
 
-// Dataset
+
 dialPlot.setDataset(0, new DefaultValueDataset(20));
 
-// Fundo do medidor
-Color fundoGeral = new Color(229, 229, 246); // #E5E5F6
+
+Color fundoGeral = new Color(229, 229, 246); 
 dialPlot.setBackgroundPaint(fundoGeral);
 dialPlot.setBackground(new DialBackground(fundoGeral));
 dialPlot.setDialFrame(new StandardDialFrame());
 
-// Criação do gráfico
+
 JFreeChart dialChart = new JFreeChart(dialPlot);
 
 title = new TextTitle("Economia/Gastos de 20% em Relação a Semana Passada",new Font("SansSerif", Font.BOLD, 14));
-title.setPaint(new Color(0x2C, 0x29, 0x66)); // cor #2C2966
+title.setPaint(new Color(0x2C, 0x29, 0x66)); 
 dialChart.setTitle(title);
 dialChart.setBackgroundPaint(fundoGeral);
 
-// ChartPanel
+
 ChartPanel medidorPanel = new ChartPanel(dialChart);
 medidorPanel.setPreferredSize(new Dimension(50, 180));
 medidorPanel.setBackground(fundoGeral);
 medidorPanel.setOpaque(true);
 
-// Painel com informações
+
 JPanel infoPanel = new JPanel(new GridLayout(1, 1));
 infoPanel.setBackground(fundoGeral);
 infoPanel.setOpaque(true);
@@ -676,7 +674,7 @@ infoPanel.setOpaque(true);
 JLabel semanaPassada = new JLabel("Semana Passada: R$200");
 JLabel essaSemana = new JLabel("Essa Semana: R$160");
 
-Color corTexto = new Color(0x2C, 0x29, 0x66); // cor #2C2966
+Color corTexto = new Color(0x2C, 0x29, 0x66); 
 semanaPassada.setForeground(corTexto);
 essaSemana.setForeground(corTexto);
 
@@ -686,7 +684,7 @@ essaSemana.setHorizontalAlignment(SwingConstants.CENTER);
 infoPanel.add(semanaPassada);
 infoPanel.add(essaSemana);
 
-// Painel principal
+
 jPanelEconomiaeGastos.removeAll();
 jPanelEconomiaeGastos.setLayout(new BorderLayout());
 jPanelEconomiaeGastos.setBackground(fundoGeral);
@@ -698,33 +696,32 @@ jPanelEconomiaeGastos.repaint();
 
 
 
-// Painel principal onde tudo vai ser desenhado
 JPanel painelTabela = new JPanel(new BorderLayout());
-painelTabela.setBackground(new Color(229, 229, 246)); // #E5E5F6
+painelTabela.setBackground(new Color(229, 229, 246)); 
 
-// Título
+
 JLabel titulo = new JLabel("Despesas Desse Período");
 titulo.setHorizontalAlignment(SwingConstants.CENTER);
 titulo.setFont(new Font("SansSerif", Font.BOLD, 14));
 titulo.setForeground(new Color(0x2C, 0x29, 0x66));
-titulo.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 0)); // espaçamento
+titulo.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 0)); 
 painelTabela.add(titulo, BorderLayout.NORTH);
 
-// Cabeçalhos da tabela
+
 String[] colunas = {"Descrição", "Visualizar"};
 
-// Dados fictícios
+
 Object[][] dados = {
     {"Conta de água", "👁"},
     {"Conta de Energia", "👁"},
     {"Farmácia", "👁"},
 };
 
-// Cria a tabela
+
 DefaultTableModel modelo = new DefaultTableModel(dados, colunas) {
     @Override
     public boolean isCellEditable(int row, int column) {
-        return column == 1; // apenas a coluna do ícone pode ser clicada
+        return column == 1; 
     }
 };
 
@@ -737,7 +734,7 @@ tabela.setForeground(Color.BLACK);
 
 tabela.setPreferredScrollableViewportSize(new Dimension(645, 180));
 
-// Cria um header à direita só para a coluna "Visualizar"
+
 DefaultTableCellRenderer headerDireita = new DefaultTableCellRenderer() {
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
@@ -745,8 +742,8 @@ DefaultTableCellRenderer headerDireita = new DefaultTableCellRenderer() {
         super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         setHorizontalAlignment(SwingConstants.RIGHT);
         setFont(new Font("SansSerif", Font.BOLD, 14));
-        setForeground(new Color(0x2C, 0x29, 0x66)); // mesma cor do título
-        setBackground(new Color(229, 229, 246));    // mesmo fundo
+        setForeground(new Color(0x2C, 0x29, 0x66)); 
+        setBackground(new Color(229, 229, 246));    
         setOpaque(true);
         return this;
     }
@@ -770,28 +767,28 @@ DefaultTableCellRenderer headerEsquerda = new DefaultTableCellRenderer(){
 tabela.getColumnModel().getColumn(0).setHeaderRenderer(headerEsquerda);
 
 
-        // Ajusta largura da coluna Visualizar (estreita)
+        
         tabela.getColumnModel().getColumn(1).setMinWidth(80);
         tabela.getColumnModel().getColumn(1).setMaxWidth(100);
         tabela.getColumnModel().getColumn(1).setPreferredWidth(90);
 
-        // Centraliza o ícone do olho na célula
+        
         DefaultTableCellRenderer centralizarIcone = new DefaultTableCellRenderer();
         centralizarIcone.setHorizontalAlignment(SwingConstants.CENTER);
         tabela.getColumnModel().getColumn(1).setCellRenderer(centralizarIcone);
 
-// Centraliza o ícone do olho
+
 DefaultTableCellRenderer centralizar = new DefaultTableCellRenderer();
 centralizar.setHorizontalAlignment(SwingConstants.CENTER);
 tabela.getColumnModel().getColumn(1).setCellRenderer(centralizar);
 
-// Adiciona a tabela com scroll ao painel
+
 JScrollPane scroll = new JScrollPane(tabela);
-scroll.getViewport().setBackground(new Color(229, 229, 246)); // fundo dentro do scroll
+scroll.getViewport().setBackground(new Color(229, 229, 246)); 
 scroll.setBorder(null);
 painelTabela.add(scroll, BorderLayout.CENTER);
 
-// Adiciona no seu painel visível
+
 jPanelDespesasPeriodo.removeAll();
 jPanelDespesasPeriodo.setLayout(new BorderLayout());
 jPanelDespesasPeriodo.setBackground(new Color(229, 229, 246));
