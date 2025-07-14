@@ -12,10 +12,12 @@ import java.sql.Types;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.format.TextStyle;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class LancamentoDAO {
@@ -519,5 +521,81 @@ public class LancamentoDAO {
             throw new RuntimeException("Erro ao carregar dados de despesa para o gráfico de linha.", e);
         } 
         return despesasPorMes;
+    }
+    
+    public List<Lancamento> pesquisarLancamentos(String termo) {
+        List<Lancamento> lancamentos = new ArrayList<>();
+        String termoLowerCase = termo.toLowerCase().trim(); // Converte para minúsculas e remove espaços
+
+        StringBuilder sqlBuilder = new StringBuilder("SELECT id, descricao, valor, status_pago, categoria, data_criacao, data_vencimento, ");
+        sqlBuilder.append("frequencia, tipo, log_data_inclusao, log_data_alteracao, log_versao_registro, ");
+        sqlBuilder.append("usuario_id, centro_custo FROM tb_Lancamento WHERE 1=1"); 
+
+        List<Object> parametros = new ArrayList<>();
+
+        // Tentar pesquisar por descrição
+        sqlBuilder.append(" AND LOWER(descricao) LIKE ?");
+        parametros.add("%" + termoLowerCase + "%");
+
+        // Tentar pesquisar por tipo (Despesa/Receita)
+        if ("despesa".contains(termoLowerCase)) {
+            sqlBuilder.append(" OR tipo = ?");
+            parametros.add(1); // 1 para Despesa
+        }
+        if ("receita".contains(termoLowerCase)) {
+            sqlBuilder.append(" OR tipo = ?");
+            parametros.add(2); // 2 para Receita
+        }
+
+        // Tentar pesquisar por mês
+        for (Month mes : Month.values()) {
+            String nomeMesPortuguesCurto = mes.getDisplayName(TextStyle.SHORT, new Locale("pt", "BR")).toLowerCase();
+            String nomeMesPortuguesCompleto = mes.getDisplayName(TextStyle.FULL, new Locale("pt", "BR")).toLowerCase();
+
+            if (nomeMesPortuguesCurto.contains(termoLowerCase) || nomeMesPortuguesCompleto.contains(termoLowerCase)) {
+                sqlBuilder.append(" OR MONTH(data_criacao) = ?");
+                parametros.add(mes.getValue());
+            }
+        }
+
+        // Ordenar resultados
+        sqlBuilder.append(" ORDER BY data_criacao ASC");
+
+        try (Connection conn = ConexaoBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sqlBuilder.toString())) {
+
+            for (int i = 0; i < parametros.size(); i++) {
+                stmt.setObject(i + 1, parametros.get(i));
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Lancamento lancamento = new Lancamento();
+                    lancamento.setId(rs.getInt("id"));
+                    lancamento.setDescricao(rs.getString("descricao"));
+                    lancamento.setValor(rs.getBigDecimal("valor"));
+                    Object statusPagoObj = rs.getObject("status_pago");
+                    lancamento.setStatusPago(statusPagoObj != null ? (boolean) statusPagoObj : false);
+                    lancamento.setCategoria(rs.getInt("categoria"));
+                    lancamento.setDataCriacao(rs.getDate("data_criacao") != null ? rs.getDate("data_criacao").toLocalDate() : null);
+                    lancamento.setDataVencimento(rs.getDate("data_vencimento") != null ? rs.getDate("data_vencimento").toLocalDate() : null);
+                    lancamento.setFrequencia(rs.getInt("frequencia"));
+                    lancamento.setTipo(rs.getInt("tipo"));
+                    lancamento.setLogDataInclusao(rs.getTimestamp("log_data_inclusao") != null ? rs.getTimestamp("log_data_inclusao").toLocalDateTime() : null);
+                    lancamento.setLogDataAlteracao(rs.getTimestamp("log_data_alteracao") != null ? rs.getTimestamp("log_data_alteracao").toLocalDateTime() : null);
+                    lancamento.setLogVersaoRegistro(rs.getObject("log_versao_registro", Integer.class) != null ? rs.getObject("log_versao_registro", Integer.class) : 0);
+                    Integer usuarioId = rs.getObject("usuario_id", Integer.class);
+                    lancamento.setUsuarioId(usuarioId != null ? usuarioId : 0);
+                    Object centroCustoObj = rs.getObject("centro_custo");
+                    lancamento.setCentroCusto(centroCustoObj != null ? (Integer) centroCustoObj : null);
+
+                    lancamentos.add(lancamento);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("LancamentoDAO.pesquisarLancamentos: Erro ao pesquisar lançamentos: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return lancamentos;
     }
 }

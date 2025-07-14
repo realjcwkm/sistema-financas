@@ -285,4 +285,11 @@ public class LancamentoController {
         }
         return listaComNomes;
     }
+    
+    public List<Lancamento> pesquisarLancamentos(String termoPesquisa) {
+    if (termoPesquisa == null || termoPesquisa.trim().isEmpty()) {
+        return lancamentoDao.listarTodosLancamentos();
+    }
+    return lancamentoDao.pesquisarLancamentos(termoPesquisa);
+}
 }
