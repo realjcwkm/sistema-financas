@@ -15,6 +15,7 @@ import java.awt.Frame;
 import java.util.List;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel; 
@@ -32,6 +33,33 @@ public class TelaLancamento extends javax.swing.JFrame {
         initComponents();
 
         panelAddLancamento.setVisible(false); 
+        
+        // Set the initial placeholder text
+        ((JTextField) labelBarraPesquisa).setText("Pesquise aqui"); // Cast if labelBarraPesquisa is not directly JTextField
+
+        // Add FocusListener directly to the existing JTextField
+        ((JTextField) labelBarraPesquisa).addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                JTextField source = (JTextField) evt.getSource();
+                if (source.getText().equals("Pesquise aqui")) {
+                    source.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                JTextField source = (JTextField) evt.getSource();
+                if (source.getText().isEmpty()) {
+                    source.setText("Pesquise aqui");
+                }
+            }
+        });
+        
+        buttonPesquisa.addActionListener(e -> {
+            realizarPesquisa(); // Chama o método de pesquisa
+        });
+      
 
         this.setExtendedState(Frame.MAXIMIZED_BOTH); // Maximiza a janela ao iniciar
 
@@ -243,6 +271,59 @@ public class TelaLancamento extends javax.swing.JFrame {
         }.execute();
     }
     
+    private void realizarPesquisa() {
+        final DefaultTableModel model = (DefaultTableModel) TabelaLancamento.getModel();
+        model.setRowCount(0);
+
+        lancamentosCarregados.clear(); // Limpa a lista local 
+
+        String termoPesquisa = ((JTextField) labelBarraPesquisa).getText().trim();
+
+        if (termoPesquisa.equals("Pesquise aqui") || termoPesquisa.isEmpty()) {
+            carregarLancamentosNaTabela(); 
+            return; 
+        }
+
+        new SwingWorker<List<Lancamento>, Void>() {
+            @Override
+            protected List<Lancamento> doInBackground() throws Exception {
+                return lancamentoController.pesquisarLancamentos(termoPesquisa);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    List<Lancamento> resultadosPesquisa = get(); 
+
+                    if (resultadosPesquisa.isEmpty()) {
+                        JOptionPane.showMessageDialog(TelaLancamento.this, "Nenhum lançamento encontrado para o termo: \"" + termoPesquisa + "\"", "Pesquisa Vazia", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        for (Lancamento lancamento : resultadosPesquisa) {
+                            lancamentosCarregados.add(lancamento); 
+
+                            String tipoNome = lancamentoController.getNomeTipoLancamento(lancamento.getTipo());
+                            String categoriaNome = lancamentoController.getNomeCategoria(lancamento.getCategoria());
+                            Object statusDisplay = (lancamento.getTipo() == 1) ? lancamento.isStatusPago() : null;
+
+                            model.addRow(new Object[]{
+                                statusDisplay,
+                                tipoNome,
+                                lancamento.getDescricao(),
+                                categoriaNome,
+                                lancamento.getValor(),
+                                null 
+                            });
+                        }
+                    }
+                    model.fireTableDataChanged(); 
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(TelaLancamento.this, "Erro ao realizar pesquisa: " + e.getMessage(), "Erro de Pesquisa", JOptionPane.ERROR_MESSAGE);
+                    e.printStackTrace();
+                }
+            }
+        }.execute();
+    }
+    
     /////////////////////////////////////////////////////////////
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -264,8 +345,8 @@ public class TelaLancamento extends javax.swing.JFrame {
         buttonNovaReceita = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        labelBarraPesquisa = new javax.swing.JTextField();
+        buttonPesquisa = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -396,25 +477,25 @@ public class TelaLancamento extends javax.swing.JFrame {
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTextField1.setBackground(new java.awt.Color(229, 229, 246));
-        jTextField1.setText("jTextField1");
+        labelBarraPesquisa.setBackground(new java.awt.Color(229, 229, 246));
+        labelBarraPesquisa.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
 
-        jButton1.setBackground(new java.awt.Color(97, 90, 205));
+        buttonPesquisa.setBackground(new java.awt.Color(97, 90, 205));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelBarraPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(labelBarraPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+            .addComponent(buttonPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -495,7 +576,7 @@ public class TelaLancamento extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonAddLancamentoActionPerformed
 
     private void buttonNovaDespesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNovaDespesaActionPerformed
-        VerDespesa Despesaformulario = new VerDespesa(this, true);
+        DespesaForm Despesaformulario = new DespesaForm(this, true);
         Despesaformulario.setVisible(true);
     }//GEN-LAST:event_buttonNovaDespesaActionPerformed
 
@@ -541,12 +622,12 @@ public class TelaLancamento extends javax.swing.JFrame {
     private javax.swing.JButton buttonAddLancamento;
     private javax.swing.JButton buttonNovaDespesa;
     private javax.swing.JButton buttonNovaReceita;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton buttonPesquisa;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField labelBarraPesquisa;
     private javax.swing.JLabel labelPlanejaGo;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JPanel panelAddLancamento;
