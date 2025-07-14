@@ -155,4 +155,5 @@ public class Lancamento {
     public void setCentroCusto(Integer centroCusto) {
         this.centroCusto = centroCusto;
     }
+
 }

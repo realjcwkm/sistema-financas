@@ -141,7 +141,7 @@ public class RelatorioDAO {
                 l.setId(rs.getInt("id"));
                 l.setDescricao(rs.getString("descricao"));
                 l.setValor(rs.getBigDecimal("valor"));
-                l.setPago(rs.getBoolean("status_pago"));
+                l.setStatusPago(rs.getBoolean("status_pago"));
                 l.setDataCriacao(rs.getDate("data_criacao").toLocalDate());
                 l.setCategoria(rs.getInt("categoria")); 
                 lista.add(l);
