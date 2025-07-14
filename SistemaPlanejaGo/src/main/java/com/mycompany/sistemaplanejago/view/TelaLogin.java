@@ -41,7 +41,6 @@ public class TelaLogin extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         panelPrincipal = new javax.swing.JPanel();
         panelNavBar = new javax.swing.JPanel();
@@ -59,7 +58,6 @@ public class TelaLogin extends javax.swing.JFrame {
         labelSenha = new javax.swing.JLabel();
         fieldSenha = new javax.swing.JPasswordField();
         panelEsqueciSenha = new javax.swing.JPanel();
-        labelEsqueciSenha1 = new javax.swing.JLabel();
         panelEntar = new javax.swing.JPanel();
         buttonEntrar1 = new javax.swing.JButton();
 
@@ -76,6 +74,11 @@ public class TelaLogin extends javax.swing.JFrame {
         labelPlanejaGo.setForeground(new java.awt.Color(255, 160, 81));
         labelPlanejaGo.setText("PlanejaGo");
         labelPlanejaGo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
+        labelPlanejaGo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelPlanejaGoMouseClicked(evt);
+            }
+        });
         panelNavBar.add(labelPlanejaGo, java.awt.BorderLayout.WEST);
 
         panelBtnCadastrar.setBackground(new java.awt.Color(44, 41, 102));
@@ -195,25 +198,15 @@ public class TelaLogin extends javax.swing.JFrame {
 
         panelEsqueciSenha.setBackground(new java.awt.Color(255, 255, 255));
 
-        labelEsqueciSenha1.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        labelEsqueciSenha1.setForeground(new java.awt.Color(0, 51, 255));
-        labelEsqueciSenha1.setText("Esqueci minha Senha");
-
         javax.swing.GroupLayout panelEsqueciSenhaLayout = new javax.swing.GroupLayout(panelEsqueciSenha);
         panelEsqueciSenha.setLayout(panelEsqueciSenhaLayout);
         panelEsqueciSenhaLayout.setHorizontalGroup(
             panelEsqueciSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelEsqueciSenhaLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(labelEsqueciSenha1)
-                .addContainerGap(308, Short.MAX_VALUE))
+            .addGap(0, 502, Short.MAX_VALUE)
         );
         panelEsqueciSenhaLayout.setVerticalGroup(
             panelEsqueciSenhaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelEsqueciSenhaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelEsqueciSenha1)
-                .addContainerGap(67, Short.MAX_VALUE))
+            .addGap(0, 95, Short.MAX_VALUE)
         );
 
         panelContent.add(panelEsqueciSenha);
@@ -282,10 +275,15 @@ public class TelaLogin extends javax.swing.JFrame {
 
     private void buttonEntrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEntrar1ActionPerformed
         // TODO add your handling code here:
-        String email = fieldEmail.getText(); // Substitua fieldEmailLogin pelo nome real do seu campo de email
+        String email = fieldEmail.getText(); 
         String senha = new String(fieldSenha.getPassword());
         
         boolean loginSucesso = usuarioController.logarUsuario(email, senha);
+        
+        if (loginSucesso == true){
+            new TelaHome().setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_buttonEntrar1ActionPerformed
 
     private void fieldSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldSenhaActionPerformed
@@ -310,6 +308,12 @@ public class TelaLogin extends javax.swing.JFrame {
         // Fecha a TelaLogin atual
         this.dispose(); // Fecha a tela de login
     }//GEN-LAST:event_buttonCadastrarMouseClicked
+
+    private void labelPlanejaGoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelPlanejaGoMouseClicked
+        // TODO add your handling code here:
+        new TelaAbertura().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_labelPlanejaGoMouseClicked
 
     /**
      * @param args the command line arguments
@@ -352,7 +356,6 @@ public class TelaLogin extends javax.swing.JFrame {
     private javax.swing.JTextField fieldEmail;
     private javax.swing.JPasswordField fieldSenha;
     private javax.swing.JLabel labelEmail;
-    private javax.swing.JLabel labelEsqueciSenha1;
     private javax.swing.JLabel labelPlanejaGo;
     private javax.swing.JLabel labelSenha;
     private javax.swing.JLabel labelTitulo;

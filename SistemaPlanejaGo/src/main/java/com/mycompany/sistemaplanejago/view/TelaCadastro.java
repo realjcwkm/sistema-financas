@@ -77,6 +77,11 @@ public class TelaCadastro extends javax.swing.JFrame {
         labelPlanejaGo.setForeground(new java.awt.Color(255, 160, 81));
         labelPlanejaGo.setText("PlanejaGo");
         labelPlanejaGo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
+        labelPlanejaGo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelPlanejaGoMouseClicked(evt);
+            }
+        });
         panelNavBar.add(labelPlanejaGo, java.awt.BorderLayout.WEST);
 
         panelBtnEntrar.setBackground(new java.awt.Color(44, 41, 102));
@@ -276,7 +281,7 @@ public class TelaCadastro extends javax.swing.JFrame {
         buttonCadastrar.setBackground(new java.awt.Color(97, 90, 205));
         buttonCadastrar.setFont(new java.awt.Font("Roboto", 1, 20)); // NOI18N
         buttonCadastrar.setForeground(new java.awt.Color(255, 255, 255));
-        buttonCadastrar.setText("Entrar");
+        buttonCadastrar.setText("Cadastrar");
         buttonCadastrar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 buttonCadastrarMouseEntered(evt);
@@ -385,6 +390,12 @@ public class TelaCadastro extends javax.swing.JFrame {
 
         this.dispose(); 
     }//GEN-LAST:event_buttonEntrarMouseClicked
+
+    private void labelPlanejaGoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelPlanejaGoMouseClicked
+        // TODO add your handling code here:
+        new TelaAbertura().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_labelPlanejaGoMouseClicked
 
     /**
      * @param args the command line arguments
