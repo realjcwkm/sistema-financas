@@ -37,6 +37,9 @@ import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.plot.dial.DialPointer;
 import org.jfree.chart.plot.dial.DialPointer.Pointer;
+import com.mycompany.sistemaplanejago.controller.RelatorioController;
+import com.mycompany.sistemaplanejago.model.Lancamento;
+import java.util.Map;
 
 /**
  *
@@ -46,6 +49,7 @@ public class TelaRelatorios extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaRelatorios.class.getName());
 
+    
     /**
      * Creates new form TelaRelatorios
      */
@@ -71,7 +75,6 @@ public class TelaRelatorios extends javax.swing.JFrame {
         labelPlanejaGo = new javax.swing.JLabel();
         labelLançamentos = new javax.swing.JLabel();
         labelRelatórios = new javax.swing.JLabel();
-        labelCalculadora = new javax.swing.JLabel();
         Panelicones = new javax.swing.JPanel();
         jLabelNotificação = new javax.swing.JLabel();
         jLabelUsuário = new javax.swing.JLabel();
@@ -92,6 +95,7 @@ public class TelaRelatorios extends javax.swing.JFrame {
         jPanelNãopagas = new javax.swing.JPanel();
         jPanelCategoriaDespesas = new javax.swing.JPanel();
         jPanelDespesasPeriodo = new javax.swing.JPanel();
+        jPanelFundo = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -119,12 +123,6 @@ public class TelaRelatorios extends javax.swing.JFrame {
         labelRelatórios.setText("Relatórios ");
         labelRelatórios.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
         panelNavegação.add(labelRelatórios);
-
-        labelCalculadora.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
-        labelCalculadora.setForeground(new java.awt.Color(255, 255, 255));
-        labelCalculadora.setText("Calculadora");
-        labelCalculadora.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
-        panelNavegação.add(labelCalculadora);
 
         getContentPane().add(panelNavegação, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1360, -1));
 
@@ -204,7 +202,7 @@ public class TelaRelatorios extends javax.swing.JFrame {
         });
 
         jComboBoxCategoria.setForeground(new java.awt.Color(19, 16, 71));
-        jComboBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Selecionar Tudo", "Educação", "Casa", "Saúde" }));
+        jComboBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Moradia", "Alimentação", "Saúde", "Educação", "Transportes", "Lazer", "Salário", "Investimentos ", "Empréstimos" }));
         jComboBoxCategoria.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 2, true));
         jComboBoxCategoria.setMinimumSize(new java.awt.Dimension(108, 22));
         jComboBoxCategoria.setOpaque(true);
@@ -398,11 +396,30 @@ public class TelaRelatorios extends javax.swing.JFrame {
 
         getContentPane().add(jPanelPaigraficos, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 1400, 510));
 
+        jPanelFundo.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelFundo.setLayout(null);
+        getContentPane().add(jPanelFundo, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 70, 1510, 760));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonGerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGerarActionPerformed
- jPanelPaigraficos.setVisible(true);
+
+ jButtonGerar.addActionListener((java.awt.event.ActionEvent evt1) -> {
+     
+     if (jComboBoxCategoria.getSelectedIndex() == 0 ||
+             jComboBoxLançamentos.getSelectedIndex() == 0 ||
+             jComboBoxPeríodo.getSelectedIndex() == 0 ||
+             jComboBoxStatus.getSelectedIndex() == 0) {
+         
+         JOptionPane.showMessageDialog(null, "Por favor, selecione todas as opções antes de gerar os gráficos.");
+         
+     } else {
+        jPanelPaigraficos.setVisible(true); 
+         
+     }
+ });
+
             // TODO add your handling code here:   // TODO add your handling code here:
     }//GEN-LAST:event_jButtonGerarActionPerformed
 
@@ -415,6 +432,7 @@ public class TelaRelatorios extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBoxPeríodoActionPerformed
 
     private void jComboBoxCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCategoriaActionPerformed
+  
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxCategoriaActionPerformed
 
@@ -422,15 +440,18 @@ public class TelaRelatorios extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxStatusActionPerformed
 private void adicionarGraficos() {
-     DefaultCategoryDataset datasetLinha = new DefaultCategoryDataset();
-     
-datasetLinha.addValue(10, "Despesas", "Seg");
-datasetLinha.addValue(12, "Despesas", "Ter");
-datasetLinha.addValue(18, "Despesas", "Qua");
-datasetLinha.addValue(25, "Despesas", "Qui");
-datasetLinha.addValue(22, "Despesas", "Sex");
-datasetLinha.addValue(30, "Despesas", "Sáb");
-datasetLinha.addValue(28, "Despesas", "Dom");
+
+  DefaultCategoryDataset datasetLinha = new DefaultCategoryDataset();
+
+RelatorioController controller = new RelatorioController();
+
+        var despesasSemana = controller.buscarDespesasSemana();
+
+for (Object[] diaValor : despesasSemana) {
+    String dia = (String) diaValor[0];       
+    Double valor = (Double) diaValor[1];
+    datasetLinha.addValue(valor, "Despesas", dia);
+}
 
 JFreeChart lineChart = ChartFactory.createLineChart(
     "Despesas ao Longo da Semana",
@@ -485,9 +506,16 @@ jPanelDespesasdaSemana.setOpaque(true);
 jPanelDespesasdaSemana.validate();
 
   
-     DefaultPieDataset pieDataset = new DefaultPieDataset();
-pieDataset.setValue("Casa", 60);
-pieDataset.setValue("Saúde", 40);
+    DefaultPieDataset pieDataset = new DefaultPieDataset();
+
+        var totalPorCategoria = controller.buscarTotalPorCategoria();
+
+for (Object[] categoriaValor : totalPorCategoria) {
+    String categoria = (String) categoriaValor[0];
+    Double valor = (Double) categoriaValor[1];
+    pieDataset.setValue(categoria, valor);
+}
+
 
 JFreeChart pieChart = ChartFactory.createPieChart(null, pieDataset, true, true, false);
 title = new TextTitle("Categoria das Despesas", new Font("SansSerif", Font.BOLD, 14));
@@ -527,8 +555,12 @@ JFreeChart barChart = ChartFactory.createBarChart(
 );
 
 DefaultCategoryDataset datasetBarra = new DefaultCategoryDataset();
-double percentualPago = 0.65;
-double percentualNaoPago = 0.35;
+
+
+Map<String, Double> percentualPagoNaoPago = controller.buscarPercentualPagoNaoPago();
+
+Double percentualPago = percentualPagoNaoPago.getOrDefault("Pago", 0.0);
+Double percentualNaoPago = percentualPagoNaoPago.getOrDefault("Não Pago", 0.0);
 
 datasetBarra.addValue(percentualNaoPago, "Não Pago", "Total");
 datasetBarra.addValue(percentualPago, "Pago", "Total");
@@ -644,8 +676,9 @@ pointer.setRadius(0.8);
 dialPlot.addPointer(pointer);
 
 
-dialPlot.setDataset(0, new DefaultValueDataset(20));
+double economiaPercentual = controller.calcularEconomiaPercentual();
 
+dialPlot.setDataset(0, new DefaultValueDataset(economiaPercentual));
 
 Color fundoGeral = new Color(229, 229, 246); 
 dialPlot.setBackgroundPaint(fundoGeral);
@@ -671,8 +704,12 @@ JPanel infoPanel = new JPanel(new GridLayout(1, 1));
 infoPanel.setBackground(fundoGeral);
 infoPanel.setOpaque(true);
 
-JLabel semanaPassada = new JLabel("Semana Passada: R$200");
-JLabel essaSemana = new JLabel("Essa Semana: R$160");
+double totalSemanaPassada = controller.getTotalSemanaPassada(); 
+double totalSemanaAtual = controller.getTotalSemanaAtual();
+
+JLabel semanaPassada = new JLabel(String.format("Semana Passada: R$%.2f", totalSemanaPassada));
+JLabel essaSemana = new JLabel(String.format("Essa Semana: R$%.2f", totalSemanaAtual));
+
 
 Color corTexto = new Color(0x2C, 0x29, 0x66); 
 semanaPassada.setForeground(corTexto);
@@ -711,11 +748,15 @@ painelTabela.add(titulo, BorderLayout.NORTH);
 String[] colunas = {"Descrição", "Visualizar"};
 
 
-Object[][] dados = {
-    {"Conta de água", "👁"},
-    {"Conta de Energia", "👁"},
-    {"Farmácia", "👁"},
-};
+        var lancamentos = controller.listarLancamentosRecentes();
+
+Object[][] dados = new Object[lancamentos.size()][2];
+
+for (int i = 0; i < lancamentos.size(); i++) {
+    Lancamento l = lancamentos.get(i);
+    dados[i][0] = l.getDescricao();
+    dados[i][1] = ("👁");
+}
 
 
 DefaultTableModel modelo = new DefaultTableModel(dados, colunas) {
@@ -837,9 +878,9 @@ jPanelDespesasPeriodo.repaint();
     private javax.swing.JPanel jPanelDespesasdaSemana;
     private javax.swing.JPanel jPanelEconomiaeGastos;
     private javax.swing.JPanel jPanelFiltros;
+    private javax.swing.JPanel jPanelFundo;
     private javax.swing.JPanel jPanelNãopagas;
     private javax.swing.JPanel jPanelPaigraficos;
-    private javax.swing.JLabel labelCalculadora;
     private javax.swing.JLabel labelCategoria;
     private javax.swing.JLabel labelLançamentos;
     private javax.swing.JLabel labelPeríodo;
