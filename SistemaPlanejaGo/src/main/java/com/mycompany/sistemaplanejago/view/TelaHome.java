@@ -8,6 +8,8 @@ import com.mycompany.sistemaplanejago.controller.LancamentoController;
 import com.mycompany.sistemaplanejago.controller.UsuarioController;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map.Entry;
@@ -24,6 +26,40 @@ public class TelaHome extends javax.swing.JFrame {
         usuarioController = new UsuarioController();
         inicializarGraficoLinha();
         inicializarComponentesPersonalizados();
+        
+        //Hover Links
+        labelLancamentos.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
+                labelLancamentos.setForeground(new Color(255, 160, 0)); // Laranja
+            }
+
+            public void mouseExited(MouseEvent evt) {
+                labelLancamentos.setForeground(Color.WHITE); // Branca
+            }
+        });
+        
+        labelRelatorios.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
+                labelRelatorios.setForeground(new Color(255, 160, 0)); // Laranja
+            }
+
+            public void mouseExited(MouseEvent evt) {
+                labelRelatorios.setForeground(Color.WHITE); // Branca
+            }
+        });
+        
+        labelSair.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
+                labelSair.setForeground(new Color(255, 160, 0)); // Laranja
+            }
+
+            public void mouseExited(MouseEvent evt) {
+                labelSair.setForeground(Color.WHITE); // Branca
+            }
+        });
+        
+
+        
 
     }
     
@@ -145,9 +181,6 @@ public class TelaHome extends javax.swing.JFrame {
     private void initComponents() {
 
         panelPrincipal = new javax.swing.JPanel();
-        panelNavBar = new javax.swing.JPanel();
-        labelPlanejaGo = new javax.swing.JLabel();
-        panelBtnCadastrar = new javax.swing.JPanel();
         panelCentralizador = new javax.swing.JPanel();
         panelContent = new javax.swing.JPanel();
         panelRow1 = new javax.swing.JPanel();
@@ -178,27 +211,19 @@ public class TelaHome extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         panelGraficoBarra = new javax.swing.JPanel();
+        panelNavBar = new javax.swing.JPanel();
+        labelPlanejaGo = new javax.swing.JLabel();
+        panelBtnEntrar = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        labelRelatorios = new javax.swing.JLabel();
+        labelLancamentos = new javax.swing.JLabel();
+        labelSair = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         panelPrincipal.setBackground(new java.awt.Color(255, 255, 255));
         panelPrincipal.setLayout(new java.awt.BorderLayout());
-
-        panelNavBar.setBackground(new java.awt.Color(44, 41, 102));
-        panelNavBar.setPreferredSize(new java.awt.Dimension(800, 70));
-        panelNavBar.setLayout(new java.awt.BorderLayout());
-
-        labelPlanejaGo.setFont(new java.awt.Font("Roboto", 1, 30)); // NOI18N
-        labelPlanejaGo.setForeground(new java.awt.Color(255, 160, 81));
-        labelPlanejaGo.setText("PlanejaGo");
-        labelPlanejaGo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
-        panelNavBar.add(labelPlanejaGo, java.awt.BorderLayout.WEST);
-
-        panelBtnCadastrar.setBackground(new java.awt.Color(44, 41, 102));
-        panelBtnCadastrar.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 30));
-        panelNavBar.add(panelBtnCadastrar, java.awt.BorderLayout.LINE_END);
-
-        panelPrincipal.add(panelNavBar, java.awt.BorderLayout.NORTH);
 
         panelCentralizador.setBackground(new java.awt.Color(255, 255, 255));
         panelCentralizador.setLayout(new java.awt.GridBagLayout());
@@ -579,6 +604,104 @@ public class TelaHome extends javax.swing.JFrame {
 
         panelPrincipal.add(panelCentralizador, java.awt.BorderLayout.CENTER);
 
+        panelNavBar.setBackground(new java.awt.Color(44, 41, 102));
+        panelNavBar.setPreferredSize(new java.awt.Dimension(800, 70));
+        panelNavBar.setLayout(new java.awt.BorderLayout());
+
+        labelPlanejaGo.setFont(new java.awt.Font("Roboto", 1, 30)); // NOI18N
+        labelPlanejaGo.setForeground(new java.awt.Color(255, 160, 81));
+        labelPlanejaGo.setText("PlanejaGo");
+        labelPlanejaGo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
+        labelPlanejaGo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelPlanejaGoMouseClicked(evt);
+            }
+        });
+        panelNavBar.add(labelPlanejaGo, java.awt.BorderLayout.WEST);
+
+        panelBtnEntrar.setBackground(new java.awt.Color(44, 41, 102));
+        panelBtnEntrar.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 30));
+        panelNavBar.add(panelBtnEntrar, java.awt.BorderLayout.LINE_END);
+
+        jPanel1.setBackground(new java.awt.Color(44, 41, 102));
+
+        jPanel3.setBackground(new java.awt.Color(44, 41, 102));
+
+        labelRelatorios.setBackground(new java.awt.Color(44, 41, 102));
+        labelRelatorios.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        labelRelatorios.setForeground(new java.awt.Color(255, 255, 255));
+        labelRelatorios.setText("Relatórios");
+        labelRelatorios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelRelatoriosMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelRelatorios)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(labelRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        labelLancamentos.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        labelLancamentos.setForeground(new java.awt.Color(255, 255, 255));
+        labelLancamentos.setText("Lançamentos");
+        labelLancamentos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelLancamentosMouseClicked(evt);
+            }
+        });
+
+        labelSair.setBackground(new java.awt.Color(44, 41, 102));
+        labelSair.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        labelSair.setForeground(new java.awt.Color(255, 255, 255));
+        labelSair.setText("Sair");
+        labelSair.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelSairMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(labelLancamentos)
+                .addGap(28, 28, 28)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 907, Short.MAX_VALUE)
+                .addComponent(labelSair)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelLancamentos, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(labelSair)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        panelNavBar.add(jPanel1, java.awt.BorderLayout.CENTER);
+
+        panelPrincipal.add(panelNavBar, java.awt.BorderLayout.NORTH);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -635,6 +758,30 @@ public class TelaHome extends javax.swing.JFrame {
         atualizarGraficoLinha();
     }//GEN-LAST:event_labelNovaReceitaMouseClicked
 
+    private void labelPlanejaGoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelPlanejaGoMouseClicked
+        // TODO add your handling code here:
+        new TelaHome().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_labelPlanejaGoMouseClicked
+
+    private void labelLancamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelLancamentosMouseClicked
+        // TODO add your handling code here:
+        new TelaLancamento().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_labelLancamentosMouseClicked
+
+    private void labelRelatoriosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelRelatoriosMouseClicked
+        // TODO add your handling code here:
+        new TelaRelatorios().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_labelRelatoriosMouseClicked
+
+    private void labelSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelSairMouseClicked
+        // TODO add your handling code here:
+        new TelaAbertura().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_labelSairMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -677,20 +824,25 @@ public class TelaHome extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel labelAcessoRapido;
     private javax.swing.JLabel labelCumprimento;
     private javax.swing.JLabel labelFraseDia;
+    private javax.swing.JLabel labelLancamentos;
     private javax.swing.JLabel labelNovaDespesa;
     private javax.swing.JLabel labelNovaReceita;
     private javax.swing.JLabel labelPlanejaGo;
+    private javax.swing.JLabel labelRelatorios;
+    private javax.swing.JLabel labelSair;
     private javax.swing.JLabel labelTotalPagar;
     private javax.swing.JLabel labelTotalPago;
     private javax.swing.JLabel labelTotalReceita;
     private javax.swing.JLabel labelValorReceita;
     private javax.swing.JLabel labelValorTotalPagar;
     private javax.swing.JLabel labelValorTotalPago;
-    private javax.swing.JPanel panelBtnCadastrar;
+    private javax.swing.JPanel panelBtnEntrar;
     private javax.swing.JPanel panelCentralizador;
     private javax.swing.JPanel panelConfiguracaoLinhas;
     private javax.swing.JPanel panelContent;

@@ -39,6 +39,8 @@ import org.jfree.chart.plot.dial.DialPointer;
 import org.jfree.chart.plot.dial.DialPointer.Pointer;
 import com.mycompany.sistemaplanejago.controller.RelatorioController;
 import com.mycompany.sistemaplanejago.model.Lancamento;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Map;
 
 /**
@@ -58,6 +60,38 @@ public class TelaRelatorios extends javax.swing.JFrame {
         adicionarGraficos();
         jPanelPaigraficos.setVisible(false);
         
+        //Hover Links
+        labelLancamentos.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
+                labelLancamentos.setForeground(new Color(255, 160, 0)); // Laranja
+            }
+
+            public void mouseExited(MouseEvent evt) {
+                labelLancamentos.setForeground(Color.WHITE); // Branca
+            }
+        });
+        
+        labelRelatorios.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
+                labelRelatorios.setForeground(new Color(255, 160, 0)); // Laranja
+            }
+
+            public void mouseExited(MouseEvent evt) {
+                labelRelatorios.setForeground(Color.WHITE); // Branca
+            }
+        });
+        
+        
+        labelSair.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
+                labelSair.setForeground(new Color(255, 160, 0)); // Laranja
+            }
+
+            public void mouseExited(MouseEvent evt) {
+                labelSair.setForeground(Color.WHITE); // Branca
+            }
+        });
+        
 
 
     }
@@ -71,13 +105,6 @@ public class TelaRelatorios extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelNavegação = new javax.swing.JPanel();
-        labelPlanejaGo = new javax.swing.JLabel();
-        labelLançamentos = new javax.swing.JLabel();
-        labelRelatórios = new javax.swing.JLabel();
-        Panelicones = new javax.swing.JPanel();
-        jLabelNotificação = new javax.swing.JLabel();
-        jLabelUsuário = new javax.swing.JLabel();
         jPanelFiltros = new javax.swing.JPanel();
         jButtonGerar = new javax.swing.JButton();
         labelPeríodo = new javax.swing.JLabel();
@@ -96,49 +123,18 @@ public class TelaRelatorios extends javax.swing.JFrame {
         jPanelCategoriaDespesas = new javax.swing.JPanel();
         jPanelDespesasPeriodo = new javax.swing.JPanel();
         jPanelFundo = new javax.swing.JPanel();
+        panelNavBar = new javax.swing.JPanel();
+        labelPlanejaGo = new javax.swing.JLabel();
+        panelBtnEntrar = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        labelRelatorios = new javax.swing.JLabel();
+        labelLancamentos = new javax.swing.JLabel();
+        labelSair = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        panelNavegação.setBackground(new java.awt.Color(44, 41, 102));
-        panelNavegação.setPreferredSize(new java.awt.Dimension(800, 70));
-        panelNavegação.setLayout(new javax.swing.BoxLayout(panelNavegação, javax.swing.BoxLayout.X_AXIS));
-
-        labelPlanejaGo.setFont(new java.awt.Font("Roboto", 1, 32)); // NOI18N
-        labelPlanejaGo.setForeground(new java.awt.Color(255, 160, 81));
-        labelPlanejaGo.setText("PlanejaGo ");
-        labelPlanejaGo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
-        panelNavegação.add(labelPlanejaGo);
-
-        labelLançamentos.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
-        labelLançamentos.setForeground(new java.awt.Color(255, 255, 255));
-        labelLançamentos.setText("Lançamentos");
-        labelLançamentos.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
-        labelLançamentos.setFocusable(false);
-        panelNavegação.add(labelLançamentos);
-
-        labelRelatórios.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
-        labelRelatórios.setForeground(new java.awt.Color(255, 255, 255));
-        labelRelatórios.setText("Relatórios ");
-        labelRelatórios.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
-        panelNavegação.add(labelRelatórios);
-
-        getContentPane().add(panelNavegação, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1360, -1));
-
-        Panelicones.setBackground(new java.awt.Color(44, 41, 102));
-        Panelicones.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 30));
-        Panelicones.setLayout(null);
-
-        jLabelNotificação.setIcon(new javax.swing.ImageIcon("C:\\Users\\Jr\\Saved Games\\sistema-financas\\SistemaPlanejaGo\\src\\Icons\\Imagens\\notification (2).png")); // NOI18N
-        Panelicones.add(jLabelNotificação);
-        jLabelNotificação.setBounds(40, 20, 30, 40);
-
-        jLabelUsuário.setIcon(new javax.swing.ImageIcon("C:\\Users\\Jr\\Saved Games\\sistema-financas\\SistemaPlanejaGo\\src\\Icons\\Imagens\\profile (3).png")); // NOI18N
-        Panelicones.add(jLabelUsuário);
-        jLabelUsuário.setBounds(80, 0, 64, 70);
-
-        getContentPane().add(Panelicones, new org.netbeans.lib.awtextra.AbsoluteConstraints(1360, 0, 150, 70));
 
         jPanelFiltros.setBackground(new java.awt.Color(229, 229, 246));
         jPanelFiltros.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(229, 229, 246), 2, true));
@@ -400,6 +396,104 @@ public class TelaRelatorios extends javax.swing.JFrame {
         jPanelFundo.setLayout(null);
         getContentPane().add(jPanelFundo, new org.netbeans.lib.awtextra.AbsoluteConstraints(1, 70, 1510, 760));
 
+        panelNavBar.setBackground(new java.awt.Color(44, 41, 102));
+        panelNavBar.setPreferredSize(new java.awt.Dimension(800, 70));
+        panelNavBar.setLayout(new java.awt.BorderLayout());
+
+        labelPlanejaGo.setFont(new java.awt.Font("Roboto", 1, 30)); // NOI18N
+        labelPlanejaGo.setForeground(new java.awt.Color(255, 160, 81));
+        labelPlanejaGo.setText("PlanejaGo");
+        labelPlanejaGo.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 30, 0, 0));
+        labelPlanejaGo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelPlanejaGoMouseClicked(evt);
+            }
+        });
+        panelNavBar.add(labelPlanejaGo, java.awt.BorderLayout.WEST);
+
+        panelBtnEntrar.setBackground(new java.awt.Color(44, 41, 102));
+        panelBtnEntrar.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 1, 1, 30));
+        panelNavBar.add(panelBtnEntrar, java.awt.BorderLayout.LINE_END);
+
+        jPanel1.setBackground(new java.awt.Color(44, 41, 102));
+
+        jPanel3.setBackground(new java.awt.Color(44, 41, 102));
+
+        labelRelatorios.setBackground(new java.awt.Color(44, 41, 102));
+        labelRelatorios.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        labelRelatorios.setForeground(new java.awt.Color(255, 255, 255));
+        labelRelatorios.setText("Relatórios");
+        labelRelatorios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelRelatoriosMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelRelatorios)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(labelRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        labelLancamentos.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        labelLancamentos.setForeground(new java.awt.Color(255, 255, 255));
+        labelLancamentos.setText("Lançamentos");
+        labelLancamentos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelLancamentosMouseClicked(evt);
+            }
+        });
+
+        labelSair.setBackground(new java.awt.Color(44, 41, 102));
+        labelSair.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        labelSair.setForeground(new java.awt.Color(255, 255, 255));
+        labelSair.setText("Sair");
+        labelSair.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelSairMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(labelLancamentos)
+                .addGap(28, 28, 28)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 906, Short.MAX_VALUE)
+                .addComponent(labelSair)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelLancamentos, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(labelSair)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        panelNavBar.add(jPanel1, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(panelNavBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1510, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -439,6 +533,30 @@ public class TelaRelatorios extends javax.swing.JFrame {
     private void jComboBoxStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxStatusActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxStatusActionPerformed
+
+    private void labelPlanejaGoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelPlanejaGoMouseClicked
+        // TODO add your handling code here:
+        new TelaHome().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_labelPlanejaGoMouseClicked
+
+    private void labelRelatoriosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelRelatoriosMouseClicked
+        // TODO add your handling code here:
+        new TelaRelatorios().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_labelRelatoriosMouseClicked
+
+    private void labelLancamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelLancamentosMouseClicked
+        // TODO add your handling code here:
+        new TelaLancamento().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_labelLancamentosMouseClicked
+
+    private void labelSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelSairMouseClicked
+        // TODO add your handling code here:
+        new TelaAbertura().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_labelSairMouseClicked
 private void adicionarGraficos() {
 
   DefaultCategoryDataset datasetLinha = new DefaultCategoryDataset();
@@ -865,14 +983,13 @@ jPanelDespesasPeriodo.repaint();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel Panelicones;
     private javax.swing.JButton jButtonGerar;
     private javax.swing.JComboBox<String> jComboBoxCategoria;
     private javax.swing.JComboBox<String> jComboBoxLançamentos;
     private javax.swing.JComboBox<String> jComboBoxPeríodo;
     private javax.swing.JComboBox<String> jComboBoxStatus;
-    private javax.swing.JLabel jLabelNotificação;
-    private javax.swing.JLabel jLabelUsuário;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanelCategoriaDespesas;
     private javax.swing.JPanel jPanelDespesasPeriodo;
     private javax.swing.JPanel jPanelDespesasdaSemana;
@@ -882,13 +999,15 @@ jPanelDespesasPeriodo.repaint();
     private javax.swing.JPanel jPanelNãopagas;
     private javax.swing.JPanel jPanelPaigraficos;
     private javax.swing.JLabel labelCategoria;
-    private javax.swing.JLabel labelLançamentos;
+    private javax.swing.JLabel labelLancamentos;
     private javax.swing.JLabel labelPeríodo;
     private javax.swing.JLabel labelPlanejaGo;
-    private javax.swing.JLabel labelRelatórios;
+    private javax.swing.JLabel labelRelatorios;
     private javax.swing.JLabel labelRelatóriosBlue;
+    private javax.swing.JLabel labelSair;
     private javax.swing.JLabel labelStatus;
     private javax.swing.JLabel labelTipoLançamento;
-    private javax.swing.JPanel panelNavegação;
+    private javax.swing.JPanel panelBtnEntrar;
+    private javax.swing.JPanel panelNavBar;
     // End of variables declaration//GEN-END:variables
 }
