@@ -49,7 +49,7 @@ create table tb_Lancamento(
     frequencia int not null default(1),
     tipo int not null,
     log_data_inclusao datetime not null,
-    log_data_alteracao datetime not null,
+    log_data_alteracao datetime default(current_date) not null,
     log_versao_registro int not null default (1),
     usuario_id int not null,
     centro_custo int, 
